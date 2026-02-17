@@ -1,0 +1,2 @@
+HubSpace
+Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=Coworking;Integrated Security=True
