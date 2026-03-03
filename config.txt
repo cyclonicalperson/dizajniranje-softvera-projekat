@@ -1,2 +1,2 @@
 CoWorking Hub
-Server=(localdb)\MSSQLLocalDB;Database=CoWorkingDB;Trusted_Connection=True;TrustServerCertificate=True;
+Server=(localdb)\MSSQLLocalDB;Database=Coworking;Trusted_Connection=True;TrustServerCertificate=True;

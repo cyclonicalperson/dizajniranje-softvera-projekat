@@ -23,11 +23,11 @@ namespace CoWorkingManager.Modeli
         // Navigaciono svojstvo ka tipu clanstva
         public TipClanstva TipClanstva { get; set; } = null!;
 
-        // Datum početka važenja clanstva
-        public DateTime DatumPocetkaClanstva { get; set; }
+        // Datum početka važenja clanstva — koristimo DateOnly (bez vremenske komponente)
+        public DateOnly DatumPocetkaClanstva { get; set; }
 
-        // Datum isteka važenja clanstva
-        public DateTime DatumKrajaClanstva { get; set; }
+        // Datum isteka važenja clanstva — koristimo DateOnly (bez vremenske komponente)
+        public DateOnly DatumKrajaClanstva { get; set; }
 
         // Status naloga, cuva se kao string u bazi:
         // 'aktivan' | 'pauziran' | 'istekao'

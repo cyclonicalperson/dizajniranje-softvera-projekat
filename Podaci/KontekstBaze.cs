@@ -133,6 +133,10 @@ namespace CoWorkingManager.Podaci
                 e.Property(k => k.Email).IsRequired().HasMaxLength(100);
                 e.Property(k => k.Telefon).HasMaxLength(30);
 
+                // DATE u bazi — EF Core mapira DateOnly na DATE kolonu (SQL Server 2019+/LocalDB)
+                e.Property(k => k.DatumPocetkaClanstva).HasColumnType("date");
+                e.Property(k => k.DatumKrajaClanstva).HasColumnType("date");
+
                 // Enum se cuva kao string malim slovima: 'aktivan', 'pauziran', 'istekao'
                 e.Property(k => k.StatusNaloga)
                  .HasConversion(
@@ -146,6 +150,10 @@ namespace CoWorkingManager.Podaci
                  .WithMany(t => t.Korisnici)
                  .HasForeignKey(k => k.TipClanstvaId)
                  .OnDelete(DeleteBehavior.Restrict);
+
+                // Indeksi iz schema.sql
+                e.HasIndex(k => k.StatusNaloga).HasDatabaseName("IX_Korisnici_Status");
+                e.HasIndex(k => k.TipClanstvaId).HasDatabaseName("IX_Korisnici_TipClanstva");
             });
         }
 
@@ -202,6 +210,10 @@ namespace CoWorkingManager.Podaci
             {
                 e.ToTable("Rezervacije");
                 e.HasKey(r => r.Id);
+
+                // DATETIME2 u bazi — DateTime u C# mapira direktno
+                e.Property(r => r.PocetakVreme).HasColumnType("datetime2");
+                e.Property(r => r.KrajVreme).HasColumnType("datetime2");
 
                 // StatusRezervacije: 'aktivna' | 'zavrsena' | 'otkazana'
                 e.Property(r => r.StatusRezervacije)

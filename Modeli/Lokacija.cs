@@ -20,9 +20,6 @@ namespace CoWorkingManager.Modeli
         // Maksimalan broj korisnika koji mogu biti prisutni u isto vreme
         public int MaxBrojKorisnika { get; set; }
 
-        // Opis lokacije (opciono)
-        public string? Opis { get; set; }
-
         // Resursi koji se nalaze na ovoj lokaciji
         public ICollection<Resurs> Resursi { get; set; } = new List<Resurs>();
 
