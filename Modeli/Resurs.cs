@@ -1,22 +1,23 @@
 namespace CoWorkingManager.Modeli
 {
-    // Bazna klasa za sve resurse u co-working prostoru
-    // Koristi TPH (Table Per Hierarchy) strategiju mapiranja —
-    // svi podtipovi se čuvaju u jednoj tabeli uz diskriminator kolonu TipResursa
+    // Predstavlja resurs u co-working prostoru (sto, sala, privatna kancelarija).
+    // Sve vrste resursa čuvaju se u jednoj tabeli Resursi uz diskriminator TipResursa
+    // Kolone specifične za podtip su NULL za ostale tipove
     public class Resurs
     {
         public int Id { get; set; }
 
-        // Strani ključ na lokaciju kojoj resurs pripada
+        // Strani kljuc na lokaciju kojoj resurs pripada
         public int LokacijaId { get; set; }
 
         // Navigaciono svojstvo ka lokaciji
         public Lokacija Lokacija { get; set; } = null!;
 
-        // Naziv ili oznaka resursa (npr. "Sto A4", "Sala Plava")
-        public string Naziv { get; set; } = string.Empty;
+        // Ime ili oznaka resursa (npr. "Sto A-1", "Sala K-1")
+        public string Ime { get; set; } = string.Empty;
 
-        // Tip resursa — koristi se kao EF diskriminator
+        // Tip resursa, cuva se kao string u bazi:
+        // 'sto' | 'sala' | 'privatna_kancelarija'
         public TipResursa TipResursa { get; set; }
 
         // Opcioni opis resursa
@@ -26,59 +27,33 @@ namespace CoWorkingManager.Modeli
         public ICollection<Rezervacija> Rezervacije { get; set; } = new List<Rezervacija>();
 
         public override string ToString() => Naziv;
-    }
 
-    /// Radno mesto (hot desk ili dedicated desk)
-    public class RadnoMesto : Resurs
-    {
-        // Pod-tip radnog mesta
-        public PodtipRadnogMesta Podtip { get; set; }
+        // ────── Kolone specificne za radna mesta (TipResursa = 'sto') ──────────
 
-        public RadnoMesto()
-        {
-            TipResursa = TipResursa.RadnoMesto;
-        }
-    }
+        // Pod-tip radnog mesta, NULL za sale i kancelarije
+        // 'hot_desk' | 'dedicated_desk'
+        public PodtipStola? PodtipStola { get; set; }
 
-    // Sala za sastanke sa opremom
-    public class SalaZaSastanke : Resurs
-    {
-        // Broj mesta u sali
-        public int Kapacitet { get; set; }
+        // ────── Kolone specificne za sale i privatne kancelarije ───────────────
 
-        // Da li sala ima projektor
-        public bool ImaProjektor { get; set; }
+        // Broj mesta, NULL za radna mesta
+        public int? Kapacitet { get; set; }
 
-        // Da li sala ima TV ekran
-        public bool ImaTV { get; set; }
+        // Da li ima projektor, NULL za radna mesta
+        public bool? ImaProjektor { get; set; }
 
-        // Da li sala ima tablu
-        public bool ImaTablu { get; set; }
+        // Da li ima TV ekran, NULL za radna mesta
+        public bool? ImaTV { get; set; }
 
-        // Da li sala ima opremu za online sastanke (kamera, mikrofon, zvučnici)
-        public bool ImaOpреmuZaOnlajn { get; set; }
+        // Da li ima tablu, NULL za radna mesta
+        public bool? ImaTablu { get; set; }
 
-        public SalaZaSastanke()
-        {
-            TipResursa = TipResursa.SalaZaSastanke;
-        }
-    }
+        // Da li ima opremu za online sastanke, NULL za radna mesta
+        public bool? ImaOnlineOpremu { get; set; }
 
-    /// Privatna kancelarija za iznajmljivanje
-    public class PrivatnaKancelarija : Resurs
-    {
-        // Maksimalan broj osoba u kancelariji
-        public int Kapacitet { get; set; }
+        // Rezervacije vezane za ovaj resurs
+        public ICollection<Rezervacija> Rezervacije { get; set; } = new List<Rezervacija>();
 
-        // Da li kancelarija ima zaključivi ormar/sef
-        public bool ImaZakljuciveSkladiste { get; set; }
-
-        // Da li kancelarija ima namensku telefonsku liniju
-        public bool ImaNamenskiTelefon { get; set; }
-
-        public PrivatnaKancelarija()
-        {
-            TipResursa = TipResursa.PrivatnaKancelarija;
-        }
+        public override string ToString() => Ime;
     }
 }

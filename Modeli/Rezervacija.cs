@@ -1,6 +1,6 @@
 namespace CoWorkingManager.Modeli
 {
-    // Predstavlja jednu rezervaciju resursa od strane korisnik
+    // Predstavlja jednu rezervaciju resursa od strane korisnika
     public class Rezervacija
     {
         public int Id { get; set; }
@@ -18,15 +18,16 @@ namespace CoWorkingManager.Modeli
         public Resurs Resurs { get; set; } = null!;
 
         // Datum i vreme početka rezervacije
-        public DateTime VremePocetka { get; set; }
+        public DateTime PocetakVreme { get; set; }
 
         // Datum i vreme završetka rezervacije
-        public DateTime VremeZavrsetka { get; set; }
+        public DateTime KrajVreme { get; set; }
 
-        // Trenutni status rezervacije
-        public StatusRezervacije Status { get; set; } = StatusRezervacije.Aktivna;
+        // Status rezervacije, cuva se kao string u bazi:
+        // 'aktivna' | 'zavrsena' | 'otkazana'
+        public StatusRezervacije StatusRezervacije { get; set; } = StatusRezervacije.Aktivna;
 
-        // Trajanje rezervacije u satima (izračunato)
-        public double TrajanjeSati => (VremeZavrsetka - VremePocetka).TotalHours;
+        // Trajanje rezervacije u satima (izracunato, nije u bazi)
+        public double TrajanjeSati => (KrajVreme - PocetakVreme).TotalHours;
     }
 }

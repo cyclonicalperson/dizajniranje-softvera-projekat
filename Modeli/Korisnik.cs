@@ -1,6 +1,6 @@
 namespace CoWorkingManager.Modeli
 {
-    // Predstavlja korisnika (člana) co-working prostora.
+    /// Predstavlja korisnika (člana) co-working prostora
     public class Korisnik
     {
         public int Id { get; set; }
@@ -11,31 +11,32 @@ namespace CoWorkingManager.Modeli
         // Prezime korisnika
         public string Prezime { get; set; } = string.Empty;
 
-        // Email adresa — mora biti jedinstven u bazi
+        // Email adresa
         public string Email { get; set; } = string.Empty;
 
         // Broj telefona (opciono)
         public string? Telefon { get; set; }
 
-        // Strani ključ na tip članstva
+        // Strani kljuc na tabelu TipoviClanstava
         public int TipClanstvaId { get; set; }
 
-        // Navigaciono svojstvo ka tipu članstva
+        // Navigaciono svojstvo ka tipu clanstva
         public TipClanstva TipClanstva { get; set; } = null!;
 
-        // Datum početka važenja članstva
-        public DateTime DatumPocetka { get; set; }
+        // Datum početka važenja clanstva
+        public DateTime DatumPocetkaClanstva { get; set; }
 
-        // Datum isteka važenja članstva
-        public DateTime DatumIsteka { get; set; }
+        // Datum isteka važenja clanstva
+        public DateTime DatumKrajaClanstva { get; set; }
 
-        // Trenutni status naloga
-        public StatusNaloga Status { get; set; } = StatusNaloga.Aktivan;
+        // Status naloga, cuva se kao string u bazi:
+        // 'aktivan' | 'pauziran' | 'istekao'
+        public StatusNaloga StatusNaloga { get; set; } = StatusNaloga.Aktivan;
 
         // Rezervacije koje je ovaj korisnik napravio
         public ICollection<Rezervacija> Rezervacije { get; set; } = new List<Rezervacija>();
 
-        // Pomoćno svojstvo: puno ime
+        // Pomocno svojstvo: puno ime za prikaz u GUI-u
         public string PunoIme => $"{Ime} {Prezime}";
 
         public override string ToString() => PunoIme;

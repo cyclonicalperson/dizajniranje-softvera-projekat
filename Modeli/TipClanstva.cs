@@ -6,29 +6,28 @@ namespace CoWorkingManager.Modeli
     {
         public int Id { get; set; }
 
-        // Naziv paketa članstva
-        public string Naziv { get; set; } = string.Empty;
+        // Ime paketa clanstva
+        public string Ime { get; set; } = string.Empty;
 
         // Cena paketa u dinarima
         public decimal Cena { get; set; }
 
         // Trajanje paketa u danima (0 = neograničeno)
-        public int TrajanjeDani { get; set; }
+        public int Trajanje { get; set; }
 
-        // Maksimalan broj sati rezervacija mesečno
-        // 0 znači neograničeno
-        public int MaksimalnoSatiMesecno { get; set; }
+        // Maksimalan broj sati rezervacija mesecno (0 = neograničeno)
+        public int MaxSatiPoMesecu { get; set; }
 
         // Da li ovaj paket uključuje pristup salama za sastanke
-        public bool UkljucujeSale { get; set; }
+        public bool PristupSali { get; set; }
 
-        // Maksimalan broj sati korišćenja sala mesečno
-        // 0 = neograničeno, -1 = sale nisu uključene
-        public int MaksimalnoSatiSalaMesecno { get; set; }
+        // Maksimalan broj sati korišćenja sala mesecno
+        // NULL znaci da sale nisu uključene u paket
+        public int BrojSatiUSaliMesecno { get; set; }
 
         // Korisnici koji imaju ovaj tip članstva
         public ICollection<Korisnik> Korisnici { get; set; } = new List<Korisnik>();
 
-        public override string ToString() => Naziv;
+        public override string ToString() => Ime;
     }
 }

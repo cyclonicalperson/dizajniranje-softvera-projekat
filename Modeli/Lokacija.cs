@@ -5,20 +5,20 @@ namespace CoWorkingManager.Modeli
     {
         public int Id { get; set; }
 
-        // Naziv lokacije
-        public string Naziv { get; set; } = string.Empty;
+        // Ime lokacije
+        public string Ime { get; set; } = string.Empty;
 
         // Adresa (ulica i broj)
-        public string? Adresa { get; set; }
+        public string Adresa { get; set; } = string.Empty;
 
         // Grad u kom se lokacija nalazi
-        public string? Grad { get; set; }
+        public string Grad { get; set; } = string.Empty;
 
         // Radno vreme lokacije kao tekst, npr. "08:00 - 22:00"
-        public string? RadnoVreme { get; set; }
+        public string RadniSati { get; set; } = string.Empty;
 
         // Maksimalan broj korisnika koji mogu biti prisutni u isto vreme
-        public int MaksimalniKapacitet { get; set; }
+        public int MaxBrojKorisnika { get; set; }
 
         // Opis lokacije (opciono)
         public string? Opis { get; set; }
@@ -26,6 +26,6 @@ namespace CoWorkingManager.Modeli
         // Resursi koji se nalaze na ovoj lokaciji
         public ICollection<Resurs> Resursi { get; set; } = new List<Resurs>();
 
-        public override string ToString() => $"{Naziv} ({Grad})";
+        public override string ToString() => $"{Ime} ({Grad})";
     }
 }
