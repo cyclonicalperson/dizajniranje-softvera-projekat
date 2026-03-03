@@ -1,2 +1,2 @@
-HubSpace
-Data Source=(LocalDB)\MSSQLLocalDB;Initial Catalog=Coworking;Integrated Security=True
+CoWorking Hub
+Server=(localdb)\MSSQLLocalDB;Database=CoWorkingDB;Trusted_Connection=True;TrustServerCertificate=True;

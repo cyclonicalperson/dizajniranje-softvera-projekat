@@ -1,31 +1,31 @@
 namespace CoWorkingManager.Modeli
 {
-    // Predstavlja paket/tip članstva u co-working prostoru
-    // (npr. dnevna karta, fleksibilni sto, fiksni sto, premium...)
+    // Predstavlja paket/tip clanstva (Dnevno, Hot Desk, Dedicated Desk, Premium...)
+    // Mapira se na tabelu TipoviClanstava u bazi
     public class TipClanstva
     {
         public int Id { get; set; }
 
-        // Ime paketa clanstva
+        // Naziv paketa — jedinstven u bazi (UNIQUE constraint)
         public string Ime { get; set; } = string.Empty;
 
-        // Cena paketa u dinarima
+        // Cena paketa
         public decimal Cena { get; set; }
 
-        // Trajanje paketa u danima (0 = neograničeno)
+        // Trajanje paketa u danima
         public int Trajanje { get; set; }
 
-        // Maksimalan broj sati rezervacija mesecno (0 = neograničeno)
+        // Maksimalan broj sati rezervacija mesečno (0 = neograničeno)
         public int MaxSatiPoMesecu { get; set; }
 
-        // Da li ovaj paket uključuje pristup salama za sastanke
+        // Da li paket ukljucuje pristup salama za sastanke
         public bool PristupSali { get; set; }
 
         // Maksimalan broj sati korišćenja sala mesecno
         // NULL znaci da sale nisu uključene u paket
-        public int BrojSatiUSaliMesecno { get; set; }
+        public int? BrojSatiUSaliMesecno { get; set; }
 
-        // Korisnici koji imaju ovaj tip članstva
+        // Korisnici koji imaju ovaj tip clanstva
         public ICollection<Korisnik> Korisnici { get; set; } = new List<Korisnik>();
 
         public override string ToString() => Ime;
