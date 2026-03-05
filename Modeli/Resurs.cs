@@ -3,6 +3,13 @@ namespace CoWorkingManager.Modeli
     // Predstavlja resurs u co-working prostoru (sto, sala, privatna kancelarija
     // Sve vrste resursa cuvaju se u jednoj tabeli Resursi uz diskriminator TipResursa
     // Kolone specificne za podtip su NULL za ostale tipove (flat table pristup)
+    //
+    // !!!!!!!!!!!!
+    // NE PRAVITI RESURS DIREKTNO SA `new Resurs()`
+    // Umesto toga, koristi ResursFactory.KreirajSto(), KreirajSalu() ili
+    // KreirajPrivatnuKancelariju(), koji garantuju da su sva obavezna polja
+    // popunjena i da nullable kolone imaju ispravne vrednosti za dati tip
+    // !!!!!!!!!!!!
     public class Resurs
     {
         public int Id { get; set; }

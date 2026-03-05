@@ -5,6 +5,13 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
 {
     // Repozitorijum za upravljanje resursima (stola, sale, kancelarije)
     // Pruza filtriranje po tipu/lokaciji i provere dostupnosti u terminu
+    //
+    // !!!!!!!!!!!!
+    // Za kreiranje novih resursa koristiti ResursFactory umesto direktnog new Resurs():
+    //   RepozitorijumResursa.Dodaj(ResursFactory.KreirajSto(...))
+    //   RepozitorijumResursa.Dodaj(ResursFactory.KreirajSalu(...))
+    //   RepozitorijumResursa.Dodaj(ResursFactory.KreirajPrivatnuKancelariju(...))
+    // !!!!!!!!!!!!
     public class ResursRepozitorijum
     {
         private readonly KontekstBaze _kontekst;
