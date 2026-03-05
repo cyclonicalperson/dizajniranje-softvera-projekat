@@ -1,0 +1,33 @@
+<Window x:Class="CoWorkingManager.UI.Views.LoginWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Login"
+        Height="250"
+        Width="350">
+
+    <Grid Margin="20">
+
+        <StackPanel>
+
+            <TextBlock Text="CoWorking Manager"
+                       FontSize="20"
+                       Margin="0 0 0 20"/>
+
+            <TextBox x:Name="usernameBox"
+                     Height="25"
+                     Margin="0 5"/>
+
+            <PasswordBox x:Name="passwordBox"
+                         Height="25"
+                         Margin="0 5"/>
+
+            <Button Content="Login"
+                    Margin="0 20"
+                    Height="30"
+                    Click="Login_Click"/>
+
+        </StackPanel>
+
+    </Grid>
+
+</Window>

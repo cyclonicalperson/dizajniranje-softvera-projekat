@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace CoWorkingManager
 {
     // Cita konfiguraciju iz config.txt i pruza naziv lanca i konekcioni string
