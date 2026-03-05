@@ -21,6 +21,7 @@ namespace CoWorkingManager.Test
         private static LokacijaRepozitorijum _lokacije = null!;
         private static ResursRepozitorijum _resursi = null!;
         private static RezervacijaRepozitorijum _rezervacije = null!;
+        private static AdministratorRepozitorijum _administratori = null!;
 
         [STAThread]
         static void Main(string[] args)
@@ -42,6 +43,7 @@ namespace CoWorkingManager.Test
                 _lokacije = new LokacijaRepozitorijum(kontekst);
                 _resursi = new ResursRepozitorijum(kontekst);
                 _rezervacije = new RezervacijaRepozitorijum(kontekst);
+                _administratori = new AdministratorRepozitorijum(kontekst);
 
                 TestSeedPodataka();
                 TestTipovaClanstva();
@@ -54,7 +56,7 @@ namespace CoWorkingManager.Test
                 TestDostupnostiResursa();
                 TestStatistikeZauzetosti();
                 TestFiltriranja();
-                //TestUI();
+                TestAdministratora();
 
                 Console.WriteLine("\n╔══════════════════════════════════════════════════╗");
                 Console.WriteLine("║         SVE PROVERE PROŠLE USPEŠNO ✓             ║");
@@ -230,6 +232,16 @@ namespace CoWorkingManager.Test
             _rezervacije.Dodaj(new Rezervacija { KorisnikId = KorId("vuk.t@mail.com"), ResursId = ResId("Sto A-1"), PocetakVreme = new DateTime(2025, 2, 5, 9, 0, 0), KrajVreme = new DateTime(2025, 2, 5, 12, 0, 0), StatusRezervacije = StatusRezervacije.Zavrsena });
             _rezervacije.Dodaj(new Rezervacija { KorisnikId = KorId("isidora.j@mail.com"), ResursId = ResId("Sto B-1"), PocetakVreme = new DateTime(2025, 2, 6, 13, 0, 0), KrajVreme = new DateTime(2025, 2, 6, 16, 0, 0), StatusRezervacije = StatusRezervacije.Otkazana });
             Ok("Uneseno 15 rezervacija");
+
+            // ── Administratori ───────────────────────────────────────────────
+            if (_administratori.DajSve().Count == 0)
+            {
+                _administratori.Dodaj(new Administrator { KorisnickoIme = "admin", Lozinka = "Admin123!", Ime = "Glavni", Prezime = "Administrator", Email = "admin@coworking.rs", DatumKreiranja = new DateOnly(2025, 1, 1) });
+                _administratori.Dodaj(new Administrator { KorisnickoIme = "milan.r", Lozinka = "Milan2025@", Ime = "Milan", Prezime = "Rankovic", Email = "milan.r@coworking.rs", DatumKreiranja = new DateOnly(2025, 1, 1) });
+                _administratori.Dodaj(new Administrator { KorisnickoIme = "vlada.j", Lozinka = "Vlada2025@", Ime = "Vlada", Prezime = "Jovanovic", Email = "vlada.j@coworking.rs", DatumKreiranja = new DateOnly(2025, 1, 15) });
+                _administratori.Dodaj(new Administrator { KorisnickoIme = "nikola.p", Lozinka = "Nikola2025@", Ime = "Nikola", Prezime = "Petrovic", Email = "nikola.p@coworking.rs", DatumKreiranja = new DateOnly(2025, 2, 1) });
+                Ok("Unesena 4 administratora");
+            }
         }
 
         // ════════════════════════════════════════════════════════════════════
@@ -492,17 +504,51 @@ namespace CoWorkingManager.Test
             Ok("ObeleziZavrseneRezervacije() — izvršeno bez greške ✓");
         }
 
-        // ════════════════════════════════════════════════════════════════════
-        // KORAK 6 — UI provere
-        // ════════════════════════════════════════════════════════════════════
-
-        public static void TestUI()
+        private static void TestAdministratora()
         {
-            //Edit
+            Zaglavlje("6. CRUD — AdministratorRepozitorijum");
 
-            Zaglavlje("6. Pokretanje Login Forme");
+            var svi = _administratori.DajSve();
+            Proveri(svi.Count >= 4, $"DajSve() — pronađeno {svi.Count} administratora");
 
-            Ok("Prijava() — izvršeno ✓");
+            var admin = _administratori.DajPoKorisnickomImenu("admin");
+            Proveri(admin != null, "DajPoKorisnickomImenu('admin') — pronađen");
+            Proveri(admin!.Ime == "Glavni", $"  Ime: {admin.Ime}");
+            Proveri(admin.Lozinka == "Admin123!", "  Lozinka odgovara");
+
+            var milanPoEmailu = _administratori.DajPoEmailu("milan.r@coworking.rs");
+            Proveri(milanPoEmailu != null, "DajPoEmailu() — milan.r pronađen");
+            Proveri(milanPoEmailu!.KorisnickoIme == "milan.r", $"  KorisnickoIme: {milanPoEmailu.KorisnickoIme}");
+
+            Proveri(_administratori.KorisnickoImePostoji("admin"), "KorisnickoImePostoji('admin') — true");
+            Proveri(!_administratori.KorisnickoImePostoji("ne.postoji"), "KorisnickoImePostoji('ne.postoji') — false");
+            Proveri(_administratori.EmailPostoji("admin@coworking.rs"), "EmailPostoji — true za postojeći");
+
+            // Dodaj, izmeni, obriši privremeni admin
+            var privremeni = new Administrator
+            {
+                KorisnickoIme = "test.admin",
+                Lozinka = "Test123!",
+                Ime = "Test",
+                Prezime = "Privremeni",
+                Email = "test.privremeni@coworking.rs",
+                DatumKreiranja = DateOnly.FromDateTime(DateTime.Today)
+            };
+            _administratori.Dodaj(privremeni);
+            Proveri(privremeni.Id > 0, $"Dodaj() — novi Id: {privremeni.Id}");
+
+            // Provjera prijave — direktno poređenje
+            var uBazi = _administratori.DajPoKorisnickomImenu("test.admin")!;
+            Proveri(uBazi.Lozinka == "Test123!", "Prijava — tačna lozinka prihvaćena ✓");
+            Proveri(uBazi.Lozinka != "pogresna", "Prijava — pogrešna lozinka odbijena ✓");
+
+            privremeni.Email = "test.izmenjen@coworking.rs";
+            _administratori.Azuriraj(privremeni);
+            Proveri(_administratori.DajPoId(privremeni.Id)?.Email == "test.izmenjen@coworking.rs",
+                "Azuriraj() — email ažuriran");
+
+            _administratori.Obrisi(privremeni.Id);
+            Proveri(_administratori.DajPoId(privremeni.Id) == null, "Obrisi() — zapis uklonjen");
         }
 
         // ════════════════════════════════════════════════════════════════════

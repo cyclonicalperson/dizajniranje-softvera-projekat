@@ -64,6 +64,7 @@ namespace CoWorkingManager.Podaci
         public DbSet<Lokacija> Lokacije { get; set; }
         public DbSet<Resurs> Resursi { get; set; }
         public DbSet<Rezervacija> Rezervacije { get; set; }
+        public DbSet<Administrator> Administratori { get; set; }
 
         // ── Konfiguracija konekcije ───────────────────────────────────────────
 
@@ -89,6 +90,7 @@ namespace CoWorkingManager.Podaci
             KonfigurisatiKorisnika(mb);
             KonfigurisatiResurs(mb);
             KonfigurisatiRezervaciju(mb);
+            KonfigurisatiAdministratora(mb);
         }
 
         private static void KonfigurisatiTipClanstva(ModelBuilder mb)
@@ -237,6 +239,27 @@ namespace CoWorkingManager.Podaci
 
                 // Indeksi iz schema.sql
                 e.HasIndex(r => r.KorisnikId).HasDatabaseName("IX_Rezervacije_Korisnik");
+            });
+        }
+
+        private static void KonfigurisatiAdministratora(ModelBuilder mb)
+        {
+            mb.Entity<Administrator>(e =>
+            {
+                e.ToTable("Administratori");
+                e.HasKey(a => a.Id);
+                e.HasIndex(a => a.KorisnickoIme).IsUnique();
+                e.HasIndex(a => a.Email).IsUnique();
+                e.Property(a => a.KorisnickoIme).IsRequired().HasMaxLength(50);
+                e.Property(a => a.Lozinka).IsRequired().HasMaxLength(50);
+                e.Property(a => a.Ime).IsRequired().HasMaxLength(50);
+                e.Property(a => a.Prezime).IsRequired().HasMaxLength(50);
+                e.Property(a => a.Email).IsRequired().HasMaxLength(100);
+
+                // DATE u bazi — koristimo DateOnly
+                e.Property(a => a.DatumKreiranja)
+                 .HasColumnType("date")
+                 .HasDefaultValueSql("GETDATE()");
             });
         }
 

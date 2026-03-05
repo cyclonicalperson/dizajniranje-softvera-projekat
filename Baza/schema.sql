@@ -71,9 +71,6 @@ CREATE TABLE Resursi (
         REFERENCES Lokacije(Id)
 );
 
--- U slucaju da dodamo jos podtipova:
--- Za svaki tip resursa odrediti cutom parametre kao što je u primeru za radno mesto salu za sastanke
-
 
 -- Rezervacije
 
@@ -98,6 +95,19 @@ CREATE TABLE Rezervacije (
 
     CONSTRAINT CHK_Rezervacija_Vreme
         CHECK (KrajVreme > PocetakVreme)
+);
+
+
+-- Administratori
+
+CREATE TABLE Administratori (
+    Id INT IDENTITY PRIMARY KEY,
+    KorisnickoIme NVARCHAR(50) NOT NULL UNIQUE,
+    Lozinka NVARCHAR(50) NOT NULL,
+    Ime NVARCHAR(50) NOT NULL,
+    Prezime NVARCHAR(50) NOT NULL,
+    Email NVARCHAR(100) NOT NULL UNIQUE,
+    DatumKreiranja DATE NOT NULL DEFAULT GETDATE()
 );
 
 

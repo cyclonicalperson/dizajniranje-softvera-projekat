@@ -1,4 +1,3 @@
-
 -- Tipovi clanstva
 
 INSERT INTO TipoviClanstava
@@ -66,7 +65,7 @@ VALUES
 (1, 'Sala K-2', 'sala', 'Mala sala za sastanke', NULL, 4, 0, 1, 1, 0),
 (1, 'Sala K-3', 'sala', 'Sala sa projektorom', NULL, 10, 1, 0, 1, 1);
 
--- Belgrade
+-- Beograd
 INSERT INTO Resursi
 (LokacijaId, Ime, TipResursa, Opis, PodtipStola, Kapacitet, ImaProjektor, ImaTV, ImaTablu, ImaOnlineOpremu)
 VALUES
@@ -110,3 +109,14 @@ VALUES
 (18, 10, '2025-02-04 16:00', '2025-02-04 18:00', 'aktivna'),
 (19, 1, '2025-02-05 09:00', '2025-02-05 12:00', 'zavrsena'),
 (20, 8, '2025-02-06 13:00', '2025-02-06 16:00', 'otkazana');
+
+
+-- Administratori (lozinke su plaintext)
+
+INSERT INTO Administratori
+(KorisnickoIme, Lozinka, Ime, Prezime, Email, DatumKreiranja)
+VALUES
+('admin',    'Admin123!',   'Glavni',  'Administrator', 'admin@coworking.rs',    '2025-01-01'),
+('milan.r',  'Milan2025@',  'Milan',   'Rankovic',      'milan.r@coworking.rs',  '2025-01-01'),
+('vlada.j',  'Vlada2025@',  'Vlada',   'Jovanovic',     'vlada.j@coworking.rs',  '2025-01-15'),
+('nikola.p', 'Nikola2025@', 'Nikola',  'Petrovic',      'nikola.p@coworking.rs', '2025-02-01');
