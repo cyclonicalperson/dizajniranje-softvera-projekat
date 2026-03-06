@@ -107,5 +107,20 @@ namespace CoWorkingManager.Logika.Servisi
             TimeSpan kraj = krajRez.TimeOfDay;
             return pocetak >= pocetakRadnog && kraj <= krajRadnog;
         }
+        // Vraca sve rezervacije prosleđenog korisnika, sortirane od najnovije
+        public List<Rezervacija> dajRezervacijeKorisnika(Korisnik korisnik)
+        {
+            var rezervacije = _fasada.Rezervacije.DajPoKorisniku(korisnik.Id);
+            notifikacija("Dohvacene rezervacije korisnika");
+            return rezervacije;
+        }
+        // Vraca sve rezervacije na datoj lokaciji za dati dan, sortirane po vremenu pocetka
+        // Ne ukljucuje otkazane rezervacije
+        public List<Rezervacija> dajRezervacijePoLokacijiIDanu(Lokacija lokacija, DateTime datum)
+        {
+            var rezervacije = _fasada.Rezervacije.DajPoLokacijiIDanu(lokacija.Id, datum);
+            notifikacija("Dohvacene rezervacije po lokaciji i danu");
+            return rezervacije;
+        }
     }
 }
