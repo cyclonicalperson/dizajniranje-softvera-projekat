@@ -1,6 +1,8 @@
 ﻿using CoWorkingManager.Modeli;
 using CoWorkingManager.Podaci.Repozitorijumi;
 using CoWorkingManager.Logika.Servisi;
+using System.IO;
+using System.Printing.IndexedProperties;
 
 namespace CoWorkingManager.Podaci
 {
@@ -21,6 +23,7 @@ namespace CoWorkingManager.Podaci
 
         private static CoworkingFasada? instanca;
         private static readonly object katanac = new();
+        public string Config { get; }
 
         // ── Repozitorijumi — jedine javne tačke pristupa podacima ─────────
 
@@ -41,6 +44,7 @@ namespace CoWorkingManager.Podaci
             Resursi = new ResursRepozitorijum(kontekst);
             Rezervacije = new RezervacijaRepozitorijum(kontekst);
             Administratori = new AdministratorRepozitorijum(kontekst);
+            Config = File.ReadLines("config.txt").First();
         }
 
         // ── Inicijalizacija — poziva se jednom pri pokretanju aplikacije ──
