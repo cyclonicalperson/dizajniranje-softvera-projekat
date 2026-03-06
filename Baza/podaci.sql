@@ -111,12 +111,18 @@ VALUES
 (20, 8, '2025-02-06 13:00', '2025-02-06 16:00', 'otkazana');
 
 
--- Administratori (lozinke su plaintext)
+-- Administratori
+-- Lozinke su BCrypt hashovi (cost factor 11, $2b$ format)
+-- Plaintext lozinke za testiranje:
+--   admin    → Admin123!
+--   milan.r  → Milan2025@
+--   vlada.j  → Vlada2025@
+--   nikola.p → Nikola2025@
 
 INSERT INTO Administratori
-(KorisnickoIme, Lozinka, Ime, Prezime, Email, DatumKreiranja)
+(KorisnickoIme, HashLozinke, Ime, Prezime, Email, DatumKreiranja)
 VALUES
-('admin',    'Admin123!',   'Glavni',  'Administrator', 'admin@coworking.rs',    '2025-01-01'),
-('milan.r',  'Milan2025@',  'Milan',   'Rankovic',      'milan.r@coworking.rs',  '2025-01-01'),
-('vlada.j',  'Vlada2025@',  'Vlada',   'Jovanovic',     'vlada.j@coworking.rs',  '2025-01-15'),
-('nikola.p', 'Nikola2025@', 'Nikola',  'Petrovic',      'nikola.p@coworking.rs', '2025-02-01');
+('admin',    '$2b$11$2NmbJ7rlhS88FVq99Tz3Zu0/yg/OoqilgdhHib8E3kyq.ExpJO4ru', 'Glavni', 'Administrator', 'admin@coworking.rs',    '2025-01-01'),
+('milan.r',  '$2b$11$FKWKVTFakhYLwAQs40cX7uDcayK5/6lijVRtMZ7mPVCilsFFaueSy', 'Milan',  'Rankovic',      'milan.r@coworking.rs',  '2025-01-01'),
+('vlada.j',  '$2b$11$DJJIsE2ZipIpYOw.KH6RquaCeoLX7LND/x/gp12f8XJ/v/appdEky', 'Vlada',  'Jovanovic',     'vlada.j@coworking.rs',  '2025-01-15'),
+('nikola.p', '$2b$11$bJKUuJS2veZzCCrqQyKaRO2mma5qbbNOLz7NHhw3.dbIriS.JsJn2', 'Nikola', 'Petrovic',      'nikola.p@coworking.rs', '2025-02-01');

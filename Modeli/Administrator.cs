@@ -8,8 +8,9 @@ namespace CoWorkingManager.Modeli
         // Korisničko ime za prijavu
         public string KorisnickoIme { get; set; } = string.Empty;
 
-        // Lozinka u plaintext obliku
-        public string Lozinka { get; set; } = string.Empty;
+        // BCrypt hash lozinke (cost factor 11)
+        // Nikad se ne poredi direktno — koristiti BCrypt.Net.BCrypt.Verify(plaintext, HashLozinke)
+        public string HashLozinke { get; set; } = string.Empty;
 
         // Ime administratora
         public string Ime { get; set; } = string.Empty;

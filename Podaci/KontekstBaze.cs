@@ -251,7 +251,8 @@ namespace CoWorkingManager.Podaci
                 e.HasIndex(a => a.KorisnickoIme).IsUnique();
                 e.HasIndex(a => a.Email).IsUnique();
                 e.Property(a => a.KorisnickoIme).IsRequired().HasMaxLength(50);
-                e.Property(a => a.Lozinka).IsRequired().HasMaxLength(50);
+                // BCrypt hash je 60 karaktera ($2a$11$...) — NVARCHAR(72) daje marginu za $2b$ format
+                e.Property(a => a.HashLozinke).IsRequired().HasMaxLength(72);
                 e.Property(a => a.Ime).IsRequired().HasMaxLength(50);
                 e.Property(a => a.Prezime).IsRequired().HasMaxLength(50);
                 e.Property(a => a.Email).IsRequired().HasMaxLength(100);

@@ -1,4 +1,5 @@
 using System.Runtime.InteropServices;
+using BCrypt.Net;
 using CoWorkingManager.Modeli;
 using CoWorkingManager.Podaci;
 using CoWorkingManager.Podaci.Repozitorijumi;
@@ -243,11 +244,11 @@ namespace CoWorkingManager.Test
             // ── Administratori ───────────────────────────────────────────────
             if (_facade.Administratori.DajSve().Count == 0)
             {
-                _facade.Administratori.Dodaj(new Administrator { KorisnickoIme = "admin", Lozinka = "Admin123!", Ime = "Glavni", Prezime = "Administrator", Email = "admin@coworking.rs", DatumKreiranja = new DateOnly(2025, 1, 1) });
-                _facade.Administratori.Dodaj(new Administrator { KorisnickoIme = "milan.r", Lozinka = "Milan2025@", Ime = "Milan", Prezime = "Rankovic", Email = "milan.r@coworking.rs", DatumKreiranja = new DateOnly(2025, 1, 1) });
-                _facade.Administratori.Dodaj(new Administrator { KorisnickoIme = "vlada.j", Lozinka = "Vlada2025@", Ime = "Vlada", Prezime = "Jovanovic", Email = "vlada.j@coworking.rs", DatumKreiranja = new DateOnly(2025, 1, 15) });
-                _facade.Administratori.Dodaj(new Administrator { KorisnickoIme = "nikola.p", Lozinka = "Nikola2025@", Ime = "Nikola", Prezime = "Petrovic", Email = "nikola.p@coworking.rs", DatumKreiranja = new DateOnly(2025, 2, 1) });
-                Ok("Unesena 4 administratora");
+                _facade.Administratori.Dodaj(new Administrator { KorisnickoIme = "admin", HashLozinke = BCrypt.Net.BCrypt.HashPassword("Admin123!", 11), Ime = "Glavni", Prezime = "Administrator", Email = "admin@coworking.rs", DatumKreiranja = new DateOnly(2025, 1, 1) });
+                _facade.Administratori.Dodaj(new Administrator { KorisnickoIme = "milan.r", HashLozinke = BCrypt.Net.BCrypt.HashPassword("Milan2025@", 11), Ime = "Milan", Prezime = "Rankovic", Email = "milan.r@coworking.rs", DatumKreiranja = new DateOnly(2025, 1, 1) });
+                _facade.Administratori.Dodaj(new Administrator { KorisnickoIme = "vlada.j", HashLozinke = BCrypt.Net.BCrypt.HashPassword("Vlada2025@", 11), Ime = "Vlada", Prezime = "Jovanovic", Email = "vlada.j@coworking.rs", DatumKreiranja = new DateOnly(2025, 1, 15) });
+                _facade.Administratori.Dodaj(new Administrator { KorisnickoIme = "nikola.p", HashLozinke = BCrypt.Net.BCrypt.HashPassword("Nikola2025@", 11), Ime = "Nikola", Prezime = "Petrovic", Email = "nikola.p@coworking.rs", DatumKreiranja = new DateOnly(2025, 2, 1) });
+                Ok("Unesena 4 administratora (lozinke hashirane BCrypt cost=11)");
             }
         }
 
@@ -548,7 +549,7 @@ namespace CoWorkingManager.Test
             var admin = _facade.Administratori.DajPoKorisnickomImenu("admin");
             Proveri(admin != null, "DajPoKorisnickomImenu('admin') — pronađen");
             Proveri(admin!.Ime == "Glavni", $"  Ime: {admin.Ime}");
-            Proveri(admin.Lozinka == "Admin123!", "  Lozinka odgovara");
+            Proveri(admin.HashLozinke.StartsWith("$2"), "  HashLozinke je BCrypt format ($2...) ✓");
 
             var milanPoEmailu = _facade.Administratori.DajPoEmailu("milan.r@coworking.rs");
             Proveri(milanPoEmailu != null, "DajPoEmailu() — milan.r pronađen");
@@ -562,7 +563,7 @@ namespace CoWorkingManager.Test
             var privremeni = new Administrator
             {
                 KorisnickoIme = "test.admin",
-                Lozinka = "Test123!",
+                HashLozinke = BCrypt.Net.BCrypt.HashPassword("Test123!"),
                 Ime = "Test",
                 Prezime = "Privremeni",
                 Email = "test.privremeni@coworking.rs",
@@ -573,8 +574,8 @@ namespace CoWorkingManager.Test
 
             // Provjera prijave — direktno poređenje
             var uBazi = _facade.Administratori.DajPoKorisnickomImenu("test.admin")!;
-            Proveri(uBazi.Lozinka == "Test123!", "Prijava — tačna lozinka prihvaćena ✓");
-            Proveri(uBazi.Lozinka != "pogresna", "Prijava — pogrešna lozinka odbijena ✓");
+            Proveri(BCrypt.Net.BCrypt.Verify("Test123!", uBazi.HashLozinke), "Prijava — tačna lozinka prihvaćena ✓");
+            Proveri(!BCrypt.Net.BCrypt.Verify("pogresna", uBazi.HashLozinke), "Prijava — pogrešna lozinka odbijena ✓");
 
             privremeni.Email = "test.izmenjen@coworking.rs";
             _facade.Administratori.Azuriraj(privremeni);
