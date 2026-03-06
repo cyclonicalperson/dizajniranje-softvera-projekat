@@ -1,5 +1,6 @@
 using CoWorkingManager.Modeli;
 using CoWorkingManager.Podaci;
+using System.Windows.Media;
 
 namespace CoWorkingManager.Logika.Servisi
 {
@@ -49,11 +50,46 @@ namespace CoWorkingManager.Logika.Servisi
         }
         // Vraca filtrirani spisak korisnika po lokaciji, tipu clanstva i statusu naloga
         // Svi parametri su opcioni — prosleđuje null za parametre koji se ne filtriraju
-        public List<Korisnik> dajKorisnike(int? lokacijaId, int? tipClanstvaId, StatusNaloga? status)
+        public List<Korisnik> dajKorisnike(string? lokacija, string? tipClanstva, string? statusNaloga)
         {
+            int? lokacijaId = null;
+            if (!string.IsNullOrEmpty(lokacija))
+            {
+                var l = _fasada.Lokacije.DajSve().FirstOrDefault(x => x.Ime == lokacija);
+                if (l != null)
+                    lokacijaId = l.Id;
+            }
+
+            int? tipClanstvaId = null;
+            if (!string.IsNullOrEmpty(tipClanstva))
+            {
+                var t = _fasada.TipoviClanstva.DajSve().FirstOrDefault(x => x.Ime == tipClanstva);
+                if (t != null)
+                    tipClanstvaId = t.Id;
+            }
+
+            StatusNaloga status = StatusNaloga.Aktivan; // default
+            if (!string.IsNullOrEmpty(statusNaloga))
+            {
+                Enum.TryParse(statusNaloga, out status);
+            }
+
             var korisnici = _fasada.Korisnici.DajPoFiltru(lokacijaId, tipClanstvaId, status);
             notifikacija("Dohvacena lista korisnika");
             return korisnici;
+        }
+
+        public List<string> dajStatuseNaloga()
+        {
+            List<string> statusi = new List<string>();
+
+            foreach (var korisnik in _fasada.Korisnici.DajSve())
+            {
+                statusi.Add(korisnik.StatusNaloga.ToString());
+            }
+
+            notifikacija("Dohvaceni statusi naloga");
+            return statusi;
         }
     }
 }
