@@ -23,32 +23,44 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
             kontekst.TipoviClanstava.FirstOrDefault(t => t.Ime == ime);
 
         // Dodaje novi tip clanstva
-        public void Dodaj(TipClanstva tip)
+        // Vraca false ako tip sa istim nazivom već postoji
+        public bool Dodaj(TipClanstva tip)
         {
+            if (kontekst.TipoviClanstava.Any(t => t.Ime == tip.Ime))
+                return false;
+
             kontekst.TipoviClanstava.Add(tip);
             kontekst.SaveChanges();
+            return true;
         }
 
         // Azurira tip clanstva
-        public void Azuriraj(TipClanstva tip)
+        // Vraca false ako tip sa datim ID-jem ne postoji
+        public bool Azuriraj(TipClanstva tip)
         {
+            if (!kontekst.TipoviClanstava.Any(t => t.Id == tip.Id))
+                return false;
+
             kontekst.TipoviClanstava.Update(tip);
             kontekst.SaveChanges();
+            return true;
         }
 
-        // Brise tip članstva samo ako nema korisnika sa tim paketom
-        public void Obrisi(int id)
+        // Brise tip clanstva samo ako nema korisnika sa tim paketom
+        // Vraca false ako tip ne postoji ili ima dodeljene korisnike
+        public bool Obrisi(int id)
         {
             var tip = kontekst.TipoviClanstava.Find(id);
-            if (tip == null) return;
+            if (tip == null)
+                return false;
 
             bool imaKorisnike = kontekst.Korisnici.Any(k => k.TipClanstvaId == id);
             if (imaKorisnike)
-                throw new InvalidOperationException(
-                    "Nije moguce obrisati tip clanstva koji ima dodeljene korisnike");
+                return false;
 
             kontekst.TipoviClanstava.Remove(tip);
             kontekst.SaveChanges();
+            return true;
         }
     }
 }

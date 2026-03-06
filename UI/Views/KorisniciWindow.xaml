@@ -13,8 +13,14 @@
 
         <ComboBox Name="SelKorisnici_StatusCBox" Width="150" Height="25" SelectionChanged="SelKorisnici_StatusCBox_SelectionChanged" Margin="165,10,445,509"/>
 
-        <ListBox DisplayMemberPath="FirstName" Margin="10,40,650,504"/>
-        <ListBox DisplayMemberPath="FirstName" Margin="110,40,550,504"/>
+        <ListBox x:Name="ListBoxIme" Margin="10,40,650,504"/>
+        <ListBox x:Name="ListBoxPrezime" Margin="110,40,550,504"/>
+        <ListBox x:Name="ListBoxEmail" Margin="110,40,550,504"/>
+        <ListBox x:Name="ListBoxBrojTelefona" Margin="110,40,550,504"/>
+        <ListBox x:Name="ListBoxTipClanstva" Margin="110,40,550,504"/>
+        <ListBox x:Name="ListBoxDatumPocetkaClanstva" Margin="110,40,550,504"/>
+        <ListBox x:Name="ListBoxDatumIstekaClanstva" Margin="110,40,550,504"/>
+        <ListBox x:Name="ListBoxStatusNaloga" Margin="110,40,550,504"/>
 
         <Button Width="100" Height="25"
                 Content="Pretrazi"
