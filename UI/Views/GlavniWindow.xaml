@@ -5,24 +5,24 @@
         Height="400"
         Width="500">
 
-    <Grid>
+    <Grid Margin="20">
 
-        <UniformGrid Rows="3" Columns="2" Margin="20">
+        <UniformGrid Rows="3" Columns="2">
 
-            <Button Content="Users"
-                    Click="Users_Click"/>
+            <Button Content="Korisnici"
+                    Click="Korisnici_Click"/>
 
-            <Button Content="Locations"
-                    Click="Locations_Click"/>
+            <Button Content="Lokacije"
+                    Click="Lokacije_Click"/>
 
-            <Button Content="Membership Types"
-                    Click="Membership_Click"/>
+            <Button Content="Tipovi Clanstva"
+                    Click="TipoviClanstva_Click"/>
 
-            <Button Content="Resources"
-                    Click="Resources_Click"/>
+            <Button Content="Resursi"
+                    Click="Resursi_Click"/>
 
-            <Button Content="Reservations"
-                    Click="Reservations_Click"/>
+            <Button Content="Rezervacije"
+                    Click="Rezervacije_Click"/>
 
         </UniformGrid>
 
