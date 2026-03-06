@@ -47,5 +47,13 @@ namespace CoWorkingManager.Logika.Servisi
             notifikacija("Izmene korisnika neuspesne");
             return false;
         }
+        // Vraca filtrirani spisak korisnika po lokaciji, tipu clanstva i statusu naloga
+        // Svi parametri su opcioni — prosleđuje null za parametre koji se ne filtriraju
+        public List<Korisnik> dajKorisnike(int? lokacijaId, int? tipClanstvaId, StatusNaloga? status)
+        {
+            var korisnici = _fasada.Korisnici.DajPoFiltru(lokacijaId, tipClanstvaId, status);
+            notifikacija("Dohvacena lista korisnika");
+            return korisnici;
+        }
     }
 }
