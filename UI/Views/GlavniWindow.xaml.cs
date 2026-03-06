@@ -1,41 +1,43 @@
 ﻿using CoWorkingManager.Mediator;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Windows;
 
 namespace CoWorkingManager.UI.Views
 {
     public partial class GlavniWindow : Window
     {
-        private IMediator mediator;
+        private GlavniMediator mediator;
 
-        public GlavniWindow(IMediator mediator)
+        public GlavniWindow(GlavniMediator mediator)
         {
-            //InitializeComponent();
+            InitializeComponent();
             this.mediator = mediator;
         }
 
-        private void Users_Click(object sender, RoutedEventArgs e)
+
+        private void Korisnici_Click(object sender, RoutedEventArgs e)
         {
-            mediator.Notify(this, "OPEN_USERS");
+            mediator.Notify(this, "Otvori_Korisnike");
         }
 
-        private void Locations_Click(object sender, RoutedEventArgs e)
+        private void Lokacije_Click(object sender, RoutedEventArgs e)
         {
-            mediator.Notify(this, "OPEN_LOCATIONS");
+            mediator.Notify(this, "Otvori_Lokacije");
         }
 
-        private void Membership_Click(object sender, RoutedEventArgs e)
+        private void TipoviClanstva_Click(object sender, RoutedEventArgs e)
         {
-            mediator.Notify(this, "OPEN_MEMBERSHIP");
+            mediator.Notify(this, "Otvori_TipoveClanstva");
         }
 
-        private void Resources_Click(object sender, RoutedEventArgs e)
+        private void Resursi_Click(object sender, RoutedEventArgs e)
         {
-            mediator.Notify(this, "OPEN_RESOURCES");
+            mediator.Notify(this, "Otvori_Resurse");
         }
 
-        private void Reservations_Click(object sender, RoutedEventArgs e)
+        private void Rezervacije_Click(object sender, RoutedEventArgs e)
         {
-            mediator.Notify(this, "OPEN_RESERVATIONS");
+            mediator.Notify(this, "Otvori_Rezervacije");
         }
     }
 }

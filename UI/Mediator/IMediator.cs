@@ -1,9 +1,9 @@
-﻿
+﻿using System.Windows;
 
 namespace CoWorkingManager.Mediator
 {
     public interface IMediator
     {
-        void Notify(object sender, string eventCode);
+        void Notify(Window sender, string eventCode);
     }
 }
