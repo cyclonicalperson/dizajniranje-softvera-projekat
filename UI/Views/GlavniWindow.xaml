@@ -5,9 +5,9 @@
         Height="400"
         Width="500">
 
-    <Grid>
+    <Grid Margin="20">
 
-        <UniformGrid Rows="3" Columns="2" Margin="20">
+        <UniformGrid Rows="3" Columns="2">
 
             <Button Content="Users"
                     Click="Users_Click"/>
