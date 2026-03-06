@@ -13,17 +13,17 @@
 
         <ComboBox Name="SelKorisnici_StatusCBox" Width="150" Height="25" SelectionChanged="SelKorisnici_StatusCBox_SelectionChanged" Margin="165,10,445,509"/>
 
-        <ListBox ItemsSource="{Binding People}" DisplayMemberPath="FirstName" Margin="10,40,650,504"/>
-        <ListBox ItemsSource="{Binding People}" DisplayMemberPath="FirstName" Margin="110,40,550,504"/>
+        <ListBox DisplayMemberPath="FirstName" Margin="10,40,650,504"/>
+        <ListBox DisplayMemberPath="FirstName" Margin="110,40,550,504"/>
 
         <Button Width="100" Height="25"
-                Content="Search"
-                Click="Users_Click" Margin="475,10,185,509"/>
+                Content="Pretrazi"
+                Click="Pretrazi_Click" Margin="475,10,185,509"/>
 
 
         <Button Width="100" Height="25"
                 Content="Dashboard"
-                Click="Dashobard_Click" Margin="660,0,0,519"/>
+                Click="GlavniMeni_Click" Margin="660,0,0,519"/>
 
     </Grid>
 
