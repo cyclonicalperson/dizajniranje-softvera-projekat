@@ -36,26 +36,51 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
                 .FirstOrDefault(a => a.Email == email);
         }
 
-        public void Dodaj(Administrator administrator)
+        // Dodaje novog administratora
+        // Vraca false ako korisnicko ime ili email već postoje
+        public bool Dodaj(Administrator administrator)
         {
+            if (KorisnickoImePostoji(administrator.KorisnickoIme))
+                return false;
+
+            if (EmailPostoji(administrator.Email))
+                return false;
+
             kontekst.Administratori.Add(administrator);
             kontekst.SaveChanges();
+            return true;
         }
 
-        public void Azuriraj(Administrator administrator)
+        // Azurira postojeceg administratora
+        // Vraca false ako administrator ne postoji, ili ako novo korisnicko
+        // ime / email već koristi drugi administrator
+        public bool Azuriraj(Administrator administrator)
         {
+            if (!kontekst.Administratori.Any(a => a.Id == administrator.Id))
+                return false;
+
+            if (KorisnickoImePostoji(administrator.KorisnickoIme, excludeId: administrator.Id))
+                return false;
+
+            if (EmailPostoji(administrator.Email, excludeId: administrator.Id))
+                return false;
+
             kontekst.Administratori.Update(administrator);
             kontekst.SaveChanges();
+            return true;
         }
 
-        public void Obrisi(int id)
+        // Brise administratora po ID-u
+        // Vraca false ako administrator ne postoji
+        public bool Obrisi(int id)
         {
             var admin = kontekst.Administratori.Find(id);
-            if (admin != null)
-            {
-                kontekst.Administratori.Remove(admin);
-                kontekst.SaveChanges();
-            }
+            if (admin == null)
+                return false;
+
+            kontekst.Administratori.Remove(admin);
+            kontekst.SaveChanges();
+            return true;
         }
 
         public bool KorisnickoImePostoji(string korisnickoIme, int? excludeId = null)

@@ -131,10 +131,10 @@ namespace CoWorkingManager.Test
             var dedicatedDesk = new TipClanstva { Ime = "Dedicated Desk", Cena = 180.00m, Trajanje = 30, MaxSatiPoMesecu = 120, PristupSali = true, BrojSatiUSaliMesecno = 20 };
             var premium = new TipClanstva { Ime = "Premium", Cena = 250.00m, Trajanje = 30, MaxSatiPoMesecu = 200, PristupSali = true, BrojSatiUSaliMesecno = 40 };
 
-            _facade.TipoviClanstva.Dodaj(dnevno);
-            _facade.TipoviClanstva.Dodaj(hotDesk);
-            _facade.TipoviClanstva.Dodaj(dedicatedDesk);
-            _facade.TipoviClanstva.Dodaj(premium);
+            Proveri(_facade.TipoviClanstva.Dodaj(dnevno), "→ true");
+            Proveri(_facade.TipoviClanstva.Dodaj(hotDesk), "→ true");
+            Proveri(_facade.TipoviClanstva.Dodaj(dedicatedDesk), "→ true");
+            Proveri(_facade.TipoviClanstva.Dodaj(premium), "→ true");
             Ok($"Unesena 4 tipa članstva (Id: {dnevno.Id}–{premium.Id})");
 
             // ── Lokacije (iz podaci.sql — bez Opis kolone) ───────────────────
@@ -149,30 +149,30 @@ namespace CoWorkingManager.Test
             Ok($"Unesene 3 lokacije (Id: {kragujevac.Id}–{noviSad.Id})");
 
             // ── Resursi — Kragujevac — kreiranje kroz ResursFactory ──────────
-            _facade.Resursi.Dodaj(ResursFactory.KreirajSto(kragujevac.Id, "Sto A-1", PodtipStola.HotDesk, opis: "Pored prozora"));
-            _facade.Resursi.Dodaj(ResursFactory.KreirajSto(kragujevac.Id, "Sto A-2", PodtipStola.DedicatedDesk, opis: "Tih deo zgrade"));
-            _facade.Resursi.Dodaj(ResursFactory.KreirajSto(kragujevac.Id, "Sto A-3", PodtipStola.HotDesk, opis: "Blizu ulaza"));
-            _facade.Resursi.Dodaj(ResursFactory.KreirajSto(kragujevac.Id, "Sto A-4", PodtipStola.DedicatedDesk, opis: "Tiha zona"));
-            _facade.Resursi.Dodaj(ResursFactory.KreirajSalu(kragujevac.Id, "Sala K-1", kapacitet: 8, imaProjektor: true, imaTV: true, imaTablu: true, imaOnlineOpremu: true, opis: "Velika sala za sastanke"));
-            _facade.Resursi.Dodaj(ResursFactory.KreirajSalu(kragujevac.Id, "Sala K-2", kapacitet: 4, imaProjektor: false, imaTV: true, imaTablu: true, imaOnlineOpremu: false, opis: "Mala sala za sastanke"));
-            _facade.Resursi.Dodaj(ResursFactory.KreirajSalu(kragujevac.Id, "Sala K-3", kapacitet: 10, imaProjektor: true, imaTV: false, imaTablu: true, imaOnlineOpremu: true, opis: "Sala sa projektorom"));
+            Proveri(_facade.Resursi.Dodaj(ResursFactory.KreirajSto(kragujevac.Id, "Sto A-1", PodtipStola.HotDesk, opis: "Pored prozora")), "Dodaj resurs → true");
+            Proveri(_facade.Resursi.Dodaj(ResursFactory.KreirajSto(kragujevac.Id, "Sto A-2", PodtipStola.DedicatedDesk, opis: "Tih deo zgrade")), "Dodaj resurs → true");
+            Proveri(_facade.Resursi.Dodaj(ResursFactory.KreirajSto(kragujevac.Id, "Sto A-3", PodtipStola.HotDesk, opis: "Blizu ulaza")), "Dodaj resurs → true");
+            Proveri(_facade.Resursi.Dodaj(ResursFactory.KreirajSto(kragujevac.Id, "Sto A-4", PodtipStola.DedicatedDesk, opis: "Tiha zona")), "Dodaj resurs → true");
+            Proveri(_facade.Resursi.Dodaj(ResursFactory.KreirajSalu(kragujevac.Id, "Sala K-1", kapacitet: 8, imaProjektor: true, imaTV: true, imaTablu: true, imaOnlineOpremu: true, opis: "Velika sala za sastanke")), "Dodaj resurs → true");
+            Proveri(_facade.Resursi.Dodaj(ResursFactory.KreirajSalu(kragujevac.Id, "Sala K-2", kapacitet: 4, imaProjektor: false, imaTV: true, imaTablu: true, imaOnlineOpremu: false, opis: "Mala sala za sastanke")), "Dodaj resurs → true");
+            Proveri(_facade.Resursi.Dodaj(ResursFactory.KreirajSalu(kragujevac.Id, "Sala K-3", kapacitet: 10, imaProjektor: true, imaTV: false, imaTablu: true, imaOnlineOpremu: true, opis: "Sala sa projektorom")), "Dodaj resurs → true");
 
             // ── Resursi — Beograd — kreiranje kroz ResursFactory ─────────────
-            _facade.Resursi.Dodaj(ResursFactory.KreirajSto(beograd.Id, "Sto B-1", PodtipStola.HotDesk, opis: "Otvoren prostor"));
-            _facade.Resursi.Dodaj(ResursFactory.KreirajSto(beograd.Id, "Sto B-2", PodtipStola.HotDesk, opis: "Otvoren prostor"));
-            _facade.Resursi.Dodaj(ResursFactory.KreirajSto(beograd.Id, "Sto B-3", PodtipStola.DedicatedDesk, opis: "Premium prostor"));
-            _facade.Resursi.Dodaj(ResursFactory.KreirajSto(beograd.Id, "Sto B-4", PodtipStola.HotDesk, opis: "Blizu kuhinje"));
-            _facade.Resursi.Dodaj(ResursFactory.KreirajSto(beograd.Id, "Sto B-5", PodtipStola.DedicatedDesk, opis: "Tihi deo"));
-            _facade.Resursi.Dodaj(ResursFactory.KreirajSalu(beograd.Id, "Sala Y-1", kapacitet: 12, imaProjektor: true, imaTV: true, imaTablu: true, imaOnlineOpremu: true, opis: "Premium prostor"));
-            _facade.Resursi.Dodaj(ResursFactory.KreirajSalu(beograd.Id, "Sala Y-2", kapacitet: 15, imaProjektor: true, imaTV: true, imaTablu: true, imaOnlineOpremu: true, opis: "Sala za prezentacije"));
-            _facade.Resursi.Dodaj(ResursFactory.KreirajPrivatnuKancelariju(beograd.Id, "Privatna kancelarija G-1", kapacitet: 6, imaTV: true, imaTablu: true, imaOnlineOpremu: true, opis: "Privatna timska kancelarija"));
+            Proveri(_facade.Resursi.Dodaj(ResursFactory.KreirajSto(beograd.Id, "Sto B-1", PodtipStola.HotDesk, opis: "Otvoren prostor")), "Dodaj resurs → true");
+            Proveri(_facade.Resursi.Dodaj(ResursFactory.KreirajSto(beograd.Id, "Sto B-2", PodtipStola.HotDesk, opis: "Otvoren prostor")), "Dodaj resurs → true");
+            Proveri(_facade.Resursi.Dodaj(ResursFactory.KreirajSto(beograd.Id, "Sto B-3", PodtipStola.DedicatedDesk, opis: "Premium prostor")), "Dodaj resurs → true");
+            Proveri(_facade.Resursi.Dodaj(ResursFactory.KreirajSto(beograd.Id, "Sto B-4", PodtipStola.HotDesk, opis: "Blizu kuhinje")), "Dodaj resurs → true");
+            Proveri(_facade.Resursi.Dodaj(ResursFactory.KreirajSto(beograd.Id, "Sto B-5", PodtipStola.DedicatedDesk, opis: "Tihi deo")), "Dodaj resurs → true");
+            Proveri(_facade.Resursi.Dodaj(ResursFactory.KreirajSalu(beograd.Id, "Sala Y-1", kapacitet: 12, imaProjektor: true, imaTV: true, imaTablu: true, imaOnlineOpremu: true, opis: "Premium prostor")), "Dodaj resurs → true");
+            Proveri(_facade.Resursi.Dodaj(ResursFactory.KreirajSalu(beograd.Id, "Sala Y-2", kapacitet: 15, imaProjektor: true, imaTV: true, imaTablu: true, imaOnlineOpremu: true, opis: "Sala za prezentacije")), "Dodaj resurs → true");
+            Proveri(_facade.Resursi.Dodaj(ResursFactory.KreirajPrivatnuKancelariju(beograd.Id, "Privatna kancelarija G-1", kapacitet: 6, imaTV: true, imaTablu: true, imaOnlineOpremu: true, opis: "Privatna timska kancelarija")), "Dodaj resurs → true");
 
             // ── Resursi — Novi Sad — kreiranje kroz ResursFactory ────────────
-            _facade.Resursi.Dodaj(ResursFactory.KreirajSto(noviSad.Id, "Sto C-1", PodtipStola.HotDesk, opis: "Pored prozora"));
-            _facade.Resursi.Dodaj(ResursFactory.KreirajSto(noviSad.Id, "Sto C-2", PodtipStola.DedicatedDesk, opis: "U uglu"));
-            _facade.Resursi.Dodaj(ResursFactory.KreirajSto(noviSad.Id, "Sto C-3", PodtipStola.HotDesk, opis: "Radni sto pored zida"));
-            _facade.Resursi.Dodaj(ResursFactory.KreirajSalu(noviSad.Id, "Sala T-1", kapacitet: 6, imaProjektor: true, imaTV: false, imaTablu: true, imaOnlineOpremu: true, opis: "OGROMNA sala"));
-            _facade.Resursi.Dodaj(ResursFactory.KreirajSalu(noviSad.Id, "Sala T-2", kapacitet: 8, imaProjektor: false, imaTV: true, imaTablu: true, imaOnlineOpremu: true, opis: "Sala za timske sastanke"));
+            Proveri(_facade.Resursi.Dodaj(ResursFactory.KreirajSto(noviSad.Id, "Sto C-1", PodtipStola.HotDesk, opis: "Pored prozora")), "Dodaj resurs → true");
+            Proveri(_facade.Resursi.Dodaj(ResursFactory.KreirajSto(noviSad.Id, "Sto C-2", PodtipStola.DedicatedDesk, opis: "U uglu")), "Dodaj resurs → true");
+            Proveri(_facade.Resursi.Dodaj(ResursFactory.KreirajSto(noviSad.Id, "Sto C-3", PodtipStola.HotDesk, opis: "Radni sto pored zida")), "Dodaj resurs → true");
+            Proveri(_facade.Resursi.Dodaj(ResursFactory.KreirajSalu(noviSad.Id, "Sala T-1", kapacitet: 6, imaProjektor: true, imaTV: false, imaTablu: true, imaOnlineOpremu: true, opis: "OGROMNA sala")), "Dodaj resurs → true");
+            Proveri(_facade.Resursi.Dodaj(ResursFactory.KreirajSalu(noviSad.Id, "Sala T-2", kapacitet: 8, imaProjektor: false, imaTV: true, imaTablu: true, imaOnlineOpremu: true, opis: "Sala za timske sastanke")), "Dodaj resurs → true");
             Ok("Uneseno 22 resursa");
 
             // ── Korisnici (iz podaci.sql, TipClanstvaId 1=Dnevno, 2=HotDesk, 3=Dedicated, 4=Premium)
@@ -244,10 +244,10 @@ namespace CoWorkingManager.Test
             // ── Administratori ───────────────────────────────────────────────
             if (_facade.Administratori.DajSve().Count == 0)
             {
-                _facade.Administratori.Dodaj(new Administrator { KorisnickoIme = "admin", HashLozinke = BCrypt.Net.BCrypt.HashPassword("Admin123!", 11), Ime = "Glavni", Prezime = "Administrator", Email = "admin@coworking.rs", DatumKreiranja = new DateOnly(2025, 1, 1) });
-                _facade.Administratori.Dodaj(new Administrator { KorisnickoIme = "milan.r", HashLozinke = BCrypt.Net.BCrypt.HashPassword("Milan2025@", 11), Ime = "Milan", Prezime = "Rankovic", Email = "milan.r@coworking.rs", DatumKreiranja = new DateOnly(2025, 1, 1) });
-                _facade.Administratori.Dodaj(new Administrator { KorisnickoIme = "vlada.j", HashLozinke = BCrypt.Net.BCrypt.HashPassword("Vlada2025@", 11), Ime = "Vlada", Prezime = "Jovanovic", Email = "vlada.j@coworking.rs", DatumKreiranja = new DateOnly(2025, 1, 15) });
-                _facade.Administratori.Dodaj(new Administrator { KorisnickoIme = "nikola.p", HashLozinke = BCrypt.Net.BCrypt.HashPassword("Nikola2025@", 11), Ime = "Nikola", Prezime = "Petrovic", Email = "nikola.p@coworking.rs", DatumKreiranja = new DateOnly(2025, 2, 1) });
+                Proveri(_facade.Administratori.Dodaj(new Administrator { KorisnickoIme = "admin", HashLozinke = BCrypt.Net.BCrypt.HashPassword("Admin123!", 11), Ime = "Glavni", Prezime = "Administrator", Email = "admin@coworking.rs", DatumKreiranja = new DateOnly(2025, 1, 1) }), "→ true");
+                Proveri(_facade.Administratori.Dodaj(new Administrator { KorisnickoIme = "milan.r", HashLozinke = BCrypt.Net.BCrypt.HashPassword("Milan2025@", 11), Ime = "Milan", Prezime = "Rankovic", Email = "milan.r@coworking.rs", DatumKreiranja = new DateOnly(2025, 1, 1) }), "→ true");
+                Proveri(_facade.Administratori.Dodaj(new Administrator { KorisnickoIme = "vlada.j", HashLozinke = BCrypt.Net.BCrypt.HashPassword("Vlada2025@", 11), Ime = "Vlada", Prezime = "Jovanovic", Email = "vlada.j@coworking.rs", DatumKreiranja = new DateOnly(2025, 1, 15) }), "→ true");
+                Proveri(_facade.Administratori.Dodaj(new Administrator { KorisnickoIme = "nikola.p", HashLozinke = BCrypt.Net.BCrypt.HashPassword("Nikola2025@", 11), Ime = "Nikola", Prezime = "Petrovic", Email = "nikola.p@coworking.rs", DatumKreiranja = new DateOnly(2025, 2, 1) }), "→ true");
                 Ok("Unesena 4 administratora (lozinke hashirane BCrypt cost=11)");
             }
         }
@@ -270,14 +270,14 @@ namespace CoWorkingManager.Test
             Proveri(hotDesk.BrojSatiUSaliMesecno == 10, $"  BrojSatiUSaliMesecno: {hotDesk.BrojSatiUSaliMesecno}");
 
             var privremeni = new TipClanstva { Ime = "Privremeni Test", Cena = 99m, Trajanje = 7, MaxSatiPoMesecu = 20, PristupSali = false };
-            _facade.TipoviClanstva.Dodaj(privremeni);
+            Proveri(_facade.TipoviClanstva.Dodaj(privremeni), "→ true");
             Proveri(privremeni.Id > 0, $"Dodaj() — novi Id: {privremeni.Id}");
 
             privremeni.Cena = 55m;
-            _facade.TipoviClanstva.Azuriraj(privremeni);
+            Proveri(_facade.TipoviClanstva.Azuriraj(privremeni), "→ true");
             Proveri(_facade.TipoviClanstva.DajPoId(privremeni.Id)?.Cena == 55m, "Azuriraj() — cena ažurirana na 55");
 
-            _facade.TipoviClanstva.Obrisi(privremeni.Id);
+            Proveri(_facade.TipoviClanstva.Obrisi(privremeni.Id), "→ true");
             Proveri(_facade.TipoviClanstva.DajPoId(privremeni.Id) == null, "Obrisi() — zapis uklonjen");
         }
 
@@ -342,6 +342,29 @@ namespace CoWorkingManager.Test
             Proveri(salaK1 != null, "Sala K-1 pronađena");
             Proveri(salaK1!.ImaProjektor == true, "  ImaProjektor: true");
             Proveri(salaK1.Kapacitet == 8, $"  Kapacitet: {salaK1.Kapacitet} (očekivano 8)");
+
+            // Dodaj novi resurs → true
+            var noviSto = ResursFactory.KreirajSto(lokacijaId, "Sto TEST", PodtipStola.HotDesk);
+            Proveri(_facade.Resursi.Dodaj(noviSto), "Dodaj() novi resurs → true");
+            Proveri(noviSto.Id > 0, $"  Dobio Id: {noviSto.Id}");
+
+            // Dodaj duplikat (isto ime, ista lokacija) → false
+            var duplikat = ResursFactory.KreirajSto(lokacijaId, "Sto TEST", PodtipStola.DedicatedDesk);
+            Proveri(!_facade.Resursi.Dodaj(duplikat), "Dodaj() duplikat imena → false");
+
+            // Azuriraj postojeći → true
+            noviSto.Opis = "Ažuriran opis";
+            Proveri(_facade.Resursi.Azuriraj(noviSto), "Azuriraj() → true");
+            Proveri(_facade.Resursi.DajPoId(noviSto.Id)?.Opis == "Ažuriran opis", "  Opis ažuriran");
+
+            // Azuriraj nepostojećeg → false
+            var nepostoji = ResursFactory.KreirajSto(lokacijaId, "Nepostojeci", PodtipStola.HotDesk);
+            nepostoji.Id = -1;
+            Proveri(!_facade.Resursi.Azuriraj(nepostoji), "Azuriraj() nepostojećeg resursa → false");
+
+            // Obrisi → true, pa drugi put → false
+            Proveri(_facade.Resursi.Obrisi(noviSto.Id), "Obrisi() → true");
+            Proveri(!_facade.Resursi.Obrisi(noviSto.Id), "Obrisi() drugi put → false (ne postoji)");
         }
 
         private static void TestRezervacija()
@@ -569,21 +592,36 @@ namespace CoWorkingManager.Test
                 Email = "test.privremeni@coworking.rs",
                 DatumKreiranja = DateOnly.FromDateTime(DateTime.Today)
             };
-            _facade.Administratori.Dodaj(privremeni);
-            Proveri(privremeni.Id > 0, $"Dodaj() — novi Id: {privremeni.Id}");
+            // Dodaj → true
+            Proveri(_facade.Administratori.Dodaj(privremeni), "Dodaj() → true");
+            Proveri(privremeni.Id > 0, $"  novi Id: {privremeni.Id}");
 
-            // Provjera prijave — direktno poređenje
+            // Dodaj duplikat korisničkog imena → false
+            var duplikatKorisnickoIme = new Administrator { KorisnickoIme = "test.admin", HashLozinke = BCrypt.Net.BCrypt.HashPassword("x"), Ime = "X", Prezime = "X", Email = "x@x.rs", DatumKreiranja = DateOnly.FromDateTime(DateTime.Today) };
+            Proveri(!_facade.Administratori.Dodaj(duplikatKorisnickoIme), "Dodaj() duplikat korisničkog imena → false");
+
+            // Dodaj duplikat emaila → false
+            var duplikatEmailAdmin = new Administrator { KorisnickoIme = "novi.admin", HashLozinke = BCrypt.Net.BCrypt.HashPassword("x"), Ime = "X", Prezime = "X", Email = "test.privremeni@coworking.rs", DatumKreiranja = DateOnly.FromDateTime(DateTime.Today) };
+            Proveri(!_facade.Administratori.Dodaj(duplikatEmailAdmin), "Dodaj() duplikat emaila → false");
+
+            // Provjera prijave sa BCrypt.Verify
             var uBazi = _facade.Administratori.DajPoKorisnickomImenu("test.admin")!;
             Proveri(BCrypt.Net.BCrypt.Verify("Test123!", uBazi.HashLozinke), "Prijava — tačna lozinka prihvaćena ✓");
             Proveri(!BCrypt.Net.BCrypt.Verify("pogresna", uBazi.HashLozinke), "Prijava — pogrešna lozinka odbijena ✓");
 
+            // Azuriraj → true
             privremeni.Email = "test.izmenjen@coworking.rs";
-            _facade.Administratori.Azuriraj(privremeni);
-            Proveri(_facade.Administratori.DajPoId(privremeni.Id)?.Email == "test.izmenjen@coworking.rs",
-                "Azuriraj() — email ažuriran");
+            Proveri(_facade.Administratori.Azuriraj(privremeni), "Azuriraj() → true");
+            Proveri(_facade.Administratori.DajPoId(privremeni.Id)?.Email == "test.izmenjen@coworking.rs", "  email ažuriran");
 
-            _facade.Administratori.Obrisi(privremeni.Id);
-            Proveri(_facade.Administratori.DajPoId(privremeni.Id) == null, "Obrisi() — zapis uklonjen");
+            // Azuriraj nepostojećeg → false
+            var nepostojiAdmin = new Administrator { Id = -1, KorisnickoIme = "x", HashLozinke = "x", Ime = "X", Prezime = "X", Email = "xx@x.rs", DatumKreiranja = DateOnly.FromDateTime(DateTime.Today) };
+            Proveri(!_facade.Administratori.Azuriraj(nepostojiAdmin), "Azuriraj() nepostojećeg → false");
+
+            // Obrisi → true, pa drugi put → false
+            Proveri(_facade.Administratori.Obrisi(privremeni.Id), "Obrisi() → true");
+            Proveri(_facade.Administratori.DajPoId(privremeni.Id) == null, "  zapis uklonjen");
+            Proveri(!_facade.Administratori.Obrisi(privremeni.Id), "Obrisi() drugi put → false (ne postoji)");
         }
 
         // ════════════════════════════════════════════════════════════════════

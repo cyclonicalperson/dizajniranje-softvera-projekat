@@ -96,28 +96,41 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
         }
 
         // Dodaje novi resurs
-        public void Dodaj(Resurs resurs)
+        // Vraca false ako na istoj lokaciji vec postoji resurs sa istim imenom
+        // Preporuka: koristiti ResursFactory za kreiranje resursa
+        public bool Dodaj(Resurs resurs)
         {
+            if (_kontekst.Resursi.Any(r => r.LokacijaId == resurs.LokacijaId && r.Ime == resurs.Ime))
+                return false;
+
             _kontekst.Resursi.Add(resurs);
             _kontekst.SaveChanges();
+            return true;
         }
 
         // Azurira resurse
-        public void Azuriraj(Resurs resurs)
+        // Vraca false ako resurs sa datim ID-jem ne postoji
+        public bool Azuriraj(Resurs resurs)
         {
+            if (!_kontekst.Resursi.Any(r => r.Id == resurs.Id))
+                return false;
+
             _kontekst.Resursi.Update(resurs);
             _kontekst.SaveChanges();
+            return true;
         }
 
         // Brise resurs po ID-u
-        public void Obrisi(int id)
+        // Vraca false ako resurs ne postoji
+        public bool Obrisi(int id)
         {
             var resurs = _kontekst.Resursi.Find(id);
-            if (resurs != null)
-            {
-                _kontekst.Resursi.Remove(resurs);
-                _kontekst.SaveChanges();
-            }
+            if (resurs == null)
+                return false;
+
+            _kontekst.Resursi.Remove(resurs);
+            _kontekst.SaveChanges();
+            return true;
         }
     }
 }
