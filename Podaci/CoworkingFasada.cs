@@ -1,5 +1,6 @@
 ﻿using CoWorkingManager.Modeli;
 using CoWorkingManager.Podaci.Repozitorijumi;
+using CoWorkingManager.Logika.Servisi;
 
 namespace CoWorkingManager.Podaci
 {
@@ -79,6 +80,12 @@ namespace CoWorkingManager.Podaci
                 KontekstBaze.ResetInstance();
                 instanca = null;
             }
+        }
+
+        public static Administrator LoginAdmin(string korisnickoIme, string lozinka)
+        {
+            AdministratorServis servis = new AdministratorServis();
+            return servis.Login(korisnickoIme, lozinka);
         }
     }
 }
