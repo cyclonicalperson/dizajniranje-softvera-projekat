@@ -91,40 +91,73 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
         }
 
         // Dodaje novu rezervaciju
-        public void Dodaj(Rezervacija rezervacija)
+        // Vraca false ako postoji preklapanje termina za isti resurs
+        public bool Dodaj(Rezervacija rezervacija)
         {
+            if (PostojiPreklapanje(rezervacija.ResursId, rezervacija.PocetakVreme, rezervacija.KrajVreme))
+                return false;
+
             kontekst.Rezervacije.Add(rezervacija);
             kontekst.SaveChanges();
+            return true;
         }
 
-        // Azurira rezervaciju (promena termina, resursa...)
-        public void Azuriraj(Rezervacija rezervacija)
+
+
+        // Menja termin ili resurs postojeće rezervacije
+        // Vraca false ako rezervacija ne postoji, nije aktivna,
+        // ili novi termin se preklapa sa drugom rezervacijom
+        public bool Azuriraj(Rezervacija rezervacija)
         {
+            var uBazi = kontekst.Rezervacije.Find(rezervacija.Id);
+            if (uBazi == null)
+                return false;
+
+            // Izmena je dozvoljena samo za aktivne rezervacije
+            if (uBazi.StatusRezervacije != StatusRezervacije.Aktivna)
+                return false;
+
+            // Proverava preklapanje, iskljucujući samu ovu rezervaciju
+            if (PostojiPreklapanje(
+                    rezervacija.ResursId,
+                    rezervacija.PocetakVreme,
+                    rezervacija.KrajVreme,
+                    excludeId: rezervacija.Id))
+                return false;
+
             kontekst.Rezervacije.Update(rezervacija);
             kontekst.SaveChanges();
+            return true;
         }
 
-        // Otkazuje rezervaciju postavljanjem statusa na 'Otkazana'
+        // Otkazuje rezervaciju postavljanjem statusa na Otkazana
         // Zapis ostaje u bazi radi istorije
-        public void Otkazi(int id)
+        // Vraca false ako rezervacija ne postoji ili je vec otkazana/zavrsena
+        public bool Otkazi(int id)
         {
             var rezervacija = kontekst.Rezervacije.Find(id);
-            if (rezervacija != null)
-            {
-                rezervacija.StatusRezervacije = StatusRezervacije.Otkazana;
-                kontekst.SaveChanges();
-            }
+            if (rezervacija == null)
+                return false;
+
+            if (rezervacija.StatusRezervacije != StatusRezervacije.Aktivna)
+                return false;
+
+            rezervacija.StatusRezervacije = StatusRezervacije.Otkazana;
+            kontekst.SaveChanges();
+            return true;
         }
 
         // Trajno brise rezervaciju iz baze
-        public void Obrisi(int id)
+        // Vraca false ako rezervacija ne postoji
+        public bool Obrisi(int id)
         {
             var rezervacija = kontekst.Rezervacije.Find(id);
-            if (rezervacija != null)
-            {
-                kontekst.Rezervacije.Remove(rezervacija);
-                kontekst.SaveChanges();
-            }
+            if (rezervacija == null)
+                return false;
+
+            kontekst.Rezervacije.Remove(rezervacija);
+            kontekst.SaveChanges();
+            return true;
         }
 
         // Automatski oznacava prosle aktivne rezervacije kao zavrsene

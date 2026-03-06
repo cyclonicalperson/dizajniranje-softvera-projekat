@@ -142,9 +142,9 @@ namespace CoWorkingManager.Test
             var beograd = new Lokacija { Ime = "Hub Beograd", Adresa = "Nemanjina 4", Grad = "Beograd", RadniSati = "00:00–24:00", MaxBrojKorisnika = 300 };
             var noviSad = new Lokacija { Ime = "Hub Novi Sad", Adresa = "Bulevar Oslobodjenja 88", Grad = "Novi Sad", RadniSati = "07:00–23:00", MaxBrojKorisnika = 180 };
 
-            _facade.Lokacije.Dodaj(kragujevac);
-            _facade.Lokacije.Dodaj(beograd);
-            _facade.Lokacije.Dodaj(noviSad);
+            Proveri(_facade.Lokacije.Dodaj(kragujevac), "Dodaj lokacija Kragujevac → true");
+            Proveri(_facade.Lokacije.Dodaj(beograd), "Dodaj lokacija Beograd → true");
+            Proveri(_facade.Lokacije.Dodaj(noviSad), "Dodaj lokacija Novi Sad → true");
             Ok($"Unesene 3 lokacije (Id: {kragujevac.Id}–{noviSad.Id})");
 
             // ── Resursi — Kragujevac — kreiranje kroz ResursFactory ──────────
@@ -176,31 +176,31 @@ namespace CoWorkingManager.Test
 
             // ── Korisnici (iz podaci.sql, TipClanstvaId 1=Dnevno, 2=HotDesk, 3=Dedicated, 4=Premium)
             // Koristimo lokalne Id varijable da ne zavisimo od hardkodiranih Id-jeva
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Marko", Prezime = "Jovanovic", Email = "marko.j@mail.com", Telefon = "061111111", TipClanstvaId = hotDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 1), DatumKrajaClanstva = new DateOnly(2025, 1, 31), StatusNaloga = StatusNaloga.Aktivan });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Ana", Prezime = "Petrovic", Email = "ana.p@mail.com", Telefon = "062222222", TipClanstvaId = dedicatedDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 5), DatumKrajaClanstva = new DateOnly(2025, 2, 4), StatusNaloga = StatusNaloga.Aktivan });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Nikola", Prezime = "Ilic", Email = "nikola.i@mail.com", Telefon = "063333333", TipClanstvaId = premium.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 1), DatumKrajaClanstva = new DateOnly(2025, 1, 31), StatusNaloga = StatusNaloga.Aktivan });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Jelena", Prezime = "Markovic", Email = "jelena.m@mail.com", Telefon = "064444444", TipClanstvaId = dnevno.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 10), DatumKrajaClanstva = new DateOnly(2025, 1, 10), StatusNaloga = StatusNaloga.Istekao });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Ivan", Prezime = "Stojanovic", Email = "ivan.s@mail.com", Telefon = "065555555", TipClanstvaId = hotDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 3), DatumKrajaClanstva = new DateOnly(2025, 2, 2), StatusNaloga = StatusNaloga.Pauziran });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Milica", Prezime = "Kovacevic", Email = "milica.k@mail.com", Telefon = "066666666", TipClanstvaId = dedicatedDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 1), DatumKrajaClanstva = new DateOnly(2025, 1, 31), StatusNaloga = StatusNaloga.Aktivan });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Stefan", Prezime = "Nikolic", Email = "stefan.n@mail.com", Telefon = "067777777", TipClanstvaId = premium.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 1), DatumKrajaClanstva = new DateOnly(2025, 1, 31), StatusNaloga = StatusNaloga.Aktivan });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Tamara", Prezime = "Lazic", Email = "tamara.l@mail.com", Telefon = "068888888", TipClanstvaId = hotDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 12), DatumKrajaClanstva = new DateOnly(2025, 2, 11), StatusNaloga = StatusNaloga.Aktivan });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Petar", Prezime = "Djordjevic", Email = "petar.d@mail.com", Telefon = "069999999", TipClanstvaId = dedicatedDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 8), DatumKrajaClanstva = new DateOnly(2025, 2, 7), StatusNaloga = StatusNaloga.Aktivan });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Marija", Prezime = "Vasic", Email = "marija.v@mail.com", Telefon = "060000000", TipClanstvaId = dnevno.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 15), DatumKrajaClanstva = new DateOnly(2025, 1, 15), StatusNaloga = StatusNaloga.Istekao });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Luka", Prezime = "Pavlovic", Email = "luka.p@mail.com", Telefon = "061101010", TipClanstvaId = hotDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 2), DatumKrajaClanstva = new DateOnly(2025, 2, 1), StatusNaloga = StatusNaloga.Aktivan });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Sara", Prezime = "Milosevic", Email = "sara.m@mail.com", Telefon = "062202020", TipClanstvaId = dedicatedDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 3), DatumKrajaClanstva = new DateOnly(2025, 2, 2), StatusNaloga = StatusNaloga.Aktivan });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Filip", Prezime = "Arandjelovic", Email = "filip.a@mail.com", Telefon = "063303030", TipClanstvaId = premium.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 1), DatumKrajaClanstva = new DateOnly(2025, 1, 31), StatusNaloga = StatusNaloga.Aktivan });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Maja", Prezime = "Popovic", Email = "maja.p@mail.com", Telefon = "064404040", TipClanstvaId = dnevno.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 18), DatumKrajaClanstva = new DateOnly(2025, 1, 18), StatusNaloga = StatusNaloga.Istekao });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Nemanja", Prezime = "Ristic", Email = "nemanja.r@mail.com", Telefon = "065505050", TipClanstvaId = hotDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 6), DatumKrajaClanstva = new DateOnly(2025, 2, 5), StatusNaloga = StatusNaloga.Pauziran });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Jovana", Prezime = "Mitrovic", Email = "jovana.m@mail.com", Telefon = "066606060", TipClanstvaId = dedicatedDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 7), DatumKrajaClanstva = new DateOnly(2025, 2, 6), StatusNaloga = StatusNaloga.Aktivan });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Aleksandar", Prezime = "Petkovic", Email = "aleks.p@mail.com", Telefon = "067707070", TipClanstvaId = premium.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 1), DatumKrajaClanstva = new DateOnly(2025, 1, 31), StatusNaloga = StatusNaloga.Aktivan });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Teodora", Prezime = "Stankovic", Email = "teodora.s@mail.com", Telefon = "068808080", TipClanstvaId = hotDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 11), DatumKrajaClanstva = new DateOnly(2025, 2, 10), StatusNaloga = StatusNaloga.Aktivan });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Vuk", Prezime = "Todorovic", Email = "vuk.t@mail.com", Telefon = "069909090", TipClanstvaId = dedicatedDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 9), DatumKrajaClanstva = new DateOnly(2025, 2, 8), StatusNaloga = StatusNaloga.Aktivan });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Isidora", Prezime = "Jaksic", Email = "isidora.j@mail.com", Telefon = "060111111", TipClanstvaId = dnevno.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 21), DatumKrajaClanstva = new DateOnly(2025, 1, 21), StatusNaloga = StatusNaloga.Istekao });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Ognjen", Prezime = "Knezevic", Email = "ognjen.k@mail.com", Telefon = "061222333", TipClanstvaId = hotDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 4), DatumKrajaClanstva = new DateOnly(2025, 2, 3), StatusNaloga = StatusNaloga.Aktivan });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Kristina", Prezime = "Obradovic", Email = "kristina.o@mail.com", Telefon = "062333444", TipClanstvaId = dedicatedDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 5), DatumKrajaClanstva = new DateOnly(2025, 2, 4), StatusNaloga = StatusNaloga.Aktivan });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Dusan", Prezime = "Maric", Email = "dusan.m@mail.com", Telefon = "063444555", TipClanstvaId = premium.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 1), DatumKrajaClanstva = new DateOnly(2025, 1, 31), StatusNaloga = StatusNaloga.Aktivan });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Anja", Prezime = "Simic", Email = "anja.s@mail.com", Telefon = "064555666", TipClanstvaId = hotDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 13), DatumKrajaClanstva = new DateOnly(2025, 2, 12), StatusNaloga = StatusNaloga.Aktivan });
-            _facade.Korisnici.Dodaj(new Korisnik { Ime = "Bojan", Prezime = "Zivkovic", Email = "bojan.z@mail.com", Telefon = "065666777", TipClanstvaId = dedicatedDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 14), DatumKrajaClanstva = new DateOnly(2025, 2, 13), StatusNaloga = StatusNaloga.Aktivan });
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Marko", Prezime = "Jovanovic", Email = "marko.j@mail.com", Telefon = "061111111", TipClanstvaId = hotDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 1), DatumKrajaClanstva = new DateOnly(2025, 1, 31), StatusNaloga = StatusNaloga.Aktivan }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Ana", Prezime = "Petrovic", Email = "ana.p@mail.com", Telefon = "062222222", TipClanstvaId = dedicatedDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 5), DatumKrajaClanstva = new DateOnly(2025, 2, 4), StatusNaloga = StatusNaloga.Aktivan }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Nikola", Prezime = "Ilic", Email = "nikola.i@mail.com", Telefon = "063333333", TipClanstvaId = premium.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 1), DatumKrajaClanstva = new DateOnly(2025, 1, 31), StatusNaloga = StatusNaloga.Aktivan }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Jelena", Prezime = "Markovic", Email = "jelena.m@mail.com", Telefon = "064444444", TipClanstvaId = dnevno.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 10), DatumKrajaClanstva = new DateOnly(2025, 1, 10), StatusNaloga = StatusNaloga.Istekao }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Ivan", Prezime = "Stojanovic", Email = "ivan.s@mail.com", Telefon = "065555555", TipClanstvaId = hotDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 3), DatumKrajaClanstva = new DateOnly(2025, 2, 2), StatusNaloga = StatusNaloga.Pauziran }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Milica", Prezime = "Kovacevic", Email = "milica.k@mail.com", Telefon = "066666666", TipClanstvaId = dedicatedDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 1), DatumKrajaClanstva = new DateOnly(2025, 1, 31), StatusNaloga = StatusNaloga.Aktivan }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Stefan", Prezime = "Nikolic", Email = "stefan.n@mail.com", Telefon = "067777777", TipClanstvaId = premium.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 1), DatumKrajaClanstva = new DateOnly(2025, 1, 31), StatusNaloga = StatusNaloga.Aktivan }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Tamara", Prezime = "Lazic", Email = "tamara.l@mail.com", Telefon = "068888888", TipClanstvaId = hotDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 12), DatumKrajaClanstva = new DateOnly(2025, 2, 11), StatusNaloga = StatusNaloga.Aktivan }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Petar", Prezime = "Djordjevic", Email = "petar.d@mail.com", Telefon = "069999999", TipClanstvaId = dedicatedDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 8), DatumKrajaClanstva = new DateOnly(2025, 2, 7), StatusNaloga = StatusNaloga.Aktivan }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Marija", Prezime = "Vasic", Email = "marija.v@mail.com", Telefon = "060000000", TipClanstvaId = dnevno.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 15), DatumKrajaClanstva = new DateOnly(2025, 1, 15), StatusNaloga = StatusNaloga.Istekao }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Luka", Prezime = "Pavlovic", Email = "luka.p@mail.com", Telefon = "061101010", TipClanstvaId = hotDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 2), DatumKrajaClanstva = new DateOnly(2025, 2, 1), StatusNaloga = StatusNaloga.Aktivan }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Sara", Prezime = "Milosevic", Email = "sara.m@mail.com", Telefon = "062202020", TipClanstvaId = dedicatedDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 3), DatumKrajaClanstva = new DateOnly(2025, 2, 2), StatusNaloga = StatusNaloga.Aktivan }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Filip", Prezime = "Arandjelovic", Email = "filip.a@mail.com", Telefon = "063303030", TipClanstvaId = premium.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 1), DatumKrajaClanstva = new DateOnly(2025, 1, 31), StatusNaloga = StatusNaloga.Aktivan }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Maja", Prezime = "Popovic", Email = "maja.p@mail.com", Telefon = "064404040", TipClanstvaId = dnevno.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 18), DatumKrajaClanstva = new DateOnly(2025, 1, 18), StatusNaloga = StatusNaloga.Istekao }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Nemanja", Prezime = "Ristic", Email = "nemanja.r@mail.com", Telefon = "065505050", TipClanstvaId = hotDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 6), DatumKrajaClanstva = new DateOnly(2025, 2, 5), StatusNaloga = StatusNaloga.Pauziran }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Jovana", Prezime = "Mitrovic", Email = "jovana.m@mail.com", Telefon = "066606060", TipClanstvaId = dedicatedDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 7), DatumKrajaClanstva = new DateOnly(2025, 2, 6), StatusNaloga = StatusNaloga.Aktivan }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Aleksandar", Prezime = "Petkovic", Email = "aleks.p@mail.com", Telefon = "067707070", TipClanstvaId = premium.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 1), DatumKrajaClanstva = new DateOnly(2025, 1, 31), StatusNaloga = StatusNaloga.Aktivan }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Teodora", Prezime = "Stankovic", Email = "teodora.s@mail.com", Telefon = "068808080", TipClanstvaId = hotDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 11), DatumKrajaClanstva = new DateOnly(2025, 2, 10), StatusNaloga = StatusNaloga.Aktivan }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Vuk", Prezime = "Todorovic", Email = "vuk.t@mail.com", Telefon = "069909090", TipClanstvaId = dedicatedDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 9), DatumKrajaClanstva = new DateOnly(2025, 2, 8), StatusNaloga = StatusNaloga.Aktivan }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Isidora", Prezime = "Jaksic", Email = "isidora.j@mail.com", Telefon = "060111111", TipClanstvaId = dnevno.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 21), DatumKrajaClanstva = new DateOnly(2025, 1, 21), StatusNaloga = StatusNaloga.Istekao }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Ognjen", Prezime = "Knezevic", Email = "ognjen.k@mail.com", Telefon = "061222333", TipClanstvaId = hotDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 4), DatumKrajaClanstva = new DateOnly(2025, 2, 3), StatusNaloga = StatusNaloga.Aktivan }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Kristina", Prezime = "Obradovic", Email = "kristina.o@mail.com", Telefon = "062333444", TipClanstvaId = dedicatedDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 5), DatumKrajaClanstva = new DateOnly(2025, 2, 4), StatusNaloga = StatusNaloga.Aktivan }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Dusan", Prezime = "Maric", Email = "dusan.m@mail.com", Telefon = "063444555", TipClanstvaId = premium.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 1), DatumKrajaClanstva = new DateOnly(2025, 1, 31), StatusNaloga = StatusNaloga.Aktivan }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Anja", Prezime = "Simic", Email = "anja.s@mail.com", Telefon = "064555666", TipClanstvaId = hotDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 13), DatumKrajaClanstva = new DateOnly(2025, 2, 12), StatusNaloga = StatusNaloga.Aktivan }), "Dodaj korisnik → true");
+            Proveri(_facade.Korisnici.Dodaj(new Korisnik { Ime = "Bojan", Prezime = "Zivkovic", Email = "bojan.z@mail.com", Telefon = "065666777", TipClanstvaId = dedicatedDesk.Id, DatumPocetkaClanstva = new DateOnly(2025, 1, 14), DatumKrajaClanstva = new DateOnly(2025, 2, 13), StatusNaloga = StatusNaloga.Aktivan }), "Dodaj korisnik → true");
             Ok("Uneseno 25 korisnika");
 
             // ── Rezervacije (iz podaci.sql — ResursId i KorisnikId po redosledu unosa) ──
@@ -212,13 +212,16 @@ namespace CoWorkingManager.Test
             int KorId(string email) => sviK.First(k => k.Email == email).Id;
 
             // Rezervacije se kreiraju kroz RezervacijaBuilder — garantuje validnost svakog objekta
-            void DodajRez(string email, string resIme, DateTime od, DateTime do_, StatusRezervacije status) =>
-                _facade.Rezervacije.Dodaj(new RezervacijaBuilder()
+            void DodajRez(string email, string resIme, DateTime od, DateTime do_, StatusRezervacije status)
+            {
+                bool ok = _facade.Rezervacije.Dodaj(new RezervacijaBuilder()
                     .ZaKorisnika(KorId(email))
                     .NaResursu(ResId(resIme))
                     .Od(od).Do(do_)
                     .SaStatusom(status)
                     .Build());
+                Proveri(ok, $"Dodaj rezervacija {resIme} za {email} → true");
+            }
 
             DodajRez("marko.j@mail.com", "Sto A-1", new DateTime(2025, 1, 20, 9, 0, 0), new DateTime(2025, 1, 20, 13, 0, 0), StatusRezervacije.Zavrsena);
             DodajRez("ana.p@mail.com", "Sto A-3", new DateTime(2025, 1, 22, 10, 0, 0), new DateTime(2025, 1, 22, 12, 0, 0), StatusRezervacije.Zavrsena);
@@ -306,8 +309,16 @@ namespace CoWorkingManager.Test
             Proveri(!_facade.Korisnici.EmailPostoji("ne.postoji@mail.com"), "EmailPostoji() — false za nepostojeći");
 
             marko.Telefon = "069000000";
-            _facade.Korisnici.Azuriraj(marko);
+            Proveri(_facade.Korisnici.Azuriraj(marko), "Azuriraj() → true");
             Proveri(_facade.Korisnici.DajPoEmailu("marko.j@mail.com")?.Telefon == "069000000", "Azuriraj() — telefon ažuriran");
+
+            // Azuriraj sa nepostojećim ID-jem → false
+            var nepostoji = new Korisnik { Id = -1, Ime = "X", Email = "x@x.com" };
+            Proveri(!_facade.Korisnici.Azuriraj(nepostoji), "Azuriraj() nepostojećeg korisnika → false");
+
+            // Dodaj duplikat emaila → false
+            var duplikat = new Korisnik { Ime = "Test", Prezime = "Test", Email = "marko.j@mail.com", TipClanstvaId = marko.TipClanstvaId, DatumPocetkaClanstva = DateOnly.FromDateTime(DateTime.Today), DatumKrajaClanstva = DateOnly.FromDateTime(DateTime.Today), StatusNaloga = StatusNaloga.Aktivan };
+            Proveri(!_facade.Korisnici.Dodaj(duplikat), "Dodaj() sa duplikat emailom → false");
         }
 
         private static void TestResursa()
@@ -340,21 +351,39 @@ namespace CoWorkingManager.Test
             var lokacija = _facade.Lokacije.DajSve().First(l => l.Grad == "Kragujevac");
             var sto = _facade.Resursi.DajStoloviPoLokaciji(lokacija.Id).First();
 
-            var rez = new Rezervacija
-            {
-                KorisnikId = marko.Id,
-                ResursId = sto.Id,
-                PocetakVreme = new DateTime(2025, 3, 10, 9, 0, 0),
-                KrajVreme = new DateTime(2025, 3, 10, 13, 0, 0),
-                StatusRezervacije = StatusRezervacije.Aktivna
-            };
-            _facade.Rezervacije.Dodaj(rez);
+            var rez = new RezervacijaBuilder()
+                .ZaKorisnika(marko.Id).NaResursu(sto.Id)
+                .Od(new DateTime(2025, 3, 10, 9, 0, 0))
+                .Do(new DateTime(2025, 3, 10, 13, 0, 0))
+                .Build();
+            Proveri(_facade.Rezervacije.Dodaj(rez), "Dodaj() → true");
             Proveri(rez.Id > 0, $"Dodaj() — nova rezervacija Id: {rez.Id}");
             Proveri(_facade.Rezervacije.DajPoKorisniku(marko.Id).Any(r => r.Id == rez.Id), "DajPoKorisniku() — pronađena");
             Proveri(rez.TrajanjeSati == 4.0, $"TrajanjeSati: {rez.TrajanjeSati}h (očekivano 4.0)");
 
-            _facade.Rezervacije.Otkazi(rez.Id);
+            // Dodaj isti termin ponovo → false (preklapanje)
+            var preklopljena = new RezervacijaBuilder()
+                .ZaKorisnika(marko.Id).NaResursu(sto.Id)
+                .Od(new DateTime(2025, 3, 10, 10, 0, 0))
+                .Do(new DateTime(2025, 3, 10, 12, 0, 0))
+                .Build();
+            Proveri(!_facade.Rezervacije.Dodaj(preklopljena), "Dodaj() sa preklapanjem termina → false");
+
+            // Izmena termina — pomeramo za sat napred, bez preklapanja
+            rez.PocetakVreme = new DateTime(2025, 3, 10, 10, 0, 0);
+            rez.KrajVreme = new DateTime(2025, 3, 10, 14, 0, 0);
+            Proveri(_facade.Rezervacije.Azuriraj(rez), "Azuriraj() → true");
+            Proveri(_facade.Rezervacije.DajPoId(rez.Id)?.PocetakVreme.Hour == 10, "Azuriraj() — vreme početka ažurirano");
+
+            Proveri(_facade.Rezervacije.Otkazi(rez.Id), "Otkazi() → true");
             Proveri(_facade.Rezervacije.DajPoId(rez.Id)?.StatusRezervacije == StatusRezervacije.Otkazana, "Otkazi() — status = Otkazana");
+
+            // Otkazi već otkazanu → false
+            Proveri(!_facade.Rezervacije.Otkazi(rez.Id), "Otkazi() već otkazane → false");
+
+            // Azuriraj otkazanu → false
+            rez.PocetakVreme = new DateTime(2025, 3, 10, 9, 0, 0);
+            Proveri(!_facade.Rezervacije.Azuriraj(rez), "Azuriraj() otkazane rezervacije → false");
 
             var dnevneRez = _facade.Rezervacije.DajPoLokacijiIDanu(lokacija.Id, new DateTime(2025, 3, 10));
             Ok($"DajPoLokacijiIDanu() — {dnevneRez.Count} rezervacija na dan (otkazane nisu uključene)");
@@ -380,7 +409,7 @@ namespace CoWorkingManager.Test
                 KrajVreme = new DateTime(2025, 4, 1, 14, 0, 0),
                 StatusRezervacije = StatusRezervacije.Aktivna
             };
-            _facade.Rezervacije.Dodaj(baza);
+            Proveri(_facade.Rezervacije.Dodaj(baza), "Dodaj(baza) → true");
 
             Proveri(_facade.Rezervacije.PostojiPreklapanje(sto.Id, new DateTime(2025, 4, 1, 11, 0, 0), new DateTime(2025, 4, 1, 13, 0, 0)),
                 "Preklapanje unutar termina → detektovano ✓");
@@ -393,7 +422,7 @@ namespace CoWorkingManager.Test
             Proveri(!_facade.Rezervacije.PostojiPreklapanje(sto.Id, new DateTime(2025, 4, 1, 10, 0, 0), new DateTime(2025, 4, 1, 14, 0, 0), excludeId: baza.Id),
                 "ExcludeId (izmena) → ne preklapa sa samim sobom ✓");
 
-            _facade.Rezervacije.Obrisi(baza.Id);
+            Proveri(_facade.Rezervacije.Obrisi(baza.Id), "Obrisi(baza.Id) → true ✓");
         }
 
         private static void TestBrojaSatiKorisnika()
@@ -408,9 +437,9 @@ namespace CoWorkingManager.Test
             var r1 = new RezervacijaBuilder().ZaKorisnika(marko.Id).NaResursu(sto.Id).Od(new DateTime(2025, 5, 1, 9, 0, 0)).Do(new DateTime(2025, 5, 1, 13, 0, 0)).Build();
             var r2 = new RezervacijaBuilder().ZaKorisnika(marko.Id).NaResursu(sto.Id).Od(new DateTime(2025, 5, 5, 10, 0, 0)).Do(new DateTime(2025, 5, 5, 12, 0, 0)).Build();
             var r3 = new RezervacijaBuilder().ZaKorisnika(marko.Id).NaResursu(sala.Id).Od(new DateTime(2025, 5, 8, 14, 0, 0)).Do(new DateTime(2025, 5, 8, 16, 0, 0)).Build();
-            _facade.Rezervacije.Dodaj(r1);
-            _facade.Rezervacije.Dodaj(r2);
-            _facade.Rezervacije.Dodaj(r3);
+            Proveri(_facade.Rezervacije.Dodaj(r1), "Dodaj(r1) → true");
+            Proveri(_facade.Rezervacije.Dodaj(r2), "Dodaj(r2) → true");
+            Proveri(_facade.Rezervacije.Dodaj(r3), "Dodaj(r3) → true");
 
             double ukupno = _facade.Korisnici.DajUkupnoSatiMesecno(marko.Id, 2025, 5);
             double salaSati = _facade.Korisnici.DajSatiSalaMesecno(marko.Id, 2025, 5);
@@ -422,9 +451,10 @@ namespace CoWorkingManager.Test
             Proveri(!tip.BrojSatiUSaliMesecno.HasValue || salaSati <= tip.BrojSatiUSaliMesecno.Value,
                 $"Nije prekoračen limit sala ({salaSati}/{tip.BrojSatiUSaliMesecno}h)");
 
-            _facade.Rezervacije.Obrisi(r1.Id);
-            _facade.Rezervacije.Obrisi(r2.Id);
-            _facade.Rezervacije.Obrisi(r3.Id);
+            Proveri(_facade.Rezervacije.Obrisi(r1.Id), "Obrisi(r1) → true ✓");
+            Proveri(_facade.Rezervacije.Obrisi(r2.Id), "Obrisi(r2) → true ✓");
+            Proveri(_facade.Rezervacije.Obrisi(r3.Id), "Obrisi(r3) → true ✓");
+            Proveri(!_facade.Rezervacije.Obrisi(r1.Id), "Obrisi(r1) drugi put → false (ne postoji) ✓");
         }
 
         private static void TestDostupnostiResursa()
@@ -443,7 +473,7 @@ namespace CoWorkingManager.Test
                 KrajVreme = new DateTime(2025, 6, 15, 14, 0, 0),
                 StatusRezervacije = StatusRezervacije.Aktivna
             };
-            _facade.Rezervacije.Dodaj(zaubez);
+            Proveri(_facade.Rezervacije.Dodaj(zaubez), "Dodaj(zaubez) → true");
 
             Proveri(!_facade.Resursi.JeDostupan(sto.Id, new DateTime(2025, 6, 15, 12, 0, 0), new DateTime(2025, 6, 15, 16, 0, 0)),
                 "Sto nije dostupan u zauzetom terminu ✓");
@@ -453,7 +483,7 @@ namespace CoWorkingManager.Test
             var dostupni = _facade.Resursi.DajDostupneResurse(lokacija.Id, new DateTime(2025, 6, 15, 12, 0, 0), new DateTime(2025, 6, 15, 16, 0, 0));
             Proveri(!dostupni.Any(r => r.Id == sto.Id), $"DajDostupneResurse() — zauzeti sto nije u listi ({dostupni.Count} slobodnih)");
 
-            _facade.Rezervacije.Obrisi(zaubez.Id);
+            Proveri(_facade.Rezervacije.Obrisi(zaubez.Id), "Obrisi(zaubez) → true ✓");
         }
 
         private static void TestStatistikeZauzetosti()
@@ -478,14 +508,14 @@ namespace CoWorkingManager.Test
                 KrajVreme = sada.AddHours(2),
                 StatusRezervacije = StatusRezervacije.Aktivna
             };
-            _facade.Rezervacije.Dodaj(aktivan);
+            Proveri(_facade.Rezervacije.Dodaj(aktivan), "Dodaj(aktivan) → true");
 
             var statPosle = _facade.Lokacije.DajStatistikuZauzetosti(lokacija.Id, sada);
             Ok($"Posle rezervacije: {statPosle}");
             Proveri(statPosle.ZauzetihResursa >= 1, $"  Bar jedan resurs je zauzet: {statPosle.ZauzetihResursa}");
             Proveri(statPosle.ProcenatZauzetosti > 0, $"  Procenat zauzetosti: {statPosle.ProcenatZauzetosti}%");
 
-            _facade.Rezervacije.Obrisi(aktivan.Id);
+            Proveri(_facade.Rezervacije.Obrisi(aktivan.Id), "Obrisi(aktivan) → true ✓");
         }
 
         private static void TestFiltriranja()

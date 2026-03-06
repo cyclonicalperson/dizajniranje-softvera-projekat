@@ -31,28 +31,40 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
         }
 
         // Dodaje novu lokaciju
-        public void Dodaj(Lokacija lokacija)
+        // Vraca false ako lokacija sa istim imenom i gradom vec postoji
+        public bool Dodaj(Lokacija lokacija)
         {
+            if (kontekst.Lokacije.Any(l => l.Ime == lokacija.Ime && l.Grad == lokacija.Grad))
+                return false;
+
             kontekst.Lokacije.Add(lokacija);
             kontekst.SaveChanges();
+            return true;
         }
 
         // Azurira lokaciju
-        public void Azuriraj(Lokacija lokacija)
+        // Vraca false ako lokacija ne postoji
+        public bool Azuriraj(Lokacija lokacija)
         {
+            if (!kontekst.Lokacije.Any(l => l.Id == lokacija.Id))
+                return false;
+
             kontekst.Lokacije.Update(lokacija);
             kontekst.SaveChanges();
+            return true;
         }
 
         // Brise lokaciju (kaskadno briše resurse na njoj)
-        public void Obrisi(int id)
+        // Vraća false ako lokacija ne postoji
+        public bool Obrisi(int id)
         {
             var lokacija = kontekst.Lokacije.Find(id);
-            if (lokacija != null)
-            {
-                kontekst.Lokacije.Remove(lokacija);
-                kontekst.SaveChanges();
-            }
+            if (lokacija == null)
+                return false;
+
+            kontekst.Lokacije.Remove(lokacija);
+            kontekst.SaveChanges();
+            return true;
         }
 
         // Izracunava statistike zauzetosti lokacije za dati trenutak

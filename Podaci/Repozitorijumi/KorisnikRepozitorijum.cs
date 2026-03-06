@@ -74,28 +74,44 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
         }
 
         // Dodaje novog korisnika i cuva u bazi
-        public void Dodaj(Korisnik korisnik)
+        // Vraca false ako korisnik sa istim emailom već postoji
+        public bool Dodaj(Korisnik korisnik)
         {
+            if (EmailPostoji(korisnik.Email))
+                return false;
+
             kontekst.Korisnici.Add(korisnik);
             kontekst.SaveChanges();
+            return true;
         }
 
+
         // Azurira postojećeg korisnika i cuva promene
-        public void Azuriraj(Korisnik korisnik)
+        // Vraca false ako korisnik ne postoji ili novi email već koristi drugi korisnik
+        public bool Azuriraj(Korisnik korisnik)
         {
+            if (!kontekst.Korisnici.Any(k => k.Id == korisnik.Id))
+                return false;
+
+            if (EmailPostoji(korisnik.Email, excludeId: korisnik.Id))
+                return false;
+
             kontekst.Korisnici.Update(korisnik);
             kontekst.SaveChanges();
+            return true;
         }
 
         // Brise korisnika po ID-u
-        public void Obrisi(int id)
+        // Vraća false ako korisnik ne postoji
+        public bool Obrisi(int id)
         {
             var korisnik = kontekst.Korisnici.Find(id);
-            if (korisnik != null)
-            {
-                kontekst.Korisnici.Remove(korisnik);
-                kontekst.SaveChanges();
-            }
+            if (korisnik == null)
+                return false;
+
+            kontekst.Korisnici.Remove(korisnik);
+            kontekst.SaveChanges();
+            return true;
         }
 
         // Proverava da li vec postoji korisnik sa datim emailom
