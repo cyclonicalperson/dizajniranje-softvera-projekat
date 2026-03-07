@@ -9,10 +9,11 @@ namespace CoWorkingManager.UI.Views
     {
         private GlavniMediator mediator;
 
-        public LoginWindow(GlavniMediator mediator)
+        public LoginWindow(GlavniMediator mediator, string imeLanca)
         {
             this.mediator = mediator;
             InitializeComponent();
+            NazivLanca.Text = imeLanca;
         }
 
         private void Login_Click(object sender, RoutedEventArgs e)

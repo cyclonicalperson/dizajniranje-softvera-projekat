@@ -12,10 +12,6 @@ namespace CoWorkingManager
         {
             base.OnStartup(e);
 
-            // ─────────────────────────────────────
-            // 1. Učitavanje config.txt
-            // ─────────────────────────────────────
-
             if (!File.Exists("config.txt"))
             {
                 MessageBox.Show("config.txt nije pronađen!");
@@ -34,23 +30,14 @@ namespace CoWorkingManager
 
             string connectionString = lines[1];
 
-            // ─────────────────────────────────────
-            // 2. Inicijalizacija CoworkingFasada
-            // ─────────────────────────────────────
-
             CoworkingFasada.Inicijalizuj(connectionString);
 
-            // ─────────────────────────────────────
-            // 3. Kreiranje Mediatora
-            // ─────────────────────────────────────
+            CoworkingFasada fasada = CoworkingFasada.DajInstancu();
+            String imeLanca = fasada.Config;
 
             GlavniMediator mediator = new GlavniMediator();
 
-            // ─────────────────────────────────────
-            // 4. Pokretanje Login prozora
-            // ─────────────────────────────────────
-
-            LoginWindow login = new LoginWindow(mediator);
+            LoginWindow login = new LoginWindow(mediator, imeLanca);
             login.Show();
         }
     }

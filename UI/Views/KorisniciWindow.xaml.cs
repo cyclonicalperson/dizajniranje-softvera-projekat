@@ -144,7 +144,7 @@ namespace CoWorkingManager.UI.Views
             }
             else
             {
-                //return korisnikServis.obrisiKorisnika(Ime, Prezime, Email, BrojTelefona, TipClanstva, DatumPocetkaClanstva, DatumIstekaClanstva, StatusNaloga);
+                return korisnikServis.obrisiKorisnika(Ime, Prezime);
             }
 
             //treuntni return zbog nedostatka funkcionalnosti servisa
