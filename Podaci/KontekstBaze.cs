@@ -147,7 +147,8 @@ namespace CoWorkingManager.Podaci
                          char.ToUpper(v[0]) + v.Substring(1), true))
                  .HasMaxLength(20);
 
-                // Relacija: Korisnik - TipClanstva (CASCADE zabranjen — ne briši tip ako ima korisnika)
+                // Relacija: Korisnik - TipClanstva
+                // Restrict: ne brisi tip ako ima korisnika
                 e.HasOne(k => k.TipClanstva)
                  .WithMany(t => t.Korisnici)
                  .HasForeignKey(k => k.TipClanstvaId)
@@ -195,6 +196,7 @@ namespace CoWorkingManager.Podaci
                 e.Property(r => r.ImaOnlineOpremu).IsRequired(false);
 
                 // Relacija: Resurs - Lokacija
+                // Cascade: brisanje lokacije automatski brise i sve njene resurse(i kaskadno njihove rezervacije)
                 e.HasOne(r => r.Lokacija)
                  .WithMany(l => l.Resursi)
                  .HasForeignKey(r => r.LokacijaId)
@@ -226,12 +228,14 @@ namespace CoWorkingManager.Podaci
                  .HasMaxLength(20);
 
                 // Relacija: Rezervacija - Korisnik
+                // Cascade: brisanje korisnika automatski briše i sve njegove rezervacije
                 e.HasOne(r => r.Korisnik)
                  .WithMany(k => k.Rezervacije)
                  .HasForeignKey(r => r.KorisnikId)
                  .OnDelete(DeleteBehavior.Cascade);
 
-                // Relacija: Rezervacija - Resurs (Restrict — ne briše resurs ako ima rezervacija)
+                // Relacija: Rezervacija - Resurs
+                // Restrict: ne briše resurs ako ima rezervacija
                 e.HasOne(r => r.Resurs)
                  .WithMany(res => res.Rezervacije)
                  .HasForeignKey(r => r.ResursId)
