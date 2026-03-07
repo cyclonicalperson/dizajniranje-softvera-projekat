@@ -4,6 +4,7 @@
         Title="Korisnici"
         Height="650"
         Width="1000"
+        Closed="KorisniciWindow_Closed"
         Background="#F4F6F9">
 
     <Grid Margin="20">

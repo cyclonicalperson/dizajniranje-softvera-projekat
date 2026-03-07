@@ -13,5 +13,10 @@ namespace CoWorkingManager.UI.Views
             this.mediator = mediator;
             InitializeComponent();
         }
+
+        private void RezervacijeWindow_Closed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }

@@ -7,8 +7,11 @@ namespace CoWorkingManager.UI.Views
 {
     public partial class LoginWindow : Window
     {
-        public LoginWindow()
+        private GlavniMediator mediator;
+
+        public LoginWindow(GlavniMediator mediator)
         {
+            this.mediator = mediator;
             InitializeComponent();
         }
 
