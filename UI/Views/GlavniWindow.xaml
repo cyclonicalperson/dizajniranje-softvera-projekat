@@ -4,7 +4,6 @@
         Title="Dashboard"
         Height="450"
         Width="600"
-        Closed="GlavniWindow_Closed"
         Background="#F4F6F9">
 
     <Grid Margin="20">

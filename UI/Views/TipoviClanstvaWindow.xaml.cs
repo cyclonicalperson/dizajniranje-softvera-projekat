@@ -2,46 +2,38 @@
 using CoWorkingManager.Mediator;
 using CoWorkingManager.Modeli;
 using CoWorkingManager.Podaci;
+using CoWorkingManager.UI.Mediator;
 using System.Windows;
+using System.Windows.Controls;
+using System.Collections.Generic;
+using System.IO;
 
 namespace CoWorkingManager.UI.Views
 {
     public partial class TipoviClanstvaWindow : Window
     {
         private GlavniMediator mediator;
-        private CoworkingFasada facade = CoworkingFasada.DajInstancu();
 
-        public TipoviClanstvaWindow(GlavniMediator mediator, string imeLanca)
+        public TipoviClanstvaWindow(GlavniMediator mediator)
         {
             this.mediator = mediator;
+            this.tipoviClanstvaMediator = tipoviClanstvaMediator;
             InitializeComponent();
-            NazivLanca.Text = imeLanca;
-
-            this.mediator = mediator;
-
-            RefreshTable();
         }
 
-        public void RefreshTable()
+        private void Izmeni_Click(object sender, RoutedEventArgs e)
         {
-            List<TipClanstva> lista = facade.TipoviClanstva.DajSve();
-
-            ClanstvaGrid.ItemsSource = null;
-            ClanstvaGrid.ItemsSource = lista;
+            tipoviClanstvaMediator.Notify(this, "Izmeni");
         }
 
-        private void Dodaj_Click(object sender, RoutedEventArgs e)
+        private void Obrisi_Click(object sender, RoutedEventArgs e)
         {
-            TipClanstvaServis servis = new TipClanstvaServis();
-            //servis.dodajTipClanstva();
-
-            RefreshTable();
-            mediator.Notify(this, "CLANSTVA_CHANGED");
+            tipoviClanstvaMediator.Notify(this, "Obrisi");
         }
 
-        private void TipoviClanstvaWindow_Closed(object sender, EventArgs e)
+        private void GlavniMeni_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            mediator.Notify(this, "Otvori_GlavniMeni");
         }
     }
 }

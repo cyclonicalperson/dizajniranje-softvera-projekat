@@ -1,6 +1,8 @@
 ﻿using CoWorkingManager.Mediator;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using CoWorkingManager.Logika.Servisi;
 using System.Windows;
+using System.IO;
+using System;
 
 namespace CoWorkingManager.UI.Views
 {
@@ -12,9 +14,10 @@ namespace CoWorkingManager.UI.Views
         {
             this.mediator = mediator;
             InitializeComponent();
-            NazivLanca.Text = imeLanca;
+            // Učitaj naziv lanca iz config.txt
+            string[] configLines = File.ReadAllLines("config.txt");
+            Lanac.Text = configLines[0]; // Prva linija je naziv lanca
         }
-
 
         private void Korisnici_Click(object sender, RoutedEventArgs e)
         {
@@ -39,11 +42,6 @@ namespace CoWorkingManager.UI.Views
         private void Rezervacije_Click(object sender, RoutedEventArgs e)
         {
             mediator.Notify(this, "Otvori_Rezervacije");
-        }
-
-        private void GlavniWindow_Closed(object sender, EventArgs e)
-        {
-            Application.Current.Shutdown();
         }
     }
 }

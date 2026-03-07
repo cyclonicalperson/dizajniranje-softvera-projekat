@@ -4,7 +4,6 @@
         Title="Korisnici"
         Height="650"
         Width="1000"
-        Closed="KorisniciWindow_Closed"
         Background="#F4F6F9">
 
     <Grid Margin="20">
@@ -51,15 +50,18 @@
 
                     <ComboBox Name="SelKorisnici_LokCBox"
                               Width="200"
-                              Margin="5"/>
+                              Margin="5"
+                              SelectionChanged="SelKorisnici_LokCBox_SelectionChanged"/>
 
                     <ComboBox Name="SelKorisnici_TipClCBox"
                               Width="200"
-                              Margin="5"/>
+                              Margin="5"
+                              SelectionChanged="SelKorisnici_TipClCBox_SelectionChanged"/>
 
                     <ComboBox Name="SelKorisnici_StatusCBox"
                               Width="200"
-                              Margin="5"/>
+                              Margin="5"
+                              SelectionChanged="SelKorisnici_StatusCBox_SelectionChanged"/>
 
                     <Button Content="Pretraži"
                             Width="120"
@@ -113,17 +115,45 @@
 
                     </Grid.RowDefinitions>
 
-                    <TextBox x:Name="TextBoxIme" Grid.Row="0" Grid.Column="0" Margin="5"/>
-                    <TextBox x:Name="TextBoxPrezime" Grid.Row="0" Grid.Column="1" Margin="5"/>
+                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
+                        <TextBlock Text="Ime:"/>
+                        <TextBox x:Name="TextBoxIme"/>
+                    </StackPanel>
 
-                    <TextBox x:Name="TextBoxEmail" Grid.Row="1" Grid.Column="0" Margin="5"/>
-                    <TextBox x:Name="TextBoxBrojTelefona" Grid.Row="1" Grid.Column="1" Margin="5"/>
+                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
+                        <TextBlock Text="Prezime:"/>
+                        <TextBox x:Name="TextBoxPrezime"/>
+                    </StackPanel>
 
-                    <TextBox x:Name="TextBoxTipClanstva" Grid.Row="2" Grid.Column="0" Margin="5"/>
-                    <TextBox x:Name="TextBoxStatusNaloga" Grid.Row="2" Grid.Column="1" Margin="5"/>
+                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
+                        <TextBlock Text="E-mail:"/>
+                        <TextBox x:Name="TextBoxEmail"/>
+                    </StackPanel>
 
-                    <TextBox x:Name="TextBoxDatumPocetkaClanstva" Grid.Row="3" Grid.Column="0" Margin="5"/>
-                    <TextBox x:Name="TextBoxDatumIstekaClanstva" Grid.Row="3" Grid.Column="1" Margin="5"/>
+                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+                        <TextBlock Text="Broj telefona:"/>
+                        <TextBox x:Name="TextBoxBrojTelefona"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Grid.Column="0" Margin="5">
+                        <TextBlock Text="Tip članstva:"/>
+                        <TextBox x:Name="TextBoxTipClanstva"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Grid.Column="1" Margin="5">
+                        <TextBlock Text="Status naloga:"/>
+                        <TextBox x:Name="TextBoxStatusNaloga"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="3" Grid.Column="0" Margin="5">
+                        <TextBlock Text="Datum početka članstva:"/>
+                        <TextBox x:Name="TextBoxDatumPocetkaClanstva"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="3" Grid.Column="1" Margin="5">
+                        <TextBlock Text="Datum isteka članstva:"/>
+                        <TextBox x:Name="TextBoxDatumIstekaClanstva"/>
+                    </StackPanel>
 
                 </Grid>
 

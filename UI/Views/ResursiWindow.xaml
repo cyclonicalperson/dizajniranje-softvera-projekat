@@ -2,36 +2,175 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Resursi"
-        Height="400"
-        Width="500"
-        Closed="ResursiWindow_Closed">
+        Height="650"
+        Width="1000"
+        Background="#F4F6F9">
 
-<Grid Margin="10">
+    <Grid Margin="20">
 
         <StackPanel>
 
-            <TextBlock x:Name="NazivLanca"
-                       Text="CoWorking Manager"
+            <TextBlock x:Name="Lanac"
                        FontSize="22"
                        FontWeight="Bold"
                        TextAlignment="Center"
-                       Margin="0 0 0 30"/>
+                       Margin="0 0 0 20"/>
 
-            <DataGrid x:Name="ResursiGrid"
-                      AutoGenerateColumns="True"
-                      Margin="0 0 0 50"/>
+            <!-- Navigacija -->
 
-        </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0 0 0 10">
 
-        <StackPanel Orientation="Horizontal"
-                    VerticalAlignment="Bottom"
-                    HorizontalAlignment="Right">
+                <Button Content="Pretraga"
+                        Width="120"
+                        Margin="5"
+                        Click="Pretraga_Click"/>
 
-            <Button Content="Dodaj" Width="100" Margin="5"/>
-            <Button Content="Izmeni" Width="100" Margin="5"/>
-            <Button Content="Obriši" Width="100" Margin="5"/>
+                <Button Content="Izmena podataka"
+                        Width="150"
+                        Margin="5"
+                        Click="Izmena_Click"/>
 
-        </StackPanel>
+                <Button Content="Glavni Meni"
+                        Width="120"
+                        Margin="5"
+                        Click="GlavniMeni_Click"/>
+
+            </StackPanel>
+
+            <!-- PRETRAGA -->
+
+            <StackPanel x:Name="Pretraga"
+                        Visibility="Collapsed">
+
+                <ComboBox x:Name="SelResursi_LokCBox"
+                          Width="200"
+                          Margin="5"
+                          SelectionChanged="SelResursi_LokCBox_SelectionChanged"/>
+
+                <DataGrid x:Name="TabelaResursa"
+                          Height="350"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True">
+
+                    <DataGrid.Columns>
+
+                        <DataGridTextColumn Header="Naziv" Binding="{Binding Naziv}"/>
+                        <DataGridTextColumn Header="Tip" Binding="{Binding TipResursa}"/>
+                        <DataGridTextColumn Header="Opis" Binding="{Binding Opis}"/>
+                        <DataGridTextColumn Header="Dostupno" Binding="{Binding Dostupno}"/>
+                        <DataGridTextColumn Header="Kapacitet (za sale)" Binding="{Binding Kapacitet}"/>
+                        <DataGridCheckBoxColumn Header="Projektor" Binding="{Binding ImaProjektor}"/>
+                        <DataGridCheckBoxColumn Header="TV" Binding="{Binding ImaTV}"/>
+                        <DataGridCheckBoxColumn Header="Tabla" Binding="{Binding ImaTablu}"/>
+                        <DataGridCheckBoxColumn Header="Online oprema" Binding="{Binding ImaOnlineOpremu}"/>
+
+                    </DataGrid.Columns>
+
+                </DataGrid>
+
+            </StackPanel>
+
+            <!-- IZMENA -->
+
+            <StackPanel x:Name="Izmena"
+                        Visibility="Collapsed">
+
+                <Grid Margin="0 10">
+
+                    <Grid.ColumnDefinitions>
+
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
+                        <TextBlock Text="Naziv:"/>
+                        <TextBox x:Name="TextBoxNaziv"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
+                        <TextBlock Text="Tip resursa:"/>
+                        <TextBox x:Name="TextBoxTipResursa"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
+                        <TextBlock Text="Opis:"/>
+                        <TextBox x:Name="TextBoxOpis"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+                        <TextBlock Text="ID lokacije:"/>
+                        <TextBox x:Name="TextBoxLokacijaID"/>
+                    </StackPanel>
+
+                    <CheckBox x:Name="CheckBoxImaProjektor" Content="Ima projektor" Grid.Row="2" Grid.Column="0" Margin="5"/>
+                    <CheckBox x:Name="CheckBoxImaTV" Content="Ima TV" Grid.Row="2" Grid.Column="1" Margin="5"/>
+
+                    <CheckBox x:Name="CheckBoxImaTablu" Content="Ima tablu" Grid.Row="3" Grid.Column="0" Margin="5"/>
+                    <CheckBox x:Name="CheckBoxImaOnlineOpremu" Content="Ima opremu za online sastanke" Grid.Row="3" Grid.Column="1" Margin="5"/>
+
+                    <StackPanel Grid.Row="4" Grid.Column="0" Margin="5">
+                        <TextBlock Text="Kapacitet (za sale):"/>
+                        <TextBox x:Name="TextBoxKapacitet"/>
+                    </StackPanel>
+
+                </Grid>
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+
+                    <Button Content="Dodaj"
+                            Width="120"
+                            Margin="10"
+                            Click="Dodaj_Click"/>
+
+                    <Button Content="Izmeni"
+                            Width="120"
+                            Margin="10"
+                            Click="Izmeni_Click"/>
+
+                    <Button Content="Obriši"
+                            Width="120"
+                            Margin="10"
+                            Click="Obrisi_Click"/>
+
+                </StackPanel>
+
+            </StackPanel>
+
+            <!-- Status -->
+
+            <TextBlock x:Name="Uspesno"
+                       Foreground="Green"
+                       FontWeight="Bold"
+                       Visibility="Collapsed"
+                       TextAlignment="Center"
+                       Margin="10">
+                Akcija uspešno izvršena
+            </TextBlock>
+
+            <TextBlock x:Name="Neuspesno"
+                       Foreground="Red"
+                       FontWeight="Bold"
+                       Visibility="Collapsed"
+                       TextAlignment="Center">
+                Nije moguće izvršiti akciju
+            </TextBlock>
+
+
 
     </Grid>
 </Window>

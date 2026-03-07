@@ -15,8 +15,7 @@
 
             <StackPanel>
 
-                <TextBlock x:Name="NazivLanca"
-                           Text="CoWorking Manager"
+                <TextBlock Text="CoWorking Manager"
                            FontSize="22"
                            FontWeight="Bold"
                            TextAlignment="Center"

@@ -1,23 +1,41 @@
-﻿using System.Windows;
+﻿using CoWorkingManager.Logika.Servisi;
 using CoWorkingManager.Mediator;
+using CoWorkingManager.Modeli;
+using CoWorkingManager.Podaci;
+using CoWorkingManager.UI.Mediator;
+using System.Windows;
+using System.Windows.Controls;
+using System.Collections.Generic;
+using System.IO;
+using System;
 
 namespace CoWorkingManager.UI.Views
 {
     public partial class RezervacijeWindow : Window
     {
-
         private GlavniMediator mediator;
+        private RezervacijeMediator rezervacijeMediator;
+        private CoworkingFasada facade = CoworkingFasada.DajInstancu();
+        private RezervacijaServis rezervacijaServis = new RezervacijaServis(); // Pretpostavljamo servis
 
-        public RezervacijeWindow(GlavniMediator mediator, string imeLanca)
+        private string SelektovaniKorisnik;
+        private DateTime? SelektovaniDan;
+        private string SelektovanaLokacija;
+
+        List<Korisnik> Korisnici;
+        List<Lokacija> Lokacije;
+        List<Rezervacija> Rezervacije;
+
+        public RezervacijeWindow(GlavniMediator mediator, RezervacijeMediator rezervacijeMediator)
         {
             this.mediator = mediator;
+            this.rezervacijeMediator = rezervacijeMediator;
             InitializeComponent();
-            NazivLanca.Text = imeLanca;
         }
 
-        private void RezervacijeWindow_Closed(object sender, EventArgs e)
+        private void GlavniMeni_Click(object sender, RoutedEventArgs e)
         {
-            Application.Current.Shutdown();
+            mediator.Notify(this, "Otvori_GlavniMeni");
         }
     }
 }
