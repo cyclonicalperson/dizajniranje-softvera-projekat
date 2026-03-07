@@ -68,7 +68,7 @@ CREATE TABLE Resursi (
 
     CONSTRAINT FK_Resursi_Lokacije
         FOREIGN KEY (LokacijaId)
-        REFERENCES Lokacije(Id)
+        REFERENCES Lokacije(Id) ON DELETE CASCADE
 );
 
 
@@ -87,7 +87,7 @@ CREATE TABLE Rezervacije (
 
     CONSTRAINT FK_Rezervacije_Korisnici
         FOREIGN KEY (KorisnikId)
-        REFERENCES Korisnici(Id),
+        REFERENCES Korisnici(Id) ON DELETE CASCADE,
 
     CONSTRAINT FK_Rezervacije_Resursi
         FOREIGN KEY (ResursId)
