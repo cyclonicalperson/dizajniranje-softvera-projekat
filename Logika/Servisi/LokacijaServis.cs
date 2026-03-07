@@ -15,9 +15,17 @@ namespace CoWorkingManager.Logika.Servisi
             return lokacija;
         }
 
-        public bool dodajLokaciju(Lokacija lokacija)
+        public bool dodajLokaciju(string ime, string adresa, string grad, string radniSati, int maxBrojKorisnika)
         {
-            if(_fasada.Lokacije.Dodaj(lokacija))
+            var lokacija = new Lokacija
+            {
+                Ime = ime,
+                Adresa = adresa,
+                Grad = grad,
+                RadniSati = radniSati,
+                MaxBrojKorisnika = maxBrojKorisnika
+            };
+            if (_fasada.Lokacije.Dodaj(lokacija))
             {
                 notifikacija("Nova lokacija je dodata");
                 return true;
@@ -26,9 +34,17 @@ namespace CoWorkingManager.Logika.Servisi
             return false;
         }
 
-        public bool obrisiLokaciju(int id)
+        public bool obrisiLokaciju(string ime)
         {
-            if(_fasada.Lokacije.Obrisi(id))
+            var lokacija = _fasada.Lokacije.DajSve()
+                .FirstOrDefault(l => l.Ime == ime);
+            if (lokacija == null)
+            {
+                notifikacija("Brisanje lokacije neuspesno jer lokacija nije pronadjena");
+                return false;
+            }
+
+            if (_fasada.Lokacije.Obrisi(lokacija.Id))
             {
                 notifikacija("Obrisana lokacija");
                 return true;
@@ -37,9 +53,20 @@ namespace CoWorkingManager.Logika.Servisi
             return false;
         }
 
-        public bool izmeniLokaciju(Lokacija lokacija)
+        public bool izmeniLokaciju(string ime, string? adresa, string? grad, string? radniSati, int? maxBrojKorisnika)
         {
-            if(_fasada.Lokacije.Azuriraj(lokacija))
+            var lokacija = _fasada.Lokacije.DajSve()
+                .FirstOrDefault(l => l.Ime == ime);
+            if(lokacija == null)
+            {
+                notifikacija("Izmena lokacije neuspesna jer lokacija nije pronadjena");
+                return false;
+            }
+            if(adresa != null) lokacija.Adresa = adresa;
+            if(grad != null) lokacija.Grad = grad;
+            if(radniSati != null) lokacija.RadniSati = radniSati;
+            if(maxBrojKorisnika != null) lokacija.MaxBrojKorisnika = maxBrojKorisnika.Value;
+            if (_fasada.Lokacije.Azuriraj(lokacija))
             {
                 notifikacija("Izmenjena lokacija");
                 return true;

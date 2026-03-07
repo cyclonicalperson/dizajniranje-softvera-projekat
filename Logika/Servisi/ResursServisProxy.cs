@@ -35,20 +35,20 @@ namespace CoWorkingManager.Logika.Servisi
             proveriAdmina();
             return _praviResursServis.getResurs(id);
         }
-        bool kreirajResurs(Resurs resurs)
+        bool kreirajResurs(string ime, string imeLokacije, string tipResursa, string? opis)
         {
             proveriAdmina();
-            return _praviResursServis.dodajResurs(resurs);
+            return _praviResursServis.dodajResurs(ime, imeLokacije, tipResursa, opis);
         }
-        bool otkaziResurs(int id)
+        bool otkaziResurs(string ime)
         {
             proveriAdmina();
-            return _praviResursServis.obrisiResurs(id);
+            return _praviResursServis.obrisiResurs(ime);
         }
-        bool izmeniResurs(Resurs resurs)
+        bool izmeniResurs(string ime, string? imeLokacije, string? tipResursa, string? opis)
         {
             proveriAdmina();
-            return _praviResursServis.izmeniResurs(resurs);
+            return _praviResursServis.izmeniResurs(ime, imeLokacije, tipResursa, opis);
         }
     }
 }

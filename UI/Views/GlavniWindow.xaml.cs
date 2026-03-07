@@ -10,8 +10,10 @@ namespace CoWorkingManager.UI.Views
 
         public GlavniWindow(GlavniMediator mediator)
         {
-            InitializeComponent();
             this.mediator = mediator;
+            InitializeComponent();
+            //Dodati naziv lanca
+            //Lanac.Text = 
         }
 
 
