@@ -5,8 +5,8 @@ namespace CoWorkingManager.Logika.Servisi
     public interface IRezervacijaServis
     {
         Rezervacija getRezervacija(int id);
-        bool kreirajRezervaciju(Korisnik korisnik, Resurs resurs, Lokacija lokacija, DateTime pocetak, DateTime kraj);
-        bool otkaziRezervaciju(int id);
-        bool izmeniRezervaciju(Rezervacija rezervacija);
+        bool kreirajRezervaciju(string ime, string prezime, string resursIme, string pocetak, string kraj);
+        bool otkaziRezervaciju(string ime, string prezime, string resursIme, string pocetak, string kraj);
+        bool izmeniRezervaciju(string ime, string prezime, string resursIme, string pocetak, string kraj);
     }
 }

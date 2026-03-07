@@ -14,12 +14,12 @@ namespace CoWorkingManager.Mediator
         private ResursiWindow resursi;
         private RezervacijeWindow rezervacije;
 
-        public void SetMain(GlavniWindow w) => glavniMeni = w;
-        public void SetUsers(KorisniciWindow w) => korisnici = w;
-        public void SetLocations(LokacijeWindow w) => lokacije = w;
-        public void SetMemberships(TipoviClanstvaWindow w) => tipoviClanstva = w;
-        public void SetResources(ResursiWindow w) => resursi = w;
-        public void SetReservations(RezervacijeWindow w) => rezervacije = w;
+        public void SetGlavniWindow(GlavniWindow w) => glavniMeni = w;
+        public void SetKorisnici(KorisniciWindow w) => korisnici = w;
+        public void SetLokacije(LokacijeWindow w) => lokacije = w;
+        public void SetTipoviClanstva(TipoviClanstvaWindow w) => tipoviClanstva = w;
+        public void SetResursi(ResursiWindow w) => resursi = w;
+        public void SetRezervacije(RezervacijeWindow w) => rezervacije = w;
 
 
         public void Notify(Window sender, string eventCode)
@@ -27,32 +27,36 @@ namespace CoWorkingManager.Mediator
             switch (eventCode)
             {
                 case "Otvori_GlavniMeni":
-                    sender.Close();
+                    sender.Hide();
                     glavniMeni.Show();
                     break;
 
                 case "Otvori_Korisnike":
-                    sender.Close();
+
+                    sender.Hide();
                     korisnici.Show();
                     break;
 
                 case "Otvori_Lokacije":
-                    sender.Close();
+
+                    sender.Hide();
                     lokacije.Show();
                     break;
 
                 case "Otvori_TipoveClanstva":
-                    sender.Close();
+
+                    sender.Hide();
                     tipoviClanstva.Show();
                     break;
 
                 case "Otvori_Resurse":
-                    sender.Close();
+
+                    sender.Hide();
                     resursi.Show();
                     break;
 
                 case "Otvori_Rezervacije":
-                    sender.Close();
+                    sender.Hide();
                     rezervacije.Show();
                     break;
             }

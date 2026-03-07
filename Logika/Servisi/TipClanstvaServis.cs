@@ -7,9 +7,18 @@ namespace CoWorkingManager.Logika.Servisi
 	{
 		private readonly CoworkingFasada _fasada = CoworkingFasada.DajInstancu();
 
-		public bool dodajTipClanstva(TipClanstva tipClanstva)
+		public bool dodajTipClanstva(string ime, decimal cena, int trajanje, int maxSatiPoMesecu, bool pristupSali, int? brojSatiUSaliMesecno)
 		{
-			if(_fasada.TipoviClanstva.Dodaj(tipClanstva))
+			var tipClanstva = new TipClanstva
+			{
+				Ime = ime,
+				Cena = cena,
+				Trajanje = trajanje,
+				MaxSatiPoMesecu = maxSatiPoMesecu,
+				PristupSali = pristupSali,
+				BrojSatiUSaliMesecno = brojSatiUSaliMesecno
+			};
+            if (_fasada.TipoviClanstva.Dodaj(tipClanstva))
 			{
                 notifikacija("Dodat novi tip clanstva");
 				return true;

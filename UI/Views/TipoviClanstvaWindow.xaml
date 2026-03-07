@@ -3,8 +3,34 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Title"
         Height="400"
-        Width="500">
+        Width="500"
+        Closed="TipoviClanstvaWindow_Closed">
+
+    <Grid Margin="10">
 
 
+        <StackPanel>
 
+            <TextBlock x:Name="NazivLanca"
+                       Text="CoWorking Manager"
+                       FontSize="22"
+                       FontWeight="Bold"
+                       TextAlignment="Center"
+                       Margin="0 0 0 30"/>
+
+            <DataGrid x:Name="ClanstvaGrid"
+                      AutoGenerateColumns="True"
+                      Margin="0 0 0 50"/>
+
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Right">
+
+            <Button Content="Dodaj" Width="100" Margin="5"/>
+
+        </StackPanel>
+
+    </Grid>
 </Window>

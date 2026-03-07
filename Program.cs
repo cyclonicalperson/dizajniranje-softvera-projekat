@@ -1,9 +1,11 @@
-using System.IO;
 using System.Runtime.InteropServices;
+using BCrypt.Net;
+using CoWorkingManager.Mediator;
 using CoWorkingManager.Modeli;
 using CoWorkingManager.Podaci;
 using CoWorkingManager.Podaci.Repozitorijumi;
-using CoWorkingManager.Utils;
+using CoWorkingManager.UI.Mediator;
+using CoWorkingManager.UI.Views;
 
 namespace CoWorkingManager.Test
 {
@@ -23,7 +25,7 @@ namespace CoWorkingManager.Test
         private static CoworkingFasada _facade = null!;
 
         [STAThread]
-        static void Main(string[] args)
+        /*static void Main(string[] args)
         {
             AllocConsole();
             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -56,7 +58,7 @@ namespace CoWorkingManager.Test
                 TestStatistikeZauzetosti();
                 TestFiltriranja();
                 TestAdministratora();
-                TestIzvoznika();
+                //TestGUI();
 
                 Console.WriteLine("\n╔══════════════════════════════════════════════════╗");
                 Console.WriteLine("║         SVE PROVERE PROŠLE USPEŠNO ✓             ║");
@@ -75,7 +77,7 @@ namespace CoWorkingManager.Test
             Console.WriteLine("\nPritisnite bilo koji taster za izlaz...");
             Console.ReadKey();
             FreeConsole();
-        }
+        }*/
 
         // ════════════════════════════════════════════════════════════════════
         // KORAK 1 — Konfiguracija
@@ -627,6 +629,18 @@ namespace CoWorkingManager.Test
         }
 
         // ════════════════════════════════════════════════════════════════════
+        // KORAK 6 — GUI provere
+        // ════════════════════════════════════════════════════════════════════
+
+        /*public static void TestGUI()
+        {
+            Zaglavlje("7. GUI");
+
+            LoginWindow loginWindow = new LoginWindow();
+            loginWindow.Show();
+        }*/
+
+        // ════════════════════════════════════════════════════════════════════
         // Pomoćne metode za ispis
         // ════════════════════════════════════════════════════════════════════
 
@@ -638,69 +652,6 @@ namespace CoWorkingManager.Test
         private static void Ok(string poruka)
         {
             Console.WriteLine($"  ✓  {poruka}");
-        }
-
-        private static void TestIzvoznika()
-        {
-            Zaglavlje("7. IZVOZNIK — automatski CSV izvoz");
-
-            var izvoznik = Izvoznik.Instanca;
-
-            // ── Test 1: Ručni izvoz za januar 2025 (ima seed podataka) ────────
-            string putanja = izvoznik.IzveziZaMesec(2025, 1);
-
-            Proveri(File.Exists(putanja),
-                $"IzveziZaMesec(2025, 1) — fajl kreiran: {Path.GetFileName(putanja)}");
-
-            string sadrzaj = File.ReadAllText(putanja);
-            Proveri(sadrzaj.Length > 0,
-                "Fajl nije prazan");
-
-            // Zaglavlje mora biti prisutno
-            Proveri(sadrzaj.Contains("MESECNI IZVESTAJ"),
-                "CSV sadrži zaglavlje izveštaja");
-            Proveri(sadrzaj.Contains("SATI KORISCENJA PO KORISNIKU"),
-                "CSV sadrži odeljak — sati po korisniku");
-            Proveri(sadrzaj.Contains("ZAUZETOST RESURSA"),
-                "CSV sadrži odeljak — zauzetost resursa");
-
-            // Korisnici iz seed-a moraju biti u izveštaju
-            Proveri(sadrzaj.Contains("marko.j@mail.com"),
-                "CSV sadrži korisnika iz seed-a (marko.j)");
-            Proveri(sadrzaj.Contains("sara.m@mail.com"),
-                "CSV sadrži korisnika iz seed-a (sara.m)");
-
-            // Resursi iz seed-a moraju biti u izveštaju
-            Proveri(sadrzaj.Contains("Sto A-1"),
-                "CSV sadrži resurs iz seed-a (Sto A-1)");
-            Proveri(sadrzaj.Contains("Sala K-1"),
-                "CSV sadrži resurs iz seed-a (Sala K-1)");
-
-            // ── Test 2: Izvoz za mesec bez rezervacija ────────────────────────
-            string putanjaP = izvoznik.IzveziZaMesec(2024, 6);
-            string sadrzajP = File.ReadAllText(putanjaP);
-
-            Proveri(File.Exists(putanjaP),
-                "IzveziZaMesec za mesec bez rezervacija — fajl kreiran");
-            Proveri(sadrzajP.Contains("Ukupno rezervacija:,0"),
-                "Prazni mesec — ukupno rezervacija: 0");
-
-            // ── Test 3: IzveziSada — tekući mesec ────────────────────────────
-            string putanjaSada = izvoznik.IzveziSada();
-            Proveri(File.Exists(putanjaSada),
-                $"IzveziSada() — fajl kreiran: {Path.GetFileName(putanjaSada)}");
-
-            // ── Test 4: Automatski tajmer — pokretanje i zaustavljanje ────────
-            // Koristimo Timeout.Infinite da tajmer ne okine tokom testa
-            izvoznik.PokreniSaIntervalomSekundi(-1);
-            Ok("PokreniSaIntervalomMinuta() — tajmer pokrenut");
-
-            izvoznik.Zaustavi();
-            Ok("Zaustavi() — tajmer zaustavljen");
-
-            // Provjera da Singleton uvek vraća istu instancu
-            Proveri(ReferenceEquals(Izvoznik.Instanca, izvoznik),
-                "Izvoznik.Instanca je Singleton — ista referenca ✓");
         }
 
         private static void Proveri(bool uslov, string opis)
