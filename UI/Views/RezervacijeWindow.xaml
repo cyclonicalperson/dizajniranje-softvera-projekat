@@ -1,43 +1,138 @@
 <Window x:Class="CoWorkingManager.UI.Views.RezervacijeWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Title"
-        Height="400"
-        Width="500"
-        Closed="RezervacijeWindow_Closed">
+        Title="Rezervacije"
+        Height="650"
+        Width="1000"
+        Background="#F4F6F9">
 
-    <Grid Margin="10">
+    <Grid Margin="20">
 
         <StackPanel>
 
-            <TextBlock x:Name="NazivLanca"
-                       Text="CoWorking Manager"
+            <TextBlock x:Name="Lanac"
                        FontSize="22"
                        FontWeight="Bold"
                        TextAlignment="Center"
-                       Margin="0 0 0 30"/>
+                       Margin="0 0 0 20"/>
 
-            <DataGrid x:Name="RezervacijeGrid"
-                      AutoGenerateColumns="True"
-                      Margin="0 0 0 50"/>
+            <!-- Navigacija -->
 
-        </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0 0 0 10">
 
-        <StackPanel Orientation="Horizontal"
-                    VerticalAlignment="Bottom"
-                    HorizontalAlignment="Right">
+                <Button Content="Pretraga po korisniku"
+                        Width="180"
+                        Margin="5"
+                        Click="PretragaKorisnik_Click"/>
 
-            <Button Content="Nova rezervacija"
-                    Width="150"
-                    Margin="5"/>
+                <Button Content="Pretraga po danu/lokaciji"
+                        Width="200"
+                        Margin="5"
+                        Click="PretragaDanLokacija_Click"/>
 
-            <Button Content="Izmeni"
-                    Width="100"
-                    Margin="5"/>
+                <Button Content="Kreiraj/Izmeni"
+                        Width="150"
+                        Margin="5"
+                        Click="KreirajIzmeni_Click"/>
 
-            <Button Content="Otkaži"
-                    Width="100"
-                    Margin="5"/>
+                <Button Content="Glavni Meni"
+                        Width="120"
+                        Margin="5"
+                        Click="GlavniMeni_Click"/>
+
+            </StackPanel>
+
+            <!-- PRETRAGA PO KORISNIKU -->
+
+            <StackPanel x:Name="PretragaKorisnik"
+                        Visibility="Collapsed">
+
+                <ComboBox x:Name="SelRezervacije_KorisnikCBox"
+                          Width="200"
+                          Margin="5"
+                          SelectionChanged="SelRezervacije_KorisnikCBox_SelectionChanged"/>
+
+                <DataGrid x:Name="TabelaRezervacijaKorisnik"
+                          Height="350"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True">
+
+                    <DataGrid.Columns>
+
+                        <DataGridTextColumn Header="Resurs" Binding="{Binding Resurs}"/>
+                        <DataGridTextColumn Header="Lokacija" Binding="{Binding Lokacija}"/>
+                        <DataGridTextColumn Header="Početak" Binding="{Binding DatumPocetka}"/>
+                        <DataGridTextColumn Header="Završetak" Binding="{Binding DatumZavrsetka}"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+
+                    </DataGrid.Columns>
+
+                </DataGrid>
+
+            </StackPanel>
+
+            <!-- PRETRAGA PO DANU/LOKACIJI -->
+
+            <StackPanel x:Name="PretragaDanLokacija"
+                        Visibility="Collapsed">
+
+                <StackPanel Orientation="Horizontal"
+                            Margin="0 0 0 10">
+
+                    <DatePicker x:Name="SelRezervacije_Dan"
+                                Width="200"
+                                Margin="5"/>
+
+                    <ComboBox x:Name="SelRezervacije_LokacijaCBox"
+                              Width="200"
+                              Margin="5"/>
+
+                    <Button Content="Pretraži"
+                            Width="120"
+                            Margin="5"
+                            Click="PretraziDanLokacija_Click"/>
+
+                </StackPanel>
+
+                <DataGrid x:Name="TabelaRezervacijaDanLokacija"
+                          Height="350"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True">
+
+                    <DataGrid.Columns>
+
+                        <DataGridTextColumn Header="Korisnik" Binding="{Binding Korisnik}"/>
+                        <DataGridTextColumn Header="Resurs" Binding="{Binding Resurs}"/>
+                        <DataGridTextColumn Header="Početak" Binding="{Binding DatumPocetka}"/>
+                        <DataGridTextColumn Header="Završetak" Binding="{Binding DatumZavrsetka}"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+
+                    </DataGrid.Columns>
+
+                </DataGrid>
+
+            </StackPanel>
+
+            <!-- Status -->
+
+            <TextBlock x:Name="Uspesno"
+                       Foreground="Green"
+                       FontWeight="Bold"
+                       Visibility="Collapsed"
+                       TextAlignment="Center"
+                       Margin="10">
+                Akcija uspešno izvršena
+            </TextBlock>
+
+            <TextBlock x:Name="Neuspesno"
+                       Foreground="Red"
+                       FontWeight="Bold"
+                       Visibility="Collapsed"
+                       TextAlignment="Center">
+                Nije moguće izvršiti akciju
+            </TextBlock>
 
         </StackPanel>
 

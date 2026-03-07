@@ -4,16 +4,14 @@
         Title="Dashboard"
         Height="450"
         Width="600"
-        Closed="GlavniWindow_Closed"
         Background="#F4F6F9">
 
     <Grid Margin="20">
 
         <StackPanel>
 
-            <TextBlock x:Name="NazivLanca"
-                       Text="CoWorking Manager"
-                       FontSize="22"
+            <TextBlock x:Name="Lanac"
+                       FontSize="26"
                        FontWeight="Bold"
                        TextAlignment="Center"
                        Margin="0 0 0 30"/>

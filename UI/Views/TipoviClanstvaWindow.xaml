@@ -1,36 +1,162 @@
 <Window x:Class="CoWorkingManager.UI.Views.TipoviClanstvaWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Title"
-        Height="400"
-        Width="500"
-        Closed="TipoviClanstvaWindow_Closed">
+        Title="Tipovi članstva"
+        Height="650"
+        Width="1000"
+        Background="#F4F6F9">
 
-    <Grid Margin="10">
-
+    <Grid Margin="20">
 
         <StackPanel>
 
-            <TextBlock x:Name="NazivLanca"
-                       Text="CoWorking Manager"
+            <TextBlock x:Name="Lanac"
                        FontSize="22"
                        FontWeight="Bold"
                        TextAlignment="Center"
-                       Margin="0 0 0 30"/>
+                       Margin="0 0 0 20"/>
 
-            <DataGrid x:Name="ClanstvaGrid"
-                      AutoGenerateColumns="True"
-                      Margin="0 0 0 50"/>
+            <!-- Navigacija -->
 
-        </StackPanel>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0 0 0 10">
 
-        <StackPanel Orientation="Horizontal"
-                    VerticalAlignment="Bottom"
-                    HorizontalAlignment="Right">
+                <Button Content="Pretraga"
+                        Width="120"
+                        Margin="5"
+                        Click="Pretraga_Click"/>
 
-            <Button Content="Dodaj" Width="100" Margin="5"/>
+                <Button Content="Izmena podataka"
+                        Width="150"
+                        Margin="5"
+                        Click="Izmena_Click"/>
+
+                <Button Content="Glavni Meni"
+                        Width="120"
+                        Margin="5"
+                        Click="GlavniMeni_Click"/>
+
+            </StackPanel>
+
+            <!-- PRETRAGA -->
+
+            <StackPanel x:Name="Pretraga"
+                        Visibility="Collapsed">
+
+                <DataGrid x:Name="TabelaTipovaClanstva"
+                          Height="350"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True">
+
+                    <DataGrid.Columns>
+
+                        <DataGridTextColumn Header="Naziv paketa" Binding="{Binding NazivPaketa}"/>
+                        <DataGridTextColumn Header="Cena" Binding="{Binding Cena}"/>
+                        <DataGridTextColumn Header="Trajanje (dana)" Binding="{Binding Trajanje}"/>
+                        <DataGridTextColumn Header="Maks. sati mesečno" Binding="{Binding MaksimalanBrojSati}"/>
+                        <DataGridCheckBoxColumn Header="Dozvola za sale" Binding="{Binding DozvolaZaSale}"/>
+                        <DataGridTextColumn Header="Broj sati za sale mesečno" Binding="{Binding BrojSatiZaSale}"/>
+
+                    </DataGrid.Columns>
+
+                </DataGrid>
+
+            </StackPanel>
+
+            <!-- IZMENA -->
+
+            <StackPanel x:Name="Izmena"
+                        Visibility="Collapsed">
+
+                <Grid Margin="0 10">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Grid.Column="0" Margin="5">
+                        <TextBlock Text="Naziv paketa:"/>
+                        <TextBox x:Name="TextBoxNazivPaketa"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="0" Grid.Column="1" Margin="5">
+                        <TextBlock Text="Cena:"/>
+                        <TextBox x:Name="TextBoxCena"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Grid.Column="0" Margin="5">
+                        <TextBlock Text="Trajanje (broj dana):"/>
+                        <TextBox x:Name="TextBoxTrajanje"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
+                        <TextBlock Text="Maksimalan broj sati rezervacija mesečno:"/>
+                        <TextBox x:Name="TextBoxMaksimalanBrojSati"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Grid.Column="0" Margin="5">
+                        <TextBlock Text="Dozvola za korišćenje sala:"/>
+                        <CheckBox x:Name="CheckBoxDozvolaZaSale"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="2" Grid.Column="1" Margin="5">
+                        <TextBlock Text="Broj sati za sale mesečno:"/>
+                        <TextBox x:Name="TextBoxBrojSatiZaSale"/>
+                    </StackPanel>
+
+                </Grid>
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+
+                    <Button Content="Dodaj"
+                            Width="120"
+                            Margin="10"
+                            Click="Dodaj_Click"/>
+
+                    <Button Content="Izmeni"
+                            Width="120"
+                            Margin="10"
+                            Click="Izmeni_Click"/>
+
+                    <Button Content="Obriši"
+                            Width="120"
+                            Margin="10"
+                            Click="Obrisi_Click"/>
+
+                </StackPanel>
+
+            </StackPanel>
+
+            <!-- Status -->
+
+            <TextBlock x:Name="Uspesno"
+                       Foreground="Green"
+                       FontWeight="Bold"
+                       Visibility="Collapsed"
+                       TextAlignment="Center"
+                       Margin="10">
+                Akcija uspešno izvršena
+            </TextBlock>
+
+            <TextBlock x:Name="Neuspesno"
+                       Foreground="Red"
+                       FontWeight="Bold"
+                       Visibility="Collapsed"
+                       TextAlignment="Center">
+                Nije moguće izvršiti akciju
+            </TextBlock>
 
         </StackPanel>
 
     </Grid>
+
 </Window>

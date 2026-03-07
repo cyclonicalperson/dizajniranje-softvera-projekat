@@ -33,11 +33,8 @@ namespace CoWorkingManager
             CoworkingFasada.Inicijalizuj(connectionString);
 
             CoworkingFasada fasada = CoworkingFasada.DajInstancu();
-            String imeLanca = fasada.Config;
 
-            GlavniMediator mediator = new GlavniMediator();
-
-            LoginWindow login = new LoginWindow(mediator, imeLanca);
+            LoginWindow login = new LoginWindow();
             login.Show();
         }
     }
