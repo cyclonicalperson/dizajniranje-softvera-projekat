@@ -1,5 +1,6 @@
 using CoWorkingManager.Modeli;
 using CoWorkingManager.Podaci;
+using System.Windows.Markup;
 
 namespace CoWorkingManager.Logika.Servisi
 {
@@ -15,8 +16,19 @@ namespace CoWorkingManager.Logika.Servisi
             return resurs;
         }
 
-        public bool dodajResurs(Resurs resurs)
+        public bool dodajResurs(string ime, string imeLokacije, string tipResursa, string? opis)
         {
+            Lokacija lokacija = _fasada.Lokacije.DajSve()
+                .FirstOrDefault(l => l.Ime == imeLokacije);
+            TipResursa tip = Enum.Parse<TipResursa>(tipResursa);
+            var resurs = new Resurs
+            {
+                Ime = ime,
+                LokacijaId = lokacija.Id,
+                Lokacija = lokacija,
+                TipResursa = tip,
+                Opis = opis
+            };
             if (_fasada.Resursi.Dodaj(resurs))
             {
                 notifikacija("Novi resurs je dodat");
@@ -26,9 +38,11 @@ namespace CoWorkingManager.Logika.Servisi
             return false;
         }
 
-        public bool obrisiResurs(int id)
+        public bool obrisiResurs(string ime)
         {
-            if (_fasada.Resursi.Obrisi(id))
+            var resurs = _fasada.Resursi.DajSve()
+                .FirstOrDefault(r => r.Ime == ime);
+            if (_fasada.Resursi.Obrisi(resurs.Id))
             {
                 notifikacija("Obrisan resurs");
                 return true;
@@ -37,8 +51,25 @@ namespace CoWorkingManager.Logika.Servisi
             return false;
         }
 
-        public bool izmeniResurs(Resurs resurs)
+        public bool izmeniResurs(string ime, string? imeLokacije, string? tipResursa, string? opis)
         {
+            var resurs = _fasada.Resursi.DajSve()
+                .FirstOrDefault(r => r.Ime == ime);
+            if (resurs == null) 
+            { 
+                notifikacija("Izmena resursa neuspesna jer resurs nije pronadjen"); 
+                return false; 
+            }
+            Lokacija lokacija = _fasada.Lokacije.DajSve()
+                .FirstOrDefault(l => l.Ime == imeLokacije);
+            TipResursa tip = tipResursa != null ? Enum.Parse<TipResursa>(tipResursa) : resurs.TipResursa;
+            if (imeLokacije != null) 
+            { 
+                resurs.LokacijaId = lokacija.Id; 
+                resurs.Lokacija = lokacija;
+            }
+            if(tipResursa != null) resurs.TipResursa = tip;
+            if(opis != null) resurs.Opis = opis;
             if (_fasada.Resursi.Azuriraj(resurs))
             {
                 notifikacija("Izmenjen resurs");

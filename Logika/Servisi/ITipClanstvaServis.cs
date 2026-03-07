@@ -4,6 +4,6 @@ namespace CoWorkingManager.Logika.Servisi
 {
 	public interface ITipClanstvaServis
 	{
-		bool dodajTipClanstva(TipClanstva tipClanstva);
+		bool dodajTipClanstva(string ime, decimal cena, int trajanje, int maxSatiPoMesecu, bool pristupSali, int? brojSatiUSaliMesecno);
 	}
 }

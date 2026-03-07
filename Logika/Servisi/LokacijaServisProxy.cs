@@ -36,22 +36,22 @@ namespace CoWorkingManager.Logika.Servisi
             return _praviLokacijaServis.getLokacija(id);
         }
 
-        public bool dodajLokaciju(Lokacija lokacija)
+        public bool dodajLokaciju(string ime, string adresa, string grad, string radniSati, int maxBrojKorisnika)
         {
             proveriAdmina();
-            return _praviLokacijaServis.dodajLokaciju(lokacija);
+            return _praviLokacijaServis.dodajLokaciju(ime, adresa, grad, radniSati, maxBrojKorisnika);
         }
 
-        public bool obrisiLokaciju(int id)
+        public bool obrisiLokaciju(string ime)
         {
             proveriAdmina();
-            return _praviLokacijaServis.obrisiLokaciju(id);
+            return _praviLokacijaServis.obrisiLokaciju(ime);
         }
 
-        public bool izmeniLokaciju(Lokacija lokacija)
+        public bool izmeniLokaciju(string ime, string? adresa, string? grad, string? radniSati, int? maxBrojKorisnika)
         {
             proveriAdmina();
-            return _praviLokacijaServis.izmeniLokaciju(lokacija);
+            return _praviLokacijaServis.izmeniLokaciju(ime, adresa, grad, radniSati, maxBrojKorisnika);
         }
     }
 }

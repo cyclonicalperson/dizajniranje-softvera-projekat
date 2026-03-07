@@ -3,7 +3,7 @@ using CoWorkingManager.Modeli;
 
 namespace CoWorkingManager.Logika.Servisi
 {
-    public class KorisnikServisProxy : IKorisnikServis
+    public class KorisnikServisProxy
     {
         private readonly KorisnikServis _praviKorisnikServis;
 
@@ -35,22 +35,25 @@ namespace CoWorkingManager.Logika.Servisi
             return _praviKorisnikServis.getKorisnik(id);
         }
 
-        public bool dodajKorisnika(Korisnik korisnik)
+        public bool dodajKorisnika(string ime, string prezime, string email, string? telefon,
+            int tipClanstvaId, string datumPocetkaClanstva, string datumKrajaClanstva,
+            string statusNaloga)
         {
             proveriAdmina();
-            return _praviKorisnikServis.dodajKorisnika(korisnik);
+            return _praviKorisnikServis.dodajKorisnika(ime, prezime, email, telefon, tipClanstvaId, datumPocetkaClanstva, datumKrajaClanstva, statusNaloga);
         }
 
-        public bool obrisiKorisnika(int id)
+        public bool obrisiKorisnika(string ime, string prezime)
         {
             proveriAdmina();
-            return _praviKorisnikServis.obrisiKorisnika(id);
+            return _praviKorisnikServis.obrisiKorisnika(ime, prezime);
         }
 
-        public bool izmeniKorisnika(Korisnik korisnik)
+        public bool izmeniKorisnika(string ime, string prezime, string? noviEmail, string? noviTelefon, int? noviTipClanstvaId, 
+            string? noviDatumPocetkaClanstva, string? noviDatumKrajaClanstva, string? noviStatusNaloga)
         {
             proveriAdmina();
-            return _praviKorisnikServis.izmeniKorisnika(korisnik);
+            return _praviKorisnikServis.izmeniKorisnika(ime, prezime, noviEmail, noviTelefon, noviTipClanstvaId, noviDatumPocetkaClanstva, noviDatumKrajaClanstva, noviStatusNaloga);
         }
     }
 }
