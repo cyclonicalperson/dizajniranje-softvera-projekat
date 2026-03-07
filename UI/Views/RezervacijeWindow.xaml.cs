@@ -8,10 +8,11 @@ namespace CoWorkingManager.UI.Views
 
         private GlavniMediator mediator;
 
-        public RezervacijeWindow(GlavniMediator mediator)
+        public RezervacijeWindow(GlavniMediator mediator, string imeLanca)
         {
             this.mediator = mediator;
             InitializeComponent();
+            NazivLanca.Text = imeLanca;
         }
 
         private void RezervacijeWindow_Closed(object sender, EventArgs e)

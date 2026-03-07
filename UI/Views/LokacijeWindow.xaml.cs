@@ -7,10 +7,11 @@ namespace CoWorkingManager.UI.Views
     {
         private GlavniMediator mediator;
 
-        public LokacijeWindow(GlavniMediator mediator)
+        public LokacijeWindow(GlavniMediator mediator, string imeLanca)
         {
             this.mediator = mediator;
             InitializeComponent();
+            NazivLanca.Text = imeLanca;
         }
 
         private void LokacijeWindow_Closed(object sender, EventArgs e)

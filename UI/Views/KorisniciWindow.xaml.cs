@@ -24,20 +24,21 @@ namespace CoWorkingManager.UI.Views
         List<string> StatusiNaloga;
         List<Korisnik> Korisnici;
 
-        public KorisniciWindow(GlavniMediator mediator, KorisniciMediator mediator1)
+        public KorisniciWindow(GlavniMediator mediator, KorisniciMediator mediator1, string imeLanca)
         {
             this.mediator = mediator;
             this.korisniciMediator = mediator1;
             facade = CoworkingFasada.DajInstancu();
             InitializeComponent();
-            //Dodati naziv lanca
-            //Lanac.Text = 
+            NazivLanca.Text = imeLanca;
         }
 
         public void Show()
         {
             Pretraga.Visibility = Visibility.Collapsed;
             Izmena.Visibility = Visibility.Collapsed;
+            RefreshPretragaMeni();
+            RefreshTable();
 
             base.Show();
         }
