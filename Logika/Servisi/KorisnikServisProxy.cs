@@ -36,11 +36,11 @@ namespace CoWorkingManager.Logika.Servisi
         }
 
         public bool dodajKorisnika(string ime, string prezime, string email, string? telefon,
-            int tipClanstvaId, string datumPocetkaClanstva, string datumKrajaClanstva,
+            string tipClanstva, string datumPocetkaClanstva, string datumKrajaClanstva,
             string statusNaloga)
         {
             proveriAdmina();
-            return _praviKorisnikServis.dodajKorisnika(ime, prezime, email, telefon, tipClanstvaId, datumPocetkaClanstva, datumKrajaClanstva, statusNaloga);
+            return _praviKorisnikServis.dodajKorisnika(ime, prezime, email, telefon, tipClanstva, datumPocetkaClanstva, datumKrajaClanstva, statusNaloga);
         }
 
         public bool obrisiKorisnika(string ime, string prezime)
@@ -49,11 +49,11 @@ namespace CoWorkingManager.Logika.Servisi
             return _praviKorisnikServis.obrisiKorisnika(ime, prezime);
         }
 
-        public bool izmeniKorisnika(string ime, string prezime, string? noviEmail, string? noviTelefon, int? noviTipClanstvaId, 
+        public bool izmeniKorisnika(string ime, string prezime, string? noviEmail, string? noviTelefon, string? noviTipClanstva, 
             string? noviDatumPocetkaClanstva, string? noviDatumKrajaClanstva, string? noviStatusNaloga)
         {
             proveriAdmina();
-            return _praviKorisnikServis.izmeniKorisnika(ime, prezime, noviEmail, noviTelefon, noviTipClanstvaId, noviDatumPocetkaClanstva, noviDatumKrajaClanstva, noviStatusNaloga);
+            return _praviKorisnikServis.izmeniKorisnika(ime, prezime, noviEmail, noviTelefon, noviTipClanstva, noviDatumPocetkaClanstva, noviDatumKrajaClanstva, noviStatusNaloga);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace CoWorkingManager.Logika.Servisi
 		// Prima sve podatke potrebne za kreiranje korisnika
 		// Vraca true ako je korisnik uspesno dodat, false ako vec postoji korisnik sa istim emailom
 		public bool dodajKorisnika(string ime, string prezime, string email, string? telefon,
-			int tipClanstvaId, string datumPocetkaClanstva, string datumKrajaClanstva,
+			string tipClanstva, string datumPocetkaClanstva, string datumKrajaClanstva,
 			string statusNaloga)
 		{
 			DateOnly datumPocetka, datumKraja;
@@ -27,13 +27,20 @@ namespace CoWorkingManager.Logika.Servisi
 			datumKraja = DateOnly.Parse(datumKrajaClanstva);
 			StatusNaloga status;
 			status = Enum.Parse<StatusNaloga>(statusNaloga);
+			TipClanstva tip = _fasada.TipoviClanstva.DajSve().FirstOrDefault(t => t.Ime == tipClanstva);
+			if(tip == null)
+			{
+				notifikacija("Ne postoji tip clanstva sa imenom " + tipClanstva);
+				return false;
+            }
             var korisnik = new Korisnik
 			{
 				Ime = ime,
 				Prezime = prezime,
 				Email = email,
 				Telefon = telefon,
-				TipClanstvaId = tipClanstvaId,
+				TipClanstvaId = tip.Id,
+                TipClanstva = tip,
 				DatumPocetkaClanstva = datumPocetka,
 				DatumKrajaClanstva = datumKraja,
                 StatusNaloga = status
@@ -76,7 +83,7 @@ namespace CoWorkingManager.Logika.Servisi
 		// Trazi korisnika po imenu i prezimenu i menja mu samo ona polja koja nisu null
 		// Vraca true ako je izmena uspesna, false ako korisnik nije pronadjen ili izmena neuspesna
 		public bool izmeniKorisnika(string ime, string prezime, string? noviEmail, string? noviTelefon,
-			int? noviTipClanstvaId, string? noviDatumPocetkaClanstva,
+			string? noviTipClanstva, string? noviDatumPocetkaClanstva,
 			string? noviDatumKrajaClanstva, string? noviStatusNaloga)
 		{
 			var korisnik = _fasada.Korisnici.DajSve()
@@ -92,9 +99,15 @@ namespace CoWorkingManager.Logika.Servisi
 			datumKraja = noviDatumKrajaClanstva != null ? DateOnly.Parse(noviDatumKrajaClanstva) : korisnik.DatumKrajaClanstva;
             StatusNaloga status;
 			status = noviStatusNaloga != null ? Enum.Parse<StatusNaloga>(noviStatusNaloga) : korisnik.StatusNaloga;
-			if (noviEmail != null)                  korisnik.Email = noviEmail;
+            TipClanstva? tip = _fasada.TipoviClanstva.DajSve().FirstOrDefault(t => t.Ime == noviTipClanstva);
+            if (noviTipClanstva != null)
+            if (noviEmail != null)                  korisnik.Email = noviEmail;
 			if (noviTelefon != null)                korisnik.Telefon = noviTelefon;
-			if (noviTipClanstvaId != null)          korisnik.TipClanstvaId = noviTipClanstvaId.Value;
+			if (tip != null) 
+			{ 
+				korisnik.TipClanstva = tip; 
+				korisnik.TipClanstvaId = tip.Id; 
+			}
 			if (noviDatumPocetkaClanstva != null)   korisnik.DatumPocetkaClanstva = datumPocetka;
 			if (noviDatumKrajaClanstva != null)     korisnik.DatumKrajaClanstva = datumKraja;
 			if (noviStatusNaloga != null)           korisnik.StatusNaloga = status;
@@ -143,7 +156,8 @@ namespace CoWorkingManager.Logika.Servisi
 
 			foreach (var korisnik in _fasada.Korisnici.DajSve())
 			{
-				statusi.Add(korisnik.StatusNaloga.ToString());
+				if (!statusi.Contains(korisnik.StatusNaloga.ToString()))
+                    statusi.Add(korisnik.StatusNaloga.ToString());
 			}
 
 			notifikacija("Dohvaceni statusi naloga");
