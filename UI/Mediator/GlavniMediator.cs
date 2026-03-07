@@ -27,32 +27,36 @@ namespace CoWorkingManager.Mediator
             switch (eventCode)
             {
                 case "Otvori_GlavniMeni":
-                    sender.Close();
+                    sender.Hide();
                     glavniMeni.Show();
                     break;
 
                 case "Otvori_Korisnike":
-                    sender.Close();
+
+                    sender.Hide();
                     korisnici.Show();
                     break;
 
                 case "Otvori_Lokacije":
-                    sender.Close();
+
+                    sender.Hide();
                     lokacije.Show();
                     break;
 
                 case "Otvori_TipoveClanstva":
-                    sender.Close();
+
+                    sender.Hide();
                     tipoviClanstva.Show();
                     break;
 
                 case "Otvori_Resurse":
-                    sender.Close();
+
+                    sender.Hide();
                     resursi.Show();
                     break;
 
                 case "Otvori_Rezervacije":
-                    sender.Close();
+                    sender.Hide();
                     rezervacije.Show();
                     break;
             }

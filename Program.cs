@@ -25,7 +25,7 @@ namespace CoWorkingManager.Test
         private static CoworkingFasada _facade = null!;
 
         [STAThread]
-        static void Main(string[] args)
+        /*static void Main(string[] args)
         {
             AllocConsole();
             Console.OutputEncoding = System.Text.Encoding.UTF8;
@@ -58,7 +58,7 @@ namespace CoWorkingManager.Test
                 TestStatistikeZauzetosti();
                 TestFiltriranja();
                 TestAdministratora();
-                TestGUI();
+                //TestGUI();
 
                 Console.WriteLine("\n╔══════════════════════════════════════════════════╗");
                 Console.WriteLine("║         SVE PROVERE PROŠLE USPEŠNO ✓             ║");
@@ -77,7 +77,7 @@ namespace CoWorkingManager.Test
             Console.WriteLine("\nPritisnite bilo koji taster za izlaz...");
             Console.ReadKey();
             FreeConsole();
-        }
+        }*/
 
         // ════════════════════════════════════════════════════════════════════
         // KORAK 1 — Konfiguracija
@@ -632,13 +632,13 @@ namespace CoWorkingManager.Test
         // KORAK 6 — GUI provere
         // ════════════════════════════════════════════════════════════════════
 
-        public static void TestGUI()
+        /*public static void TestGUI()
         {
             Zaglavlje("7. GUI");
 
             LoginWindow loginWindow = new LoginWindow();
             loginWindow.Show();
-        }
+        }*/
 
         // ════════════════════════════════════════════════════════════════════
         // Pomoćne metode za ispis

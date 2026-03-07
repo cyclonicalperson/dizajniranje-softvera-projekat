@@ -61,7 +61,7 @@ namespace CoWorkingManager.UI.Views
             SelKorisnici_TipClCBox.Items.Add("TipClasntva");
             SelektovanTipClanstva = "TipClasntva";
             foreach (TipClanstva x in TipoviClanstva)
-                SelKorisnici_LokCBox.Items.Add(x.Ime);
+                SelKorisnici_TipClCBox.Items.Add(x.Ime);
 
             StatusiNaloga = korisnikServis.dajStatuseNaloga();
             SelKorisnici_StatusCBox.Items.Add("StatusNaloga");
@@ -203,6 +203,12 @@ namespace CoWorkingManager.UI.Views
         private void GlavniMeni_Click(object sender, RoutedEventArgs e)
         {
             mediator.Notify(this, "Otvori_GlavniMeni");
+        }
+
+        private void KorisniciWindow_Closed(object sender, EventArgs e)
+        {
+            // This will shut down the entire application, closing all open windows.
+            Application.Current.Shutdown();
         }
     }
 }
