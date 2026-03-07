@@ -5,9 +5,12 @@ namespace CoWorkingManager.UI.Views
 {
     public partial class TipoviClanstvaWindow : Window
     {
-        public TipoviClanstvaWindow()
+        private GlavniMediator mediator;
+
+        public TipoviClanstvaWindow(GlavniMediator mediator)
         {
-            //InitializeComponent();
+            this.mediator = mediator;
+            InitializeComponent();
         }
     }
 }

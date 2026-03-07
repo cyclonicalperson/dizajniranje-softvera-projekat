@@ -1,8 +1,11 @@
 using System.Runtime.InteropServices;
 using BCrypt.Net;
+using CoWorkingManager.Mediator;
 using CoWorkingManager.Modeli;
 using CoWorkingManager.Podaci;
 using CoWorkingManager.Podaci.Repozitorijumi;
+using CoWorkingManager.UI.Mediator;
+using CoWorkingManager.UI.Views;
 
 namespace CoWorkingManager.Test
 {
@@ -55,6 +58,7 @@ namespace CoWorkingManager.Test
                 TestStatistikeZauzetosti();
                 TestFiltriranja();
                 TestAdministratora();
+                TestGUI();
 
                 Console.WriteLine("\n╔══════════════════════════════════════════════════╗");
                 Console.WriteLine("║         SVE PROVERE PROŠLE USPEŠNO ✓             ║");
@@ -622,6 +626,18 @@ namespace CoWorkingManager.Test
             Proveri(_facade.Administratori.Obrisi(privremeni.Id), "Obrisi() → true");
             Proveri(_facade.Administratori.DajPoId(privremeni.Id) == null, "  zapis uklonjen");
             Proveri(!_facade.Administratori.Obrisi(privremeni.Id), "Obrisi() drugi put → false (ne postoji)");
+        }
+
+        // ════════════════════════════════════════════════════════════════════
+        // KORAK 6 — GUI provere
+        // ════════════════════════════════════════════════════════════════════
+
+        public static void TestGUI()
+        {
+            Zaglavlje("7. GUI");
+
+            LoginWindow loginWindow = new LoginWindow();
+            loginWindow.Show();
         }
 
         // ════════════════════════════════════════════════════════════════════

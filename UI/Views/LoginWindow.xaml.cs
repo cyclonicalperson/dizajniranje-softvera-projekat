@@ -1,5 +1,7 @@
 ﻿using System.Windows;
+using CoWorkingManager.Logika.Servisi;
 using CoWorkingManager.Mediator;
+using CoWorkingManager.UI.Mediator;
 
 namespace CoWorkingManager.UI.Views
 {
@@ -7,29 +9,35 @@ namespace CoWorkingManager.UI.Views
     {
         public LoginWindow()
         {
-            //InitializeComponent();
+            InitializeComponent();
         }
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            var mediator = new GlavniMediator();
+            KorisnikServisProxy proxy = new KorisnikServisProxy(new KorisnikServis());
+            if (proxy.autentifikacija(UsernameBox.Text, PasswordBox.Password))
+            {
+                var mediator = new GlavniMediator();
+                var mediatorKorisnici = new KorisniciMediator();
 
-            /*var main = new GlavniWindow(mediator);
-            var users = new UsersWindow(mediator);
-            var locations = new LocationsWindow(mediator);
-            var memberships = new MembershipWindow(mediator);
-            var resources = new ResourcesWindow(mediator);
-            var reservations = new ReservationsWindow(mediator);
+                var glavniMeni = new GlavniWindow(mediator);
+                var korisnici = new KorisniciWindow(mediator, mediatorKorisnici);
+                var lokacije = new LokacijeWindow(mediator);
+                var tipoviClanstva = new TipoviClanstvaWindow(mediator);
+                var resursi = new ResursiWindow(mediator);
+                var rezervacije = new RezervacijeWindow(mediator);
 
-            mediator.SetMain(main);
-            mediator.SetUsers(users);
-            mediator.SetLocations(locations);
-            mediator.SetMemberships(memberships);
-            mediator.SetResources(resources);
-            mediator.SetReservations(reservations);
+                mediator.SetGlavniWindow(glavniMeni);
+                mediator.SetKorisnici(korisnici);
+                mediatorKorisnici.SetKorisnici(korisnici);
+                mediator.SetLokacije(lokacije);
+                mediator.SetTipoviClanstva(tipoviClanstva);
+                mediator.SetResursi(resursi);
+                mediator.SetRezervacije(rezervacije);
 
-            main.Show();*/
-            this.Close();
+                glavniMeni.Show();
+                this.Close();
+            }
         }
     }
 }

@@ -5,9 +5,12 @@ namespace CoWorkingManager.UI.Views
 {
     public partial class ResursiWindow : Window
     {
-        public ResursiWindow()
+        private GlavniMediator mediator;
+
+        public ResursiWindow(GlavniMediator mediator)
         {
-            //InitializeComponent();
+            this.mediator = mediator;
+            InitializeComponent();
         }
     }
 }

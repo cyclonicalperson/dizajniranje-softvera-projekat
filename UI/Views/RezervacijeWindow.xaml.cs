@@ -5,9 +5,13 @@ namespace CoWorkingManager.UI.Views
 {
     public partial class RezervacijeWindow : Window
     {
-        public RezervacijeWindow()
+
+        private GlavniMediator mediator;
+
+        public RezervacijeWindow(GlavniMediator mediator)
         {
-            //InitializeComponent();
+            this.mediator = mediator;
+            InitializeComponent();
         }
     }
 }
