@@ -74,5 +74,14 @@ namespace CoWorkingManager.Logika.Servisi
             notifikacija("Izmena lokacije neuspesna");
             return false;
         }
+
+        public Lokacija pronadjiLokaciju(string ime)
+        {
+            var lokacija = _fasada.Lokacije.DajSve()
+                .FirstOrDefault(l => l.Ime == ime);
+            if (lokacija == null) notifikacija("Lokacija nije pronadjena");
+            else notifikacija("Uzeta lokacija");
+            return lokacija;
+        }
     }
 }

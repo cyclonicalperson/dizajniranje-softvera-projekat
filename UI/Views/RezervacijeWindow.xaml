@@ -6,6 +6,41 @@
         Width="500"
         Closed="RezervacijeWindow_Closed">
 
+    <Grid Margin="10">
 
+        <StackPanel>
+
+            <TextBlock x:Name="NazivLanca"
+                       Text="CoWorking Manager"
+                       FontSize="22"
+                       FontWeight="Bold"
+                       TextAlignment="Center"
+                       Margin="0 0 0 30"/>
+
+            <DataGrid x:Name="RezervacijeGrid"
+                      AutoGenerateColumns="True"
+                      Margin="0 0 0 50"/>
+
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal"
+                    VerticalAlignment="Bottom"
+                    HorizontalAlignment="Right">
+
+            <Button Content="Nova rezervacija"
+                    Width="150"
+                    Margin="5"/>
+
+            <Button Content="Izmeni"
+                    Width="100"
+                    Margin="5"/>
+
+            <Button Content="Otkaži"
+                    Width="100"
+                    Margin="5"/>
+
+        </StackPanel>
+
+    </Grid>
 
 </Window>

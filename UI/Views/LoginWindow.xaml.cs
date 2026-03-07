@@ -8,11 +8,13 @@ namespace CoWorkingManager.UI.Views
     public partial class LoginWindow : Window
     {
         private GlavniMediator mediator;
+        private string imeLanca;
 
         public LoginWindow(GlavniMediator mediator, string imeLanca)
         {
             this.mediator = mediator;
             InitializeComponent();
+            this.imeLanca = imeLanca;
             NazivLanca.Text = imeLanca;
         }
 
@@ -24,12 +26,12 @@ namespace CoWorkingManager.UI.Views
                 var mediator = new GlavniMediator();
                 var mediatorKorisnici = new KorisniciMediator();
 
-                var glavniMeni = new GlavniWindow(mediator);
-                var korisnici = new KorisniciWindow(mediator, mediatorKorisnici);
-                var lokacije = new LokacijeWindow(mediator);
-                var tipoviClanstva = new TipoviClanstvaWindow(mediator);
-                var resursi = new ResursiWindow(mediator);
-                var rezervacije = new RezervacijeWindow(mediator);
+                var glavniMeni = new GlavniWindow(mediator, imeLanca);
+                var korisnici = new KorisniciWindow(mediator, mediatorKorisnici, imeLanca);
+                var lokacije = new LokacijeWindow(mediator, imeLanca);
+                var tipoviClanstva = new TipoviClanstvaWindow(mediator, imeLanca);
+                var resursi = new ResursiWindow(mediator, imeLanca);
+                var rezervacije = new RezervacijeWindow(mediator, imeLanca);
 
                 mediator.SetGlavniWindow(glavniMeni);
                 mediator.SetKorisnici(korisnici);
