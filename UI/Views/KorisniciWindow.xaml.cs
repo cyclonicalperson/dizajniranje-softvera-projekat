@@ -105,13 +105,13 @@ namespace CoWorkingManager.UI.Views
             DateOnly? DatumPocetkaClanstva = null;
             if (PocetakClanstva != null)
             {
-                DatumPocetkaClanstva = DateOnly.FromDateTime(TextBoxDatumPocetkaClanstva.SelectedDate.Value);
+                DatumPocetkaClanstva = DateOnly.FromDateTime(PocetakClanstva.Value);
             }
-            DateTime? IstekClanstva = TextBoxDatumPocetkaClanstva.SelectedDate;
+            DateTime? IstekClanstva = TextBoxDatumIstekaClanstva.SelectedDate;
             DateOnly? DatumIstekaClanstva = null;
             if (IstekClanstva != null)
             {
-                DatumIstekaClanstva = DateOnly.FromDateTime(TextBoxDatumIstekaClanstva.SelectedDate.Value);
+                DatumIstekaClanstva = DateOnly.FromDateTime(IstekClanstva.Value);
             }
             string? StatusNaloga = TextBoxStatusNaloga.Text;
 
