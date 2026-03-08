@@ -100,5 +100,10 @@ namespace CoWorkingManager.UI.Views
         {
             mediator.Notify(this, "Otvori_GlavniMeni");
         }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }

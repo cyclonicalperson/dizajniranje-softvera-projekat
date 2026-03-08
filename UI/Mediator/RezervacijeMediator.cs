@@ -17,8 +17,6 @@ namespace CoWorkingManager.UI.Mediator
                 case "Meni_PretragaKorisnik":
                     rezervacije.PretragaKorisnik.Visibility = Visibility.Visible;
                     rezervacije.PretragaDanLokacija.Visibility = Visibility.Collapsed;
-                    rezervacije.Uspesno.Visibility = Visibility.Collapsed;
-                    rezervacije.Neuspesno.Visibility = Visibility.Collapsed;
                     rezervacije.RefreshPretragaKorisnikMeni();
                     rezervacije.RefreshTableKorisnik();
                     break;
@@ -26,8 +24,6 @@ namespace CoWorkingManager.UI.Mediator
                 case "Meni_PretragaDanLokacija":
                     rezervacije.PretragaKorisnik.Visibility = Visibility.Collapsed;
                     rezervacije.PretragaDanLokacija.Visibility = Visibility.Visible;
-                    rezervacije.Uspesno.Visibility = Visibility.Collapsed;
-                    rezervacije.Neuspesno.Visibility = Visibility.Collapsed;
                     rezervacije.RefreshPretragaDanLokacijaMeni();
                     break;
 

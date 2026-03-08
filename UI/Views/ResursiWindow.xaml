@@ -4,7 +4,8 @@
         Title="Resursi"
         Height="650"
         Width="1000"
-        Background="#F4F6F9">
+        Background="#F4F6F9"
+        Closed="Window_Closed">
 
     <Grid Margin="20">
 
@@ -112,7 +113,7 @@
                     </StackPanel>
 
                     <StackPanel Grid.Row="1" Grid.Column="1" Margin="5">
-                        <TextBlock Text="ID lokacije:"/>
+                        <TextBlock Text="Lokacija:"/>
                         <TextBox x:Name="TextBoxLokacijaID"/>
                     </StackPanel>
 

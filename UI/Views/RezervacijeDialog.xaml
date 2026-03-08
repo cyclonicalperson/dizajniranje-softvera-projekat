@@ -12,18 +12,13 @@
         <StackPanel>
 
             <Label Content="Korisnik:"/>
-            <ComboBox x:Name="ComboKorisnik"/>
+            <ComboBox x:Name="ComboKorisnik" SelectionChanged="ComboKorisnik_SelectionChanged"/>
 
             <Label Content="Lokacija:"/>
-            <ComboBox x:Name="ComboLokacija"/>
+            <ComboBox x:Name="ComboLokacija" SelectionChanged="ComboLokacija_SelectionChanged"/>
 
             <Label Content="Resurs:"/>
-            <ComboBox x:Name="ComboResurs"/>
-
-            <StackPanel x:Name="PanelBrojUcesnika" Visibility="Collapsed">
-                <Label Content="Broj učesnika (za sale):"/>
-                <TextBox x:Name="TxtBrojUcesnika"/>
-            </StackPanel>
+            <ComboBox x:Name="ComboResurs" SelectionChanged="ComboResurs_SelectionChanged"/>
 
             <Label Content="Datum i vreme početka:"/>
             <DatePicker x:Name="DatePocetak" DisplayDateStart="{Binding Path=Today}"/>
@@ -41,6 +36,25 @@
                 <Button Content="Zatvori" Width="100" Margin="5" Click="Zatvori_Click"/>
                 -->
             </StackPanel>
+
+            <!-- Status -->
+
+            <TextBlock x:Name="Uspesno"
+                       Foreground="Green"
+                       FontWeight="Bold"
+                       Visibility="Collapsed"
+                       TextAlignment="Center"
+                       Margin="10">
+                Akcija uspešno izvršena
+            </TextBlock>
+
+            <TextBlock x:Name="Neuspesno"
+                       Foreground="Red"
+                       FontWeight="Bold"
+                       Visibility="Collapsed"
+                       TextAlignment="Center">
+                Nije moguće izvršiti akciju
+            </TextBlock>
 
         </StackPanel>
 

@@ -39,8 +39,6 @@ namespace CoWorkingManager.UI.Views
         {
             PretragaKorisnik.Visibility = Visibility.Collapsed;
             PretragaDanLokacija.Visibility = Visibility.Collapsed;
-            Uspesno.Visibility = Visibility.Collapsed;
-            Neuspesno.Visibility = Visibility.Collapsed;
             base.Show();
         }
 
@@ -106,22 +104,10 @@ namespace CoWorkingManager.UI.Views
 
         private void Upravljaj_Click(object sender, RoutedEventArgs e)
         {
-            Rezervacija selected = null;
-            if (PretragaKorisnik.Visibility == Visibility.Visible && TabelaRezervacijaKorisnik.SelectedItem != null)
-                selected = TabelaRezervacijaKorisnik.SelectedItem as Rezervacija;
-            else if (PretragaDanLokacija.Visibility == Visibility.Visible && TabelaRezervacijaDanLokacija.SelectedItem != null)
-                selected = TabelaRezervacijaDanLokacija.SelectedItem as Rezervacija;
 
-            var dialog = new RezervacijeDialog(selected); // Novi ili izmeni/otkazi
-            if (dialog.ShowDialog() == true)
-            {
-                Uspesno.Visibility = Visibility.Visible;
-                rezervacijeMediator.Notify(this, "RefreshAfterChange");
-            }
-            else
-            {
-                Neuspesno.Visibility = Visibility.Visible;
-            }
+            RezervacijeDialogMediator dialogMediator = new RezervacijeDialogMediator();
+            RezervacijeDialog dialog = new RezervacijeDialog(dialogMediator);
+            dialog.Show();
         }
 
         private void PretraziDanLokacija_Click(object sender, RoutedEventArgs e)
@@ -135,6 +121,11 @@ namespace CoWorkingManager.UI.Views
         private void GlavniMeni_Click(object sender, RoutedEventArgs e)
         {
             mediator.Notify(this, "Otvori_GlavniMeni");
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }
