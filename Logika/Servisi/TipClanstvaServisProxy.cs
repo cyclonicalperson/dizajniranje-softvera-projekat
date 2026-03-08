@@ -30,6 +30,13 @@ namespace CoWorkingManager.Logika.Servisi
             if (AdminSession.Instance.Admin == null)
                 throw new UnauthorizedAccessException("Administrator nije prijavljen.");
         }
+
+        public List<TipClanstva> dajSve()
+        {
+            proveriAdmina();
+            return _praviTipClanstvaServis.dajSve();
+        }
+
         public bool dodajTipClanstva(string ime, decimal cena, int trajanje, int maxSatiPoMesecu, bool pristupSali, int? brojSatiUSaliMesecno)
         {
             proveriAdmina();

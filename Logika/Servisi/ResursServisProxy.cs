@@ -35,7 +35,14 @@ namespace CoWorkingManager.Logika.Servisi
             proveriAdmina();
             return _praviResursServis.getResurs(id);
         }
-        public bool kreirajResurs(string ime, string imeLokacije, string tipResursa, 
+
+        public List<Resurs> dajSve()
+        {
+            proveriAdmina();
+            return _praviResursServis.dajSve();
+        }
+
+        public bool kreirajResurs(string ime, string imeLokacije, string tipResursa,
             string? opis, string? podTipStola, int? kapacitet, bool? imaProjektor, bool? imaTV, bool? imaTablu, bool? imaOnlineOpremu)
         {
             proveriAdmina();
@@ -46,7 +53,7 @@ namespace CoWorkingManager.Logika.Servisi
             proveriAdmina();
             return _praviResursServis.obrisiResurs(ime);
         }
-        public bool izmeniResurs(string ime, string? imeLokacije, string? tipResursa, 
+        public bool izmeniResurs(string ime, string? imeLokacije, string? tipResursa,
             string? opis, string? podTipStola, int? kapacitet, bool? imaProjektor, bool? imaTV, bool? imaTablu, bool? imaOnlineOpremu)
         {
             proveriAdmina();

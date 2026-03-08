@@ -30,6 +30,13 @@ namespace CoWorkingManager.Logika.Servisi
             proveriAdmina();
             return _praviRezervacijaServis.getRezervacija(id);
         }
+
+        public List<Rezervacija> dajSve()
+        {
+            proveriAdmina();
+            return _praviRezervacijaServis.dajSve();
+        }
+
         public bool kreirajRezervaciju(string ime, string prezime, string resursIme, string pocetak, string kraj)
         {
             proveriAdmina();

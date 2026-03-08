@@ -15,6 +15,14 @@ namespace CoWorkingManager.Logika.Servisi
             else notifikacija("Uzeta rezervacija");
             return rezervacija;
         }
+
+        public List<Rezervacija> dajSve()
+        {
+            var rezervacije = _fasada.Rezervacije.DajSve();
+            notifikacija("Dohvacene sve rezervacije");
+            return rezervacije;
+        }
+
         public bool kreirajRezervaciju(string ime, string prezime, string resursIme, string pocetak, string kraj)
         {
             var korisnik = _fasada.Korisnici.DajSve()
