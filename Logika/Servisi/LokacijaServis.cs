@@ -1,5 +1,6 @@
 using CoWorkingManager.Modeli;
 using CoWorkingManager.Podaci;
+using CoWorkingManager.Podaci.Repozitorijumi;
 
 namespace CoWorkingManager.Logika.Servisi
 {
@@ -87,6 +88,13 @@ namespace CoWorkingManager.Logika.Servisi
             if (lokacija == null) notifikacija("Lokacija nije pronadjena");
             else notifikacija("Uzeta lokacija");
             return lokacija;
+        }
+
+        public List<StatistikaZauzetosti> dajStatistikuZauzetostiZaSve(DateTime uTrenutku)
+        {
+            var statistika = _fasada.Lokacije.DajStatistikuZauzetostiZaSve(uTrenutku);
+            notifikacija("Dohvacena statistika zauzetosti za sve lokacije");
+            return statistika;
         }
     }
 }

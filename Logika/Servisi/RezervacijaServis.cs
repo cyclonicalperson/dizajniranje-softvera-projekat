@@ -1,8 +1,6 @@
 using CoWorkingManager.Logika.Servisi;
 using CoWorkingManager.Modeli;
 using CoWorkingManager.Podaci;
-using System.Windows.Controls;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CoWorkingManager.Logika.Servisi
 {
@@ -168,14 +166,14 @@ namespace CoWorkingManager.Logika.Servisi
                 return false;
             }
             if (!validacijaClanstva(korisnik, resurs, (DateTime)pocetak, (DateTime)kraj))
-            { 
+            {
                 notifikacija("Nije prosla validacija clanstva");
-                return false; 
+                return false;
             }
             if (!validacijaTermina(resurs, (DateTime)pocetak, (DateTime)kraj))
-            { 
+            {
                 notifikacija("Termin nije slobodan");
-                return false; 
+                return false;
             }
             var lokacijaObj = _fasada.Lokacije.DajPoId(resurs.LokacijaId);
             if (lokacijaObj == null)
@@ -183,10 +181,10 @@ namespace CoWorkingManager.Logika.Servisi
                 notifikacija("Lokacija nije pronadjena");
                 return false;
             }
-            if (!validacijaRadnogVremena(lokacijaObj, (DateTime)pocetak, (DateTime)kraj)) 
+            if (!validacijaRadnogVremena(lokacijaObj, (DateTime)pocetak, (DateTime)kraj))
             {
                 notifikacija("Nije u radnom vremenu lokacije");
-                return false; 
+                return false;
             }
             if (pocetak != null)
                 rezervacija.PocetakVreme = (DateTime)pocetak;
@@ -244,10 +242,11 @@ namespace CoWorkingManager.Logika.Servisi
         private bool validacijaRadnogVremena(Lokacija lokacija, DateTime pocetakRez, DateTime krajRez)
         {
             if (krajRez <= pocetakRez)
-            {
                 throw new Exception("Kraj rezervacije mora biti posle početka.");
-            }
-            string[] parts = lokacija.RadniSati.Split('-');
+
+            // Podrska i za hyphen (-) i za en-dash (–) kao separator u RadniSati jer voli tako malo
+            var separatori = new[] { "–", "-" };
+            string[] parts = lokacija.RadniSati.Split(separatori, StringSplitOptions.RemoveEmptyEntries);
 
             TimeSpan pocetakRadnog = TimeSpan.Parse(parts[0].Trim());
             TimeSpan krajRadnog = TimeSpan.Parse(parts[1].Trim());
@@ -268,7 +267,7 @@ namespace CoWorkingManager.Logika.Servisi
             var prezime = imePrezime.Split(' ')[1];
             var korisnik = _fasada.Korisnici.DajSve()
                 .FirstOrDefault(k => k.Ime == ime && k.Prezime == prezime);
-            if (korisnik == null) 
+            if (korisnik == null)
             {
                 notifikacija("Korisnik nije pronadjen");
                 return new List<Rezervacija>();

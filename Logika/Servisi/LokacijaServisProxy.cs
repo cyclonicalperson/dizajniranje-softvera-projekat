@@ -1,6 +1,7 @@
 ﻿using System;
 using CoWorkingManager.Podaci;
 using CoWorkingManager.Modeli;
+using CoWorkingManager.Podaci.Repozitorijumi;
 
 namespace CoWorkingManager.Logika.Servisi
 {
@@ -63,6 +64,12 @@ namespace CoWorkingManager.Logika.Servisi
         {
             proveriAdmina();
             return _praviLokacijaServis.pronadjiLokaciju(ime);
+        }
+
+        public List<StatistikaZauzetosti> dajStatistikuZauzetostiZaSve(DateTime uTrenutku)
+        {
+            proveriAdmina();
+            return _praviLokacijaServis.dajStatistikuZauzetostiZaSve(uTrenutku);
         }
     }
 }
