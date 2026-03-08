@@ -57,7 +57,7 @@ namespace CoWorkingManager.UI.Views
 
             if (op == 0) // Dodaj
             {
-                if (string.IsNullOrWhiteSpace(NazivPaketa) || Cena != null || Trajanje != null || MaksimalanBrojSati != null)
+                if (string.IsNullOrWhiteSpace(NazivPaketa) || Cena == null || Trajanje == null || MaksimalanBrojSati == null)
                     return false;
                 return tipClanstvaServisProxy.dodajTipClanstva((string)NazivPaketa, (decimal)Cena, (int)Trajanje, (int)MaksimalanBrojSati, DozvolaZaSale, BrojSatiZaSale);
             }
