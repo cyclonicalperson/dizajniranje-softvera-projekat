@@ -45,31 +45,29 @@ namespace CoWorkingManager.UI.Views
 
         public bool Update(int op)
         {
-            string NazivPaketa = TextBoxNazivPaketa.Text;
-            decimal Cena = 0;
-            decimal.TryParse(TextBoxCena.Text, out Cena);
-            int Trajanje;
-            int.TryParse(TextBoxTrajanje.Text, out Trajanje);
-            int MaksimalanBrojSati;
-            int.TryParse(TextBoxMaksimalanBrojSati.Text, out MaksimalanBrojSati);
+            string? NazivPaketa = TextBoxNazivPaketa.Text;
+            decimal? Cena = decimal.TryParse(TextBoxCena.Text, out decimal value1) ? value1 : null;
+            int? Trajanje = int.TryParse(TextBoxTrajanje.Text, out int value2) ? value2 : null;
+            int? MaksimalanBrojSati = int.TryParse(TextBoxMaksimalanBrojSati.Text, out int value3) ? value3 : null;
             bool DozvolaZaSale = CheckBoxDozvolaZaSale.IsChecked ?? false;
-            int BrojSatiZaSale;
-            int.TryParse(TextBoxBrojSatiZaSale.Text, out BrojSatiZaSale);
+            int? BrojSatiZaSale = int.TryParse(TextBoxBrojSatiZaSale.Text, out int value4) ? value4 : null;
 
             if (string.IsNullOrWhiteSpace(NazivPaketa) || Cena == 0 || Trajanje == 0)
                 return false;
 
             if (op == 0) // Dodaj
             {
-                return false;//tipClanstvaServisProxy.dodajTipClanstva(NazivPaketa, Cena, Trajanje, MaksimalanBrojSati, DozvolaZaSale, BrojSatiZaSale);
+                if (string.IsNullOrWhiteSpace(NazivPaketa) || Cena != null || Trajanje != null || MaksimalanBrojSati != null)
+                    return false;
+                return tipClanstvaServisProxy.dodajTipClanstva((string)NazivPaketa, (decimal)Cena, (int)Trajanje, (int)MaksimalanBrojSati, DozvolaZaSale, BrojSatiZaSale);
             }
             else if (op == 1) // Izmeni
             {
-                return false;//tipClanstvaServisProxy.izmeniTipClanstva(NazivPaketa, Cena, Trajanje, MaksimalanBrojSati, DozvolaZaSale, BrojSatiZaSale);
+                return false; //tipClanstvaServisProxy.izmeniTipClanstva(NazivPaketa, Cena, Trajanje, MaksimalanBrojSati, DozvolaZaSale, BrojSatiZaSale);
             }
             else // Obrisi
             {
-                return false;//tipClanstvaServisProxy.obrisiTipClanstva(NazivPaketa);
+                return false; //tipClanstvaServisProxy.obrisiTipClanstva(NazivPaketa);
             }
         }
 

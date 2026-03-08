@@ -122,6 +122,7 @@
                             Margin="10"
                             Click="Dodaj_Click"/>
 
+                    <!--
                     <Button Content="Izmeni"
                             Width="120"
                             Margin="10"
@@ -131,6 +132,7 @@
                             Width="120"
                             Margin="10"
                             Click="Obrisi_Click"/>
+                    -->
 
                 </StackPanel>
 

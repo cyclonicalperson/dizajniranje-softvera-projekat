@@ -52,12 +52,7 @@ namespace CoWorkingManager.UI.Views
             string? Adresa = TextBoxAdresa.Text;
             string? Grad = TextBoxGrad.Text;
             string? RadnoVreme = TextBoxRadnoVreme.Text;
-            string? MaksimalanKapacitetText;
-            if (string.IsNullOrWhiteSpace(TextBoxMaksimalanKapacitet.Text))
-                MaksimalanKapacitetText = null;
-            else
-                MaksimalanKapacitetText = TextBoxMaksimalanKapacitet.Text;
-            int? MaksimalanKapacitet = int.TryParse(MaksimalanKapacitetText, out int value) ? value : null;
+            int? MaksimalanKapacitet = int.TryParse(TextBoxMaksimalanKapacitet.Text, out int value) ? value : null;
 
             if (string.IsNullOrWhiteSpace(NazivLokacije))
                 return false;

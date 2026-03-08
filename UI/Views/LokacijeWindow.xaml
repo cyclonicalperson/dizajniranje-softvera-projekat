@@ -113,11 +113,6 @@
                         <TextBox x:Name="TextBoxMaksimalanKapacitet"/>
                     </StackPanel>
 
-                    <StackPanel Grid.Row="2" Grid.Column="1" Margin="5">
-                        <TextBlock Text="Opis:"/>
-                        <TextBox x:Name="TextBoxOpis"/>
-                    </StackPanel>
-
                 </Grid>
 
                 <StackPanel Orientation="Horizontal"
