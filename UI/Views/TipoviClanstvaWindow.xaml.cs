@@ -24,7 +24,7 @@ namespace CoWorkingManager.UI.Views
             Lanac.Text = configLines[0];
         }
 
-        public void Show()
+        public new void Show()
         {
             Pretraga.Visibility = Visibility.Collapsed;
             Izmena.Visibility = Visibility.Collapsed;

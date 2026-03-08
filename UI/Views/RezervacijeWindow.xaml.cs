@@ -15,13 +15,13 @@ namespace CoWorkingManager.UI.Views
         private RezervacijaServisProxy rezervacijaServisProxy = new RezervacijaServisProxy(new RezervacijaServis());
         private LokacijaServisProxy lokacijaServisProxy = new LokacijaServisProxy(new LokacijaServis());
         private KorisnikServisProxy korisnikServisProxy = new KorisnikServisProxy(new KorisnikServis());
-        private string SelektovaniKorisnik;
+        private string? SelektovaniKorisnik;
         private DateTime? SelektovaniDan;
-        private string SelektovanaLokacija;
+        private string? SelektovanaLokacija;
 
-        List<Korisnik> Korisnici;
-        List<Lokacija> Lokacije;
-        List<Rezervacija> Rezervacije;
+        List<Korisnik>? Korisnici;
+        List<Lokacija>? Lokacije;
+        List<Rezervacija>? Rezervacije;
 
         public RezervacijeWindow(GlavniMediator mediator, RezervacijeMediator rezervacijeMediator)
         {
@@ -32,7 +32,7 @@ namespace CoWorkingManager.UI.Views
             Lanac.Text = configLines[0];
         }
 
-        public void Show()
+        public new void Show()
         {
             PretragaKorisnik.Visibility = Visibility.Collapsed;
             PretragaDanLokacija.Visibility = Visibility.Collapsed;
@@ -101,8 +101,8 @@ namespace CoWorkingManager.UI.Views
 
         private void Upravljaj_Click(object sender, RoutedEventArgs e)
         {
-
             RezervacijeDialogMediator dialogMediator = new RezervacijeDialogMediator();
+            dialogMediator.SetRezervacijeMediator(rezervacijeMediator);
             RezervacijeDialog dialog = new RezervacijeDialog(dialogMediator);
             dialog.Show();
         }

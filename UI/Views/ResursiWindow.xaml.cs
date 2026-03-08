@@ -15,9 +15,9 @@ namespace CoWorkingManager.UI.Views
         private ResursServisProxy resursServisProxy = new ResursServisProxy(new ResursServis());
         private LokacijaServisProxy lokacijaServisProxy = new LokacijaServisProxy(new LokacijaServis());
 
-        private string SelektovanaLokacija;
-        List<Lokacija> Lokacije;
-        List<Resurs> Resursi;
+        private string? SelektovanaLokacija;
+        List<Lokacija>? Lokacije;
+        List<Resurs>? Resursi;
 
         public ResursiWindow(GlavniMediator mediator, ResursiMediator resursiMediator)
         {
@@ -28,7 +28,7 @@ namespace CoWorkingManager.UI.Views
             Lanac.Text = configLines[0];
         }
 
-        public void Show()
+        public new void Show()
         {
             Pretraga.Visibility = Visibility.Collapsed;
             Izmena.Visibility = Visibility.Collapsed;

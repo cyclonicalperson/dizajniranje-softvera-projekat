@@ -50,35 +50,44 @@ namespace CoWorkingManager.UI.Views
             if (SelectedKorisnik == null || SelectedResurs == null)
                 return false;
 
-            DateTime? Pocetak = DateZavrsetak.SelectedDate;
+            // ISPRAVKA 1: Koristiti DatePocetak za početak, DateZavrsetak za kraj
+            DateTime? Pocetak = DatePocetak.SelectedDate;
             DateOnly? DatumPocetak = null;
             if (Pocetak != null)
             {
                 DatumPocetak = DateOnly.FromDateTime((DateTime)Pocetak);
             }
+
             DateTime? Kraj = DateZavrsetak.SelectedDate;
             DateOnly? DatumKraj = null;
             if (Kraj != null)
             {
                 DatumKraj = DateOnly.FromDateTime((DateTime)Kraj);
             }
-            string? vremePocetak = TimePocetak.Text;
-            string? vremeKraj = TimePocetak.Text;
 
+            // ISPRAVKA 2: Koristiti TimePocetak za početak, TimeZavrsetak za kraj
+            string? vremePocetak = TimePocetak.Text;
+            string? vremeKraj = TimeZavrsetak.Text;
+
+            // ISPRAVKA 3: Vraćati povratnu vrednost servisnih poziva umesto uvek false
             if (op == 0)
             {
-                rezervacijaServisProxy.kreirajRezervaciju(SelectedKorisnik, SelectedResurs, DatumPocetak, vremePocetak, DatumKraj, vremeKraj);
+                return rezervacijaServisProxy.kreirajRezervaciju(
+                    SelectedKorisnik, SelectedResurs,
+                    DatumPocetak, vremePocetak,
+                    DatumKraj, vremeKraj);
             }
-            else if(op == 1)
+            else if (op == 1)
             {
-                rezervacijaServisProxy.izmeniRezervaciju(SelectedKorisnik, SelectedResurs, DatumPocetak, vremePocetak, DatumKraj, vremeKraj);
-            }   
+                return rezervacijaServisProxy.izmeniRezervaciju(
+                    SelectedKorisnik, SelectedResurs,
+                    DatumPocetak, vremePocetak,
+                    DatumKraj, vremeKraj);
+            }
             else
             {
-                rezervacijaServisProxy.otkaziRezervaciju(SelectedKorisnik, SelectedResurs);
+                return rezervacijaServisProxy.otkaziRezervaciju(SelectedKorisnik, SelectedResurs);
             }
-
-            return false;
         }
 
         private void Dodaj_Click(object sender, RoutedEventArgs e)

@@ -16,14 +16,14 @@ namespace CoWorkingManager.UI.Views
         private LokacijaServisProxy lokacijaServisProxy = new LokacijaServisProxy(new LokacijaServis());
         private TipClanstvaServisProxy tipClanstvaServisProxy = new TipClanstvaServisProxy(new TipClanstvaServis());
 
-        private string SelektovanaLokacija;
-        private string SelektovanTipClanstva;
-        private string SelektovanStatusaNaloga;
+        private string? SelektovanaLokacija;
+        private string? SelektovanTipClanstva;
+        private string? SelektovanStatusaNaloga;
 
-        List<Lokacija> Lokacije;
-        List<TipClanstva> TipoviClanstva;
-        List<string> StatusiNaloga;
-        List<Korisnik> Korisnici;
+        List<Lokacija>? Lokacije;
+        List<TipClanstva>? TipoviClanstva;
+        List<string>? StatusiNaloga;
+        List<Korisnik>? Korisnici;
 
         public KorisniciWindow(GlavniMediator mediator, KorisniciMediator korisniciMediator)
         {
@@ -34,7 +34,7 @@ namespace CoWorkingManager.UI.Views
             NazivLanca.Text = configLines[0];
         }
 
-        public void Show()
+        public new void Show()
         {
             Pretraga.Visibility = Visibility.Collapsed;
             Izmena.Visibility = Visibility.Collapsed;

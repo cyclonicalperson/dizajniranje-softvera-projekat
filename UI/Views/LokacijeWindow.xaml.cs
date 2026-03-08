@@ -14,8 +14,8 @@ namespace CoWorkingManager.UI.Views
         private LokacijeMediator lokacijeMediator;
         private LokacijaServisProxy lokacijaServisProxy = new LokacijaServisProxy(new LokacijaServis());
 
-        List<StatistikaZauzetosti> StatistikeZauzetosti;
-        List <Lokacija> Lokacije;
+        List<StatistikaZauzetosti>? StatistikeZauzetosti;
+        List<Lokacija>? Lokacije;
 
         public LokacijeWindow(GlavniMediator mediator, LokacijeMediator lokacijeMediator)
         {
@@ -26,7 +26,7 @@ namespace CoWorkingManager.UI.Views
             Lanac.Text = configLines[0];
         }
 
-        public void Show()
+        public new void Show()
         {
             Pretraga.Visibility = Visibility.Collapsed;
             Izmena.Visibility = Visibility.Collapsed;
@@ -35,7 +35,7 @@ namespace CoWorkingManager.UI.Views
 
         public void RefreshTable()
         {
-            StatistikeZauzetosti = lokacijaServisProxy.DajStatistikuZauzetostiZaSve(DateTime.Today);
+            StatistikeZauzetosti = lokacijaServisProxy.dajStatistikuZauzetostiZaSve(DateTime.Today);
             Lokacije = lokacijaServisProxy.dajSve();
             TabelaLokacija.ItemsSource = null;
             TabelaLokacija.ItemsSource = StatistikeZauzetosti;
@@ -54,7 +54,7 @@ namespace CoWorkingManager.UI.Views
 
             if (op == 0) // Dodaj
             {
-                if (string.IsNullOrWhiteSpace(NazivLokacije) || string.IsNullOrWhiteSpace(Adresa) || string.IsNullOrWhiteSpace(Grad) 
+                if (string.IsNullOrWhiteSpace(Adresa) || string.IsNullOrWhiteSpace(Grad)
                     || string.IsNullOrWhiteSpace(RadnoVreme) || MaksimalanKapacitet == null)
                     return false;
                 return lokacijaServisProxy.dodajLokaciju(NazivLokacije, Adresa, Grad, RadnoVreme, (int)MaksimalanKapacitet);
