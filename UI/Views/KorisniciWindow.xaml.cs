@@ -100,8 +100,18 @@ namespace CoWorkingManager.UI.Views
             string Email = TextBoxEmail.Text;
             string BrojTelefona = TextBoxBrojTelefona.Text;
             string TipClanstva = TextBoxTipClanstva.Text;
-            string DatumPocetkaClanstva = TextBoxDatumPocetkaClanstva.Text;
-            string DatumIstekaClanstva = TextBoxDatumIstekaClanstva.Text;
+            DateTime? PocetakClanstva = TextBoxDatumPocetkaClanstva.SelectedDate;
+            DateOnly? DatumPocetkaClanstva = null;
+            if (PocetakClanstva == null)
+            {
+                DatumPocetkaClanstva = DateOnly.FromDateTime(TextBoxDatumPocetkaClanstva.SelectedDate.Value);
+            }
+            DateTime? IstekClanstva = TextBoxDatumPocetkaClanstva.SelectedDate;
+            DateOnly? DatumIstekaClanstva = null;
+            if (IstekClanstva == null)
+            {
+                DatumIstekaClanstva = DateOnly.FromDateTime(TextBoxDatumIstekaClanstva.SelectedDate.Value);
+            }
             string StatusNaloga = TextBoxStatusNaloga.Text;
 
             if (string.IsNullOrWhiteSpace(Ime) || string.IsNullOrWhiteSpace(Prezime))
@@ -110,10 +120,11 @@ namespace CoWorkingManager.UI.Views
             if (op == 0) // Dodaj
             {
                 if (string.IsNullOrWhiteSpace(Email) || string.IsNullOrWhiteSpace(BrojTelefona) || string.IsNullOrWhiteSpace(TipClanstva) ||
-                    string.IsNullOrWhiteSpace(DatumPocetkaClanstva) || string.IsNullOrWhiteSpace(DatumIstekaClanstva) || string.IsNullOrWhiteSpace(StatusNaloga))
+                    DatumPocetkaClanstva == null || DatumIstekaClanstva == null || string.IsNullOrWhiteSpace(StatusNaloga))
                     return false;
+                else
 
-                return korisnikServis.dodajKorisnika(Ime, Prezime, Email, BrojTelefona, TipClanstva, DatumPocetkaClanstva, DatumIstekaClanstva, StatusNaloga);
+                    return korisnikServis.dodajKorisnika(Ime, Prezime, Email, BrojTelefona, TipClanstva, (DateOnly)DatumPocetkaClanstva, (DateOnly)DatumIstekaClanstva, StatusNaloga);
             }
             else if (op == 1) // Izmeni
             {

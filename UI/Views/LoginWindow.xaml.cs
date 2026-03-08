@@ -10,7 +10,6 @@ namespace CoWorkingManager.UI.Views
         public LoginWindow()
         {
             InitializeComponent();
-            NazivLanca.Text = imeLanca;
         }
 
         private void Login_Click(object sender, RoutedEventArgs e)
@@ -25,12 +24,12 @@ namespace CoWorkingManager.UI.Views
                 var resursiMediator = new ResursiMediator(); // Novi mediator
                 var rezervacijeMediator = new RezervacijeMediator(); // Novi mediator
 
-                var glavniMeni = new GlavniWindow(mediator);
-                var korisnici = new KorisniciWindow(mediator, mediatorKorisnici);
-                var lokacije = new LokacijeWindow(mediator);
-                var tipoviClanstva = new TipoviClanstvaWindow(mediator);
-                var resursi = new ResursiWindow(mediator);
-                var rezervacije = new RezervacijeWindow(mediator);
+                var glavniMeni = new GlavniWindow(glavniMediator);
+                var korisnici = new KorisniciWindow(glavniMediator, korisniciMediator);
+                var lokacije = new LokacijeWindow(glavniMediator, lokacijeMediator);
+                var tipoviClanstva = new TipoviClanstvaWindow(glavniMediator, tipoviClanstvaMediator);
+                var resursi = new ResursiWindow(glavniMediator, resursiMediator);
+                var rezervacije = new RezervacijeWindow(glavniMediator, rezervacijeMediator);
 
                 glavniMediator.SetGlavniWindow(glavniMeni);
                 glavniMediator.SetKorisnici(korisnici);

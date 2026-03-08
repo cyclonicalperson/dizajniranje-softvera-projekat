@@ -163,16 +163,6 @@
 
         </StackPanel>
 
-
-            <Button Content="Izmeni"
-                    Width="100"
-                    Margin="5"/>
-
-            <Button Content="Obriši"
-                    Width="100"
-                    Margin="5"/>
-
-        </StackPanel>
-
     </Grid>
+
 </Window>

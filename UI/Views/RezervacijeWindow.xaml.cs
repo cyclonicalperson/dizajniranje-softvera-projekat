@@ -31,6 +31,106 @@ namespace CoWorkingManager.UI.Views
             this.mediator = mediator;
             this.rezervacijeMediator = rezervacijeMediator;
             InitializeComponent();
+            string[] configLines = File.ReadAllLines("config.txt");
+            Lanac.Text = configLines[0];
+        }
+
+        public void Show()
+        {
+            PretragaKorisnik.Visibility = Visibility.Collapsed;
+            PretragaDanLokacija.Visibility = Visibility.Collapsed;
+            Uspesno.Visibility = Visibility.Collapsed;
+            Neuspesno.Visibility = Visibility.Collapsed;
+            base.Show();
+        }
+
+        public void RefreshPretragaKorisnikMeni()
+        {
+            SelRezervacije_KorisnikCBox.Items.Clear();
+            Korisnici = facade.Korisnici.DajSve();
+            SelRezervacije_KorisnikCBox.Items.Add("Korisnik");
+            SelektovaniKorisnik = "Korisnik";
+            foreach (Korisnik x in Korisnici)
+                SelRezervacije_KorisnikCBox.Items.Add(x.Ime + " " + x.Prezime);
+            SelRezervacije_KorisnikCBox.SelectedIndex = 0;
+        }
+
+        public void RefreshPretragaDanLokacijaMeni()
+        {
+            SelRezervacije_LokacijaCBox.Items.Clear();
+            Lokacije = facade.Lokacije.DajSve();
+            SelRezervacije_LokacijaCBox.Items.Add("Lokacija");
+            SelektovanaLokacija = "Lokacija";
+            foreach (Lokacija x in Lokacije)
+                SelRezervacije_LokacijaCBox.Items.Add(x.Ime);
+            SelRezervacije_LokacijaCBox.SelectedIndex = 0;
+        }
+
+        public void RefreshTableKorisnik()
+        {
+            if (SelektovaniKorisnik == "Korisnik")
+                SelektovaniKorisnik = null;
+
+            //Rezervacije = facade.Rezervacije.DajPoKorisniku(SelektovaniKorisnik);
+            TabelaRezervacijaKorisnik.ItemsSource = null;
+            TabelaRezervacijaKorisnik.ItemsSource = Rezervacije;
+        }
+
+        public void RefreshTableDanLokacija()
+        {
+            if (SelektovanaLokacija == "Lokacija")
+                SelektovanaLokacija = null;
+
+            TabelaRezervacijaDanLokacija.ItemsSource = null;
+            if (SelektovaniDan != null && SelektovanaLokacija != null)
+            {
+                Rezervacije = rezervacijaServis.dajRezervacijePoLokacijiIDanu(facade.Lokacije.DajPoNazivu(SelektovanaLokacija), (DateTime)SelektovaniDan);
+                TabelaRezervacijaDanLokacija.ItemsSource = Rezervacije;
+            }
+        }
+
+        private void SelRezervacije_KorisnikCBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = sender as ComboBox;
+            if (comboBox.SelectedItem != null)
+                SelektovaniKorisnik = comboBox.SelectedItem.ToString();
+            RefreshTableKorisnik();
+        }
+
+        private void PretragaKorisnik_Click(object sender, RoutedEventArgs e)
+        {
+            rezervacijeMediator.Notify(this, "Meni_PretragaKorisnik");
+        }
+
+        private void PretragaDanLokacija_Click(object sender, RoutedEventArgs e)
+        {
+            rezervacijeMediator.Notify(this, "Meni_PretragaDanLokacija");
+        }
+
+        private void KreirajIzmeni_Click(object sender, RoutedEventArgs e)
+        {
+            // Otvori dijalog za kreiranje/izmenu
+            var dialog = new RezervacijeDialog(); // Novi dijalog
+            if (dialog.ShowDialog() == true)
+            {
+                // Validacije u servisu: zauzetost, sati, radno vreme
+                /*if (rezervacijaServis.KreirajIliIzmeniRezervaciju(dialog.RezervacijaData))
+                {
+                    Uspesno.Visibility = Visibility.Visible;
+                }
+                else
+                {
+                    Neuspesno.Visibility = Visibility.Visible;
+                }*/
+            }
+        }
+
+        private void PretraziDanLokacija_Click(object sender, RoutedEventArgs e)
+        {
+            SelektovaniDan = SelRezervacije_Dan.SelectedDate;
+            if (SelRezervacije_LokacijaCBox.SelectedItem != null)
+                SelektovanaLokacija = SelRezervacije_LokacijaCBox.SelectedItem.ToString();
+            RefreshTableDanLokacija();
         }
 
         private void GlavniMeni_Click(object sender, RoutedEventArgs e)

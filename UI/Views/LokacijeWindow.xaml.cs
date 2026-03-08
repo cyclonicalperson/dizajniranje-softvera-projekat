@@ -24,6 +24,8 @@ namespace CoWorkingManager.UI.Views
             this.mediator = mediator;
             this.lokacijeMediator = lokacijeMediator;
             InitializeComponent();
+            string[] configLines = File.ReadAllLines("config.txt");
+            Lanac.Text = configLines[0];
         }
 
         public void Show()
@@ -35,7 +37,7 @@ namespace CoWorkingManager.UI.Views
 
         public void RefreshTable()
         {
-            Lokacije = facade.Lokacije.DajSve(); // Servis sa statistikama
+            Lokacije = facade.Lokacije.DajSve();
             TabelaLokacija.ItemsSource = null;
             TabelaLokacija.ItemsSource = Lokacije;
         }
@@ -46,8 +48,7 @@ namespace CoWorkingManager.UI.Views
             string Adresa = TextBoxAdresa.Text;
             string Grad = TextBoxGrad.Text;
             string RadnoVreme = TextBoxRadnoVreme.Text;
-            int MaksimalanKapacitet = 0;
-            int.TryParse(TextBoxMaksimalanKapacitet.Text, out MaksimalanKapacitet);
+            string MaksimalanKapacitet = TextBoxMaksimalanKapacitet.Text;
             string Opis = TextBoxOpis.Text;
 
             if (string.IsNullOrWhiteSpace(NazivLokacije) || string.IsNullOrWhiteSpace(Adresa) || string.IsNullOrWhiteSpace(Grad))
@@ -55,15 +56,15 @@ namespace CoWorkingManager.UI.Views
 
             if (op == 0) // Dodaj
             {
-                return lokacijaServis.dodajLokaciju(NazivLokacije, Adresa, Grad, RadnoVreme, MaksimalanKapacitet);
+                return false;//lokacijaServis.DodajLokaciju(NazivLokacije, Adresa, Grad, RadnoVreme, MaksimalanKapacitet, Opis);
             }
             else if (op == 1) // Izmeni
             {
-                return lokacijaServis.izmeniLokaciju(NazivLokacije, Adresa, Grad, RadnoVreme, MaksimalanKapacitet);
+                return false;//lokacijaServis.IzmeniLokaciju(NazivLokacije, Adresa, Grad, RadnoVreme, MaksimalanKapacitet, Opis);
             }
             else // Obrisi
             {
-                return lokacijaServis.obrisiLokaciju(NazivLokacije);
+                return false;//lokacijaServis.ObrisiLokaciju(NazivLokacije);
             }
         }
 

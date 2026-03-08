@@ -15,8 +15,7 @@ namespace CoWorkingManager.UI.Views
         private GlavniMediator mediator;
         private ResursiMediator resursiMediator;
         private CoworkingFasada facade = CoworkingFasada.DajInstancu();
-        private ResursServis resursServis = new ResursServis();
-        private LokacijaServis lokacijaServis = new LokacijaServis();
+        private ResursServis resursServis = new ResursServis(); // Pretpostavljamo servis
 
         private string SelektovanaLokacija;
         List<Lokacija> Lokacije;
@@ -27,6 +26,8 @@ namespace CoWorkingManager.UI.Views
             this.mediator = mediator;
             this.resursiMediator = resursiMediator;
             InitializeComponent();
+            string[] configLines = File.ReadAllLines("config.txt");
+            Lanac.Text = configLines[0];
         }
 
         public void Show()
@@ -52,8 +53,7 @@ namespace CoWorkingManager.UI.Views
             if (SelektovanaLokacija == "Lokacija")
                 SelektovanaLokacija = null;
 
-            //Mora se popraviti
-            //Resursi = resursServis.dajResursePoLokacijiSortiranoPoTipu(lokacijaServis.getLokacija());
+            Resursi = facade.Resursi.DajSve();
             TabelaResursa.ItemsSource = null;
             TabelaResursa.ItemsSource = Resursi;
         }
@@ -75,15 +75,15 @@ namespace CoWorkingManager.UI.Views
 
             if (op == 0) // Dodaj
             {
-                return resursServis.dodajResurs(Naziv, LokacijaID, TipResursa, Opis);
+                return false;//resursServis.DodajResurs(Naziv, TipResursa, Opis, LokacijaID, ImaProjektor, ImaTV, ImaTablu, ImaOnlineOpremu, Kapacitet);
             }
             else if (op == 1) // Izmeni
             {
-                return resursServis.izmeniResurs(Naziv, LokacijaID, TipResursa, Opis);
+                return false;//resursServis.IzmeniResurs(Naziv, TipResursa, Opis, LokacijaID, ImaProjektor, ImaTV, ImaTablu, ImaOnlineOpremu, Kapacitet);
             }
             else // Obrisi
             {
-                return resursServis.obrisiResurs(Naziv);
+                return false;//resursServis.ObrisiResurs(Naziv, LokacijaID);
             }
         }
 

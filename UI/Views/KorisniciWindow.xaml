@@ -147,12 +147,12 @@
 
                     <StackPanel Grid.Row="3" Grid.Column="0" Margin="5">
                         <TextBlock Text="Datum početka članstva:"/>
-                        <TextBox x:Name="TextBoxDatumPocetkaClanstva"/>
+                        <DatePicker x:Name="TextBoxDatumPocetkaClanstva"/>
                     </StackPanel>
 
                     <StackPanel Grid.Row="3" Grid.Column="1" Margin="5">
                         <TextBlock Text="Datum isteka članstva:"/>
-                        <TextBox x:Name="TextBoxDatumIstekaClanstva"/>
+                        <DatePicker x:Name="TextBoxDatumIstekaClanstva"/>
                     </StackPanel>
 
                 </Grid>
