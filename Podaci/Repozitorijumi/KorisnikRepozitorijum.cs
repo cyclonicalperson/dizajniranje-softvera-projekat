@@ -104,7 +104,7 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
             if (EmailPostoji(korisnik.Email, excludeId: korisnik.Id))
                 return false;
 
-            kontekst.Korisnici.Update(korisnik);
+            kontekst.Entry(korisnik).State = EntityState.Modified;
             kontekst.SaveChanges();
             return true;
         }
