@@ -56,8 +56,8 @@
                         <DataGridTextColumn Header="Grad" Binding="{Binding Lokacija.Grad}"/>
                         <DataGridTextColumn Header="Radno vreme" Binding="{Binding Lokacija.RadniSati}"/>
                         <DataGridTextColumn Header="Maks. kapacitet" Binding="{Binding Lokacija.MaxBrojKorisnika}"/>
-                        <DataGridTextColumn Header="Broj radnih mesta" Binding="{Binding UkupanBrojRadnihMesta}"/>
-                        <DataGridTextColumn Header="Rezervisanih" Binding="{Binding BrojRezervisanih}"/>
+                        <DataGridTextColumn Header="Broj radnih mesta" Binding="{Binding UkupnoResursa}"/>
+                        <DataGridTextColumn Header="Rezervisanih" Binding="{Binding ZauzetihResursa}"/>
                         <DataGridTextColumn Header="Zauzetost (%)" Binding="{Binding ProcenatZauzetosti}"/>
 
                     </DataGrid.Columns>

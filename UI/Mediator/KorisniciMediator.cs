@@ -45,7 +45,7 @@ namespace CoWorkingManager.UI.Mediator
                         korisnici.Neuspesno.Visibility = Visibility.Visible;
                     break;
 
-                case "Izemni":
+                case "Izmeni":
                     korisnici.Uspesno.Visibility = Visibility.Collapsed;
                     korisnici.Neuspesno.Visibility = Visibility.Collapsed;
                     if (korisnici.Update(1))

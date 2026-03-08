@@ -56,10 +56,10 @@
 
                     <DataGrid.Columns>
 
-                        <DataGridTextColumn Header="Naziv" Binding="{Binding Naziv}"/>
+                        <DataGridTextColumn Header="Naziv" Binding="{Binding Ime}"/>
                         <DataGridTextColumn Header="Tip" Binding="{Binding TipResursa}"/>
                         <DataGridTextColumn Header="Opis" Binding="{Binding Opis}"/>
-                        <DataGridTextColumn Header="Dostupno" Binding="{Binding Dostupno}"/>
+                        <DataGridTextColumn Header="Podtip Stola" Binding="{Binding PodtipStola}"/>
                         <DataGridTextColumn Header="Kapacitet (za sale)" Binding="{Binding Kapacitet}"/>
                         <DataGridCheckBoxColumn Header="Projektor" Binding="{Binding ImaProjektor}"/>
                         <DataGridCheckBoxColumn Header="TV" Binding="{Binding ImaTV}"/>

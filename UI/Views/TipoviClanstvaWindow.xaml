@@ -51,12 +51,12 @@
 
                     <DataGrid.Columns>
 
-                        <DataGridTextColumn Header="Naziv paketa" Binding="{Binding NazivPaketa}"/>
+                        <DataGridTextColumn Header="Naziv paketa" Binding="{Binding Ime}"/>
                         <DataGridTextColumn Header="Cena" Binding="{Binding Cena}"/>
                         <DataGridTextColumn Header="Trajanje (dana)" Binding="{Binding Trajanje}"/>
-                        <DataGridTextColumn Header="Maks. sati mesečno" Binding="{Binding MaksimalanBrojSati}"/>
-                        <DataGridCheckBoxColumn Header="Dozvola za sale" Binding="{Binding DozvolaZaSale}"/>
-                        <DataGridTextColumn Header="Broj sati za sale mesečno" Binding="{Binding BrojSatiZaSale}"/>
+                        <DataGridTextColumn Header="Maks. sati mesečno" Binding="{Binding MaxSatiPoMesecu}"/>
+                        <DataGridCheckBoxColumn Header="Dozvola za sale" Binding="{Binding PristupSali}"/>
+                        <DataGridTextColumn Header="Broj sati za sale mesečno" Binding="{Binding BrojSatiUSaliMesecno}"/>
 
                     </DataGrid.Columns>
 

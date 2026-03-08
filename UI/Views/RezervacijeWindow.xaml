@@ -61,11 +61,11 @@
 
                     <DataGrid.Columns>
 
-                        <DataGridTextColumn Header="Resurs" Binding="{Binding Resurs}"/>
+                        <DataGridTextColumn Header="Resurs" Binding="{Binding Resurs.Ime}"/>
                         <DataGridTextColumn Header="Lokacija" Binding="{Binding Lokacija}"/>
-                        <DataGridTextColumn Header="Početak" Binding="{Binding DatumPocetka}"/>
-                        <DataGridTextColumn Header="Završetak" Binding="{Binding DatumZavrsetka}"/>
-                        <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+                        <DataGridTextColumn Header="Početak" Binding="{Binding PocetakVreme}"/>
+                        <DataGridTextColumn Header="Završetak" Binding="{Binding KrajVreme}"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding StatusRezervacije}"/>
 
                     </DataGrid.Columns>
 
@@ -103,11 +103,11 @@
 
                     <DataGrid.Columns>
 
-                        <DataGridTextColumn Header="Korisnik" Binding="{Binding Korisnik}"/>
-                        <DataGridTextColumn Header="Resurs" Binding="{Binding Resurs}"/>
-                        <DataGridTextColumn Header="Početak" Binding="{Binding DatumPocetka}"/>
-                        <DataGridTextColumn Header="Završetak" Binding="{Binding DatumZavrsetka}"/>
-                        <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+                        <DataGridTextColumn Header="Korisnik" Binding="{Binding Korisnik.Ime}"/>
+                        <DataGridTextColumn Header="Resurs" Binding="{Binding Ime}"/>
+                        <DataGridTextColumn Header="Početak" Binding="{Binding PocetakVreme}"/>
+                        <DataGridTextColumn Header="Završetak" Binding="{Binding KrajVreme}"/>
+                        <DataGridTextColumn Header="Status" Binding="{Binding StatusRezervacije}"/>
 
                     </DataGrid.Columns>
 

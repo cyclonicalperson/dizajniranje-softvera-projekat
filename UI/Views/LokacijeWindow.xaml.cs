@@ -40,35 +40,42 @@ namespace CoWorkingManager.UI.Views
 
         public void RefreshTable()
         {
-            //StatistikeZauzetosti = facade.Lokacije.DajStatistikuZauzetostiZaSve();
+            StatistikeZauzetosti = facade.Lokacije.DajStatistikuZauzetostiZaSve(DateTime.Today);
             Lokacije = facade.Lokacije.DajSve();
             TabelaLokacija.ItemsSource = null;
-            TabelaLokacija.ItemsSource = Lokacije;
+            TabelaLokacija.ItemsSource = StatistikeZauzetosti;
         }
 
         public bool Update(int op)
         {
-            string NazivLokacije = TextBoxNazivLokacije.Text;
-            string Adresa = TextBoxAdresa.Text;
-            string Grad = TextBoxGrad.Text;
-            string RadnoVreme = TextBoxRadnoVreme.Text;
-            string MaksimalanKapacitet = TextBoxMaksimalanKapacitet.Text;
-            string Opis = TextBoxOpis.Text;
+            string? NazivLokacije = TextBoxNazivLokacije.Text;
+            string? Adresa = TextBoxAdresa.Text;
+            string? Grad = TextBoxGrad.Text;
+            string? RadnoVreme = TextBoxRadnoVreme.Text;
+            string? MaksimalanKapacitetText;
+            if (string.IsNullOrWhiteSpace(TextBoxMaksimalanKapacitet.Text))
+                MaksimalanKapacitetText = null;
+            else
+                MaksimalanKapacitetText = TextBoxMaksimalanKapacitet.Text;
+            int? MaksimalanKapacitet = int.TryParse(MaksimalanKapacitetText, out int value) ? value : null;
 
-            if (string.IsNullOrWhiteSpace(NazivLokacije) || string.IsNullOrWhiteSpace(Adresa) || string.IsNullOrWhiteSpace(Grad))
+            if (string.IsNullOrWhiteSpace(NazivLokacije))
                 return false;
 
             if (op == 0) // Dodaj
             {
-                return false;//lokacijaServisProxy.DodajLokaciju(NazivLokacije, Adresa, Grad, RadnoVreme, MaksimalanKapacitet, Opis);
+                if (string.IsNullOrWhiteSpace(NazivLokacije) || string.IsNullOrWhiteSpace(Adresa) || string.IsNullOrWhiteSpace(Grad) 
+                    || string.IsNullOrWhiteSpace(RadnoVreme) || MaksimalanKapacitet == null)
+                    return false;
+                return lokacijaServisProxy.dodajLokaciju(NazivLokacije, Adresa, Grad, RadnoVreme, (int)MaksimalanKapacitet);
             }
             else if (op == 1) // Izmeni
             {
-                return false;//lokacijaServisProxy.IzmeniLokaciju(NazivLokacije, Adresa, Grad, RadnoVreme, MaksimalanKapacitet, Opis);
+                return lokacijaServisProxy.izmeniLokaciju(NazivLokacije, Adresa, Grad, RadnoVreme, MaksimalanKapacitet);
             }
             else // Obrisi
             {
-                return false;//lokacijaServisProxy.ObrisiLokaciju(NazivLokacije);
+                return lokacijaServisProxy.obrisiLokaciju(NazivLokacije);
             }
         }
 
