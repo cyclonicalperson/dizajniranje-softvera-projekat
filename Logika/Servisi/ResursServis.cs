@@ -26,30 +26,51 @@ namespace CoWorkingManager.Logika.Servisi
                 return false;
             }
             TipResursa tip = Enum.Parse<TipResursa>(tipResursa);
-            PodtipStola? podTip = null;
-            if (podTipStola != null && tip != TipResursa.Sto)
-            {
-                notifikacija("Podtip stola moze biti postavljen samo za resurse tipa Sto");
-                return false;
-            }
-            else if (podTipStola != null && tip == TipResursa.Sto)
-            {
-                podTip = podTipStola != null ? Enum.Parse<PodtipStola>(podTipStola) : null;
-            }
             var resurs = new Resurs
             {
                 Ime = ime,
                 LokacijaId = lokacija.Id,
                 Lokacija = lokacija,
                 TipResursa = tip,
-                Opis = opis,
-                PodtipStola = podTip,
-                Kapacitet = kapacitet,
-                ImaProjektor = imaProjektor,
-                ImaTV = imaTV,
-                ImaTablu = imaTablu,
-                ImaOnlineOpremu = imaOnlineOpremu
+                Opis = opis
             };
+            if (tip != TipResursa.Sto)
+            {
+                if(podTipStola != null)
+                {
+                    notifikacija("Podtip stola moze biti postavljen samo za resurse tipa Sto");
+                    return false;
+                }
+                if(kapacitet != null)
+                    resurs.Kapacitet = kapacitet;
+                if(imaProjektor != null)
+                    resurs.ImaProjektor = imaProjektor;
+                if(imaTV != null)
+                    resurs.ImaTV = imaTV;
+                if(imaTablu != null)
+                    resurs.ImaTablu = imaTablu;
+                if(imaOnlineOpremu != null)
+                    resurs.ImaOnlineOpremu = imaOnlineOpremu;
+            }
+            else
+            {
+                if(kapacitet != null || imaProjektor != null || imaTV != null || imaTablu != null || imaOnlineOpremu != null)
+                {
+                    notifikacija("Kapacitet, imaProjektor, imaTV, imaTablu i imaOnlineOpremu mogu biti postavljeni samo za resurse koji nisu tipa Sto");
+                    return false;
+                }
+                PodtipStola? podTip = null;
+                if (!string.IsNullOrWhiteSpace(podTipStola))
+                {
+                    podTip = Enum.Parse<PodtipStola>(podTipStola);
+                    if (!Enum.IsDefined(typeof(PodtipStola), podTipStola))
+                    {
+                        notifikacija("Nevalidan podtip stola");
+                        return false;
+                    }
+                }
+                resurs.PodtipStola = podTip;
+            }
             if (_fasada.Resursi.Dodaj(resurs))
             {
                 notifikacija("Novi resurs je dodat");
@@ -86,7 +107,7 @@ namespace CoWorkingManager.Logika.Servisi
             { 
                 notifikacija("Izmena resursa neuspesna jer resurs nije pronadjen"); 
                 return false; 
-            }
+            } 
             if(!string.IsNullOrWhiteSpace(imeLokacije))
             {
                 var lokacija = _fasada.Lokacije.DajPoNazivu(imeLokacije);
@@ -103,21 +124,36 @@ namespace CoWorkingManager.Logika.Servisi
                 TipResursa tip = Enum.Parse<TipResursa>(tipResursa);
                 resurs.TipResursa = tip; 
             }
-            if(!string.IsNullOrWhiteSpace(opis)) resurs.Opis = opis;
-            if(!string.IsNullOrWhiteSpace(podTipStola))
+            if (!string.IsNullOrWhiteSpace(opis)) resurs.Opis = opis;
+            if (resurs.TipResursa != TipResursa.Sto)
             {
-                if (resurs.TipResursa != TipResursa.Sto)
+                if (podTipStola != null)
                 {
                     notifikacija("Podtip stola moze biti postavljen samo za resurse tipa Sto");
                     return false;
                 }
-                resurs.PodtipStola = Enum.Parse<PodtipStola>(podTipStola);
+                if (kapacitet != null) resurs.Kapacitet = kapacitet;
+                if (imaProjektor != null) resurs.ImaProjektor = imaProjektor;
+                if (imaTV != null) resurs.ImaTV = imaTV;
+                if (imaTablu != null) resurs.ImaTablu = imaTablu;
+                if (imaOnlineOpremu != null) resurs.ImaOnlineOpremu = imaOnlineOpremu;
             }
-            if(kapacitet != null) resurs.Kapacitet = kapacitet;
-            if (imaProjektor != null) resurs.ImaProjektor = imaProjektor;
-            if (imaTV != null) resurs.ImaTV = imaTV;
-            if (imaTablu != null) resurs.ImaTablu = imaTablu;
-            if (imaOnlineOpremu != null) resurs.ImaOnlineOpremu = imaOnlineOpremu;
+            else {                 
+                if (kapacitet != null || imaProjektor != null || imaTV != null || imaTablu != null || imaOnlineOpremu != null)
+                {
+                    notifikacija("Kapacitet, imaProjektor, imaTV, imaTablu i imaOnlineOpremu mogu biti postavljeni samo za resurse koji nisu tipa Sto");
+                    return false;
+                }
+                if (!string.IsNullOrWhiteSpace(podTipStola))
+                {
+                    if (resurs.TipResursa != TipResursa.Sto)
+                    {
+                        notifikacija("Podtip stola moze biti postavljen samo za resurse tipa Sto");
+                        return false;
+                    }
+                    resurs.PodtipStola = Enum.Parse<PodtipStola>(podTipStola);
+                }
+            }
             if (_fasada.Resursi.Azuriraj(resurs))
             {
                 notifikacija("Izmenjen resurs");
