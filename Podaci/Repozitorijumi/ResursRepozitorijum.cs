@@ -26,6 +26,7 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
         {
             return _kontekst.Resursi
                 .Include(r => r.Lokacija)
+                .AsNoTracking()
                 .ToList();
         }
 
@@ -103,6 +104,8 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
             if (_kontekst.Resursi.Any(r => r.LokacijaId == resurs.LokacijaId && r.Ime == resurs.Ime))
                 return false;
 
+            // Odspajamo navigacioni objekat — EF treba samo LokacijaId, ne tracked Lokacija objekat
+            resurs.Lokacija = null;
             _kontekst.Resursi.Add(resurs);
             _kontekst.SaveChanges();
             return true;
@@ -120,6 +123,8 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
             if (tracked != null)
                 tracked.State = EntityState.Detached;
 
+            // Odspajamo navigacioni objekat — EF treba samo LokacijaId, ne tracked Lokacija objekat
+            resurs.Lokacija = null;
             _kontekst.Entry(resurs).State = EntityState.Modified;
             _kontekst.SaveChanges();
             return true;

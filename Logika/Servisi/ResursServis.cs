@@ -48,20 +48,17 @@ namespace CoWorkingManager.Logika.Servisi
                     notifikacija("Podtip stola moze biti postavljen samo za resurse tipa Sto");
                     return false;
                 }
-                if (kapacitet != null)
-                    resurs.Kapacitet = kapacitet;
-                if (imaProjektor != null)
-                    resurs.ImaProjektor = imaProjektor;
-                if (imaTV != null)
-                    resurs.ImaTV = imaTV;
-                if (imaTablu != null)
-                    resurs.ImaTablu = imaTablu;
-                if (imaOnlineOpremu != null)
-                    resurs.ImaOnlineOpremu = imaOnlineOpremu;
+                if (kapacitet != null) resurs.Kapacitet = kapacitet;
+                if (imaProjektor != null) resurs.ImaProjektor = imaProjektor;
+                if (imaTV != null) resurs.ImaTV = imaTV;
+                if (imaTablu != null) resurs.ImaTablu = imaTablu;
+                if (imaOnlineOpremu != null) resurs.ImaOnlineOpremu = imaOnlineOpremu;
             }
             else
             {
-                if (kapacitet != null || imaProjektor != null || imaTV != null || imaTablu != null || imaOnlineOpremu != null)
+                // Za Sto — oprema i kapacitet nisu dozvoljeni (moraju biti NULL u bazi)
+                // Checkboxovi u GUI su uvek bool? — proveravamo == true jer false/null su oba OK
+                if (kapacitet != null || imaProjektor == true || imaTV == true || imaTablu == true || imaOnlineOpremu == true)
                 {
                     notifikacija("Kapacitet, imaProjektor, imaTV, imaTablu i imaOnlineOpremu mogu biti postavljeni samo za resurse koji nisu tipa Sto");
                     return false;
@@ -69,12 +66,12 @@ namespace CoWorkingManager.Logika.Servisi
                 PodtipStola? podTip = null;
                 if (!string.IsNullOrWhiteSpace(podTipStola))
                 {
-                    podTip = Enum.Parse<PodtipStola>(podTipStola);
                     if (!Enum.IsDefined(typeof(PodtipStola), podTipStola))
                     {
                         notifikacija("Nevalidan podtip stola");
                         return false;
                     }
+                    podTip = Enum.Parse<PodtipStola>(podTipStola);
                 }
                 resurs.PodtipStola = podTip;
             }
@@ -147,20 +144,13 @@ namespace CoWorkingManager.Logika.Servisi
             }
             else
             {
-                if (kapacitet != null || imaProjektor != null || imaTV != null || imaTablu != null || imaOnlineOpremu != null)
+                if (kapacitet != null || imaProjektor == true || imaTV == true || imaTablu == true || imaOnlineOpremu == true)
                 {
                     notifikacija("Kapacitet, imaProjektor, imaTV, imaTablu i imaOnlineOpremu mogu biti postavljeni samo za resurse koji nisu tipa Sto");
                     return false;
                 }
                 if (!string.IsNullOrWhiteSpace(podTipStola))
-                {
-                    if (resurs.TipResursa != TipResursa.Sto)
-                    {
-                        notifikacija("Podtip stola moze biti postavljen samo za resurse tipa Sto");
-                        return false;
-                    }
                     resurs.PodtipStola = Enum.Parse<PodtipStola>(podTipStola);
-                }
             }
             if (_fasada.Resursi.Azuriraj(resurs))
             {
