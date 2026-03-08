@@ -7,8 +7,12 @@ namespace CoWorkingManager.UI.Mediator
     public class LokacijeMediator : IMediator
     {
         private LokacijeWindow lokacije;
+        private GlavniMediator glavniMediator;
 
         public void SetLokacije(LokacijeWindow w) => lokacije = w;
+
+        // Referenca na GlavniMediator potrebna da bi mogli da otvorimo ResursiWindow sa izabranom lokacijom
+        public void SetGlavniMediator(GlavniMediator gm) => glavniMediator = gm;
 
         public void Notify(Window sender, string eventCode)
         {
@@ -54,6 +58,11 @@ namespace CoWorkingManager.UI.Mediator
                         lokacije.Uspesno.Visibility = Visibility.Visible;
                     else
                         lokacije.Neuspesno.Visibility = Visibility.Visible;
+                    break;
+
+                case "IzaberiLokaciju":
+                    if (lokacije.IzabranaNazivLokacije != null)
+                        glavniMediator.Notify(lokacije, "Otvori_ResurseSaLokacijom");
                     break;
             }
         }

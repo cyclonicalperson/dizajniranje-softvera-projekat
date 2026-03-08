@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Lokacije"
         Height="650"
-        Width="1000"
+        Width="1100"
         Background="#F4F6F9"
         Closed="Window_Closed">
 
@@ -60,6 +60,22 @@
                         <DataGridTextColumn Header="Broj radnih mesta" Binding="{Binding UkupnoResursa}"/>
                         <DataGridTextColumn Header="Rezervisanih" Binding="{Binding ZauzetihResursa}"/>
                         <DataGridTextColumn Header="Zauzetost (%)" Binding="{Binding ProcenatZauzetosti}"/>
+
+                        <!--
+                            Dugme "Izaberi" u svakom redu tabele.
+                            Click handler IzaberiLokaciju_Click čita DataContext (StatistikaZauzetosti)
+                            da bi saznao naziv lokacije, zatim obaveštava mediator.
+                        -->
+                        <DataGridTemplateColumn Header="Aktivna lokacija">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Izaberi"
+                                            Width="80"
+                                            Margin="2"
+                                            Click="IzaberiLokaciju_Click"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
                     </DataGrid.Columns>
 

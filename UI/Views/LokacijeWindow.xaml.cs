@@ -2,9 +2,10 @@
 using CoWorkingManager.Mediator;
 using CoWorkingManager.Modeli;
 using CoWorkingManager.UI.Mediator;
-using System.Windows;
-using System.IO;
 using CoWorkingManager.Podaci.Repozitorijumi;
+using System.Windows;
+using System.Windows.Controls;
+using System.IO;
 
 namespace CoWorkingManager.UI.Views
 {
@@ -16,6 +17,9 @@ namespace CoWorkingManager.UI.Views
 
         List<StatistikaZauzetosti>? StatistikeZauzetosti;
         List<Lokacija>? Lokacije;
+
+        // Čuva ime lokacije koja je izabrana klikom na "Izaberi" dugme u tabeli
+        public string? IzabranaNazivLokacije { get; private set; }
 
         public LokacijeWindow(GlavniMediator mediator, LokacijeMediator lokacijeMediator)
         {
@@ -30,6 +34,7 @@ namespace CoWorkingManager.UI.Views
         {
             Pretraga.Visibility = Visibility.Collapsed;
             Izmena.Visibility = Visibility.Collapsed;
+            IzabranaNazivLokacije = null;
             base.Show();
         }
 
@@ -67,6 +72,16 @@ namespace CoWorkingManager.UI.Views
             {
                 return lokacijaServisProxy.obrisiLokaciju(NazivLokacije);
             }
+        }
+
+        private void IzaberiLokaciju_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)sender;
+            StatistikaZauzetosti? stat = btn.DataContext as StatistikaZauzetosti;
+            if (stat == null) return;
+
+            IzabranaNazivLokacije = stat.Lokacija.Ime;
+            lokacijeMediator.Notify(this, "IzaberiLokaciju");
         }
 
         private void Pretraga_Click(object sender, RoutedEventArgs e)

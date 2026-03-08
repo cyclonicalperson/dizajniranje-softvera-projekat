@@ -45,9 +45,21 @@
             <StackPanel x:Name="Pretraga"
                         Visibility="Collapsed">
 
+                <!--
+                    Label koji pokazuje aktivnu lokaciju kada je ResursiWindow otvoren
+                    klikom na "Izaberi" iz LokacijeWindow. Skriven je kad nema aktivne lokacije.
+                -->
+                <TextBlock x:Name="AktivnaLokacijaLabel"
+                           FontSize="15"
+                           FontWeight="SemiBold"
+                           Foreground="#1F4E79"
+                           Visibility="Collapsed"
+                           Margin="5 0 5 6"/>
+
                 <ComboBox x:Name="SelResursi_LokCBox"
                           Width="200"
                           Margin="5"
+                          HorizontalAlignment="Left"
                           SelectionChanged="SelResursi_LokCBox_SelectionChanged"/>
 
                 <DataGrid x:Name="TabelaResursa"

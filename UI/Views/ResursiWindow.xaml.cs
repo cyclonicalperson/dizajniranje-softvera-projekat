@@ -28,10 +28,47 @@ namespace CoWorkingManager.UI.Views
             Lanac.Text = configLines[0];
         }
 
+        // Standardno otvaranje bez predodabrane lokacije (npr. iz glavnog menija)
         public new void Show()
         {
+            SelektovanaLokacija = null;
             Pretraga.Visibility = Visibility.Collapsed;
             Izmena.Visibility = Visibility.Collapsed;
+            base.Show();
+        }
+
+        // Otvaranje sa već izabranom lokacijom — poziva se iz GlavniMediator
+        // kad korisnik klikne "Izaberi" u LokacijeWindow
+        public void ShowSaLokacijom(string nazivLokacije)
+        {
+            // Popuni ComboBox lokacijama
+            RefreshPretragaMeni();
+
+            SelektovanaLokacija = nazivLokacije;
+
+            // Prikazi panel pretrage i postavi ComboBox na izabranu lokaciju
+            Pretraga.Visibility = Visibility.Visible;
+            Izmena.Visibility = Visibility.Collapsed;
+            Uspesno.Visibility = Visibility.Collapsed;
+            Neuspesno.Visibility = Visibility.Collapsed;
+
+            // Selektuj ispravnu lokaciju u ComboBoxu
+            foreach (var item in SelResursi_LokCBox.Items)
+            {
+                if (item?.ToString() == SelektovanaLokacija)
+                {
+                    SelResursi_LokCBox.SelectedItem = item;
+                    break;
+                }
+            }
+
+            // Prikazi resurse izabrane lokacije
+            RefreshTable();
+
+            // Prikazi header sa nazivom aktivne lokacije
+            AktivnaLokacijaLabel.Text = $"Aktivna lokacija: {SelektovanaLokacija}";
+            AktivnaLokacijaLabel.Visibility = Visibility.Visible;
+
             base.Show();
         }
 
@@ -40,7 +77,8 @@ namespace CoWorkingManager.UI.Views
             SelResursi_LokCBox.Items.Clear();
             Lokacije = lokacijaServisProxy.dajSve();
             SelResursi_LokCBox.Items.Add("Lokacija");
-            SelektovanaLokacija = "Lokacija";
+            if (SelektovanaLokacija == null)
+                SelektovanaLokacija = "Lokacija";
             foreach (Lokacija x in Lokacije)
                 SelResursi_LokCBox.Items.Add(x.Ime);
             SelResursi_LokCBox.SelectedIndex = 0;
@@ -48,10 +86,9 @@ namespace CoWorkingManager.UI.Views
 
         public void RefreshTable()
         {
-            if (SelektovanaLokacija == "Lokacija")
-                SelektovanaLokacija = null;
+            string? filtriranaLokacija = SelektovanaLokacija == "Lokacija" ? null : SelektovanaLokacija;
 
-            Resursi = resursServisProxy.dajResursePoLokacijiSortiranoPoTipu(SelektovanaLokacija);
+            Resursi = resursServisProxy.dajResursePoLokacijiSortiranoPoTipu(filtriranaLokacija);
             TabelaResursa.ItemsSource = null;
             TabelaResursa.ItemsSource = Resursi;
         }
@@ -94,6 +131,18 @@ namespace CoWorkingManager.UI.Views
             ComboBox comboBox = sender as ComboBox;
             if (comboBox.SelectedItem != null)
                 SelektovanaLokacija = comboBox.SelectedItem.ToString();
+
+            // Ažuriraj label aktivne lokacije
+            if (SelektovanaLokacija != null && SelektovanaLokacija != "Lokacija")
+            {
+                AktivnaLokacijaLabel.Text = $"Aktivna lokacija: {SelektovanaLokacija}";
+                AktivnaLokacijaLabel.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                AktivnaLokacijaLabel.Visibility = Visibility.Collapsed;
+            }
+
             RefreshTable();
         }
 

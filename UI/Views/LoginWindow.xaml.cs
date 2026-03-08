@@ -19,10 +19,10 @@ namespace CoWorkingManager.UI.Views
             {
                 var glavniMediator = new GlavniMediator();
                 var korisniciMediator = new KorisniciMediator();
-                var lokacijeMediator = new LokacijeMediator(); // Novi mediator
-                var tipoviClanstvaMediator = new TipoviClanstvaMediator(); // Novi mediator
-                var resursiMediator = new ResursiMediator(); // Novi mediator
-                var rezervacijeMediator = new RezervacijeMediator(); // Novi mediator
+                var lokacijeMediator = new LokacijeMediator();
+                var tipoviClanstvaMediator = new TipoviClanstvaMediator();
+                var resursiMediator = new ResursiMediator();
+                var rezervacijeMediator = new RezervacijeMediator();
 
                 var glavniMeni = new GlavniWindow(glavniMediator);
                 var korisnici = new KorisniciWindow(glavniMediator, korisniciMediator);
@@ -36,6 +36,9 @@ namespace CoWorkingManager.UI.Views
                 korisniciMediator.SetKorisnici(korisnici);
                 glavniMediator.SetLokacije(lokacije);
                 lokacijeMediator.SetLokacije(lokacije);
+                // NOVO: LokacijeMediator treba referencu na GlavniMediator
+                // da bi mogao da pozove Otvori_ResurseSaLokacijom
+                lokacijeMediator.SetGlavniMediator(glavniMediator);
                 glavniMediator.SetTipoviClanstva(tipoviClanstva);
                 tipoviClanstvaMediator.SetTipoviClanstva(tipoviClanstva);
                 glavniMediator.SetResursi(resursi);
