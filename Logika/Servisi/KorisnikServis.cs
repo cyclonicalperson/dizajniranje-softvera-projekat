@@ -106,7 +106,7 @@ namespace CoWorkingManager.Logika.Servisi
 			{
                 StatusNaloga? status;
                 status = Enum.Parse<StatusNaloga>(noviStatusNaloga);
-                korisnik.StatusNaloga = (StatusNaloga)status; 
+                korisnik.StatusNaloga = (StatusNaloga)status;
 			}
 
 			if (_fasada.Korisnici.Azuriraj(korisnik))
