@@ -53,5 +53,10 @@ namespace CoWorkingManager.Logika.Servisi
             proveriAdmina();
             return _praviLokacijaServis.izmeniLokaciju(ime, adresa, grad, radniSati, maxBrojKorisnika);
         }
+        public Lokacija pronadjiLokaciju(string ime)
+        {
+            proveriAdmina();
+            return _praviLokacijaServis.pronadjiLokaciju(ime);
+        }
     }
 }

@@ -16,18 +16,39 @@ namespace CoWorkingManager.Logika.Servisi
             return resurs;
         }
 
-        public bool dodajResurs(string ime, string imeLokacije, string tipResursa, string? opis)
+        public bool dodajResurs(string ime, string imeLokacije, string tipResursa, 
+            string? opis, string? podTipStola, int? kapacitet, bool? imaProjektor, bool? imaTV, bool? imaTablu, bool? imaOnlineOpremu)
         {
-            Lokacija lokacija = _fasada.Lokacije.DajSve()
-                .FirstOrDefault(l => l.Ime == imeLokacije);
+            Lokacija lokacija = _fasada.Lokacije.DajPoNazivu(imeLokacije);
+            if (lokacija == null)
+            {
+                notifikacija("Dodavanje resursa neuspesno jer lokacija nije pronadjena");
+                return false;
+            }
             TipResursa tip = Enum.Parse<TipResursa>(tipResursa);
+            PodtipStola? podTip = null;
+            if (podTipStola != null && tip != TipResursa.Sto)
+            {
+                notifikacija("Podtip stola moze biti postavljen samo za resurse tipa Sto");
+                return false;
+            }
+            else if (podTipStola != null && tip == TipResursa.Sto)
+            {
+                podTip = podTipStola != null ? Enum.Parse<PodtipStola>(podTipStola) : null;
+            }
             var resurs = new Resurs
             {
                 Ime = ime,
                 LokacijaId = lokacija.Id,
                 Lokacija = lokacija,
                 TipResursa = tip,
-                Opis = opis
+                Opis = opis,
+                PodtipStola = podTip,
+                Kapacitet = kapacitet,
+                ImaProjektor = imaProjektor,
+                ImaTV = imaTV,
+                ImaTablu = imaTablu,
+                ImaOnlineOpremu = imaOnlineOpremu
             };
             if (_fasada.Resursi.Dodaj(resurs))
             {
@@ -51,7 +72,8 @@ namespace CoWorkingManager.Logika.Servisi
             return false;
         }
 
-        public bool izmeniResurs(string ime, string? imeLokacije, string? tipResursa, string? opis)
+        public bool izmeniResurs(string ime, string? imeLokacije, string? tipResursa, 
+            string? opis, string? podTipStola, int? kapacitet, bool? imaProjektor, bool? imaTV, bool? imaTablu, bool? imaOnlineOpremu)
         {
             var resurs = _fasada.Resursi.DajSve()
                 .FirstOrDefault(r => r.Ime == ime);
@@ -60,16 +82,37 @@ namespace CoWorkingManager.Logika.Servisi
                 notifikacija("Izmena resursa neuspesna jer resurs nije pronadjen"); 
                 return false; 
             }
-            Lokacija lokacija = _fasada.Lokacije.DajSve()
-                .FirstOrDefault(l => l.Ime == imeLokacije);
-            TipResursa tip = tipResursa != null ? Enum.Parse<TipResursa>(tipResursa) : resurs.TipResursa;
-            if (imeLokacije != null) 
-            { 
-                resurs.LokacijaId = lokacija.Id; 
+            if(imeLokacije != null)
+            {
+                var lokacija = _fasada.Lokacije.DajPoNazivu(imeLokacije);
+                if (lokacija == null)
+                {
+                    notifikacija("Izmena resursa neuspesna jer lokacija nije pronadjena");
+                    return false;
+                }
+                resurs.LokacijaId = lokacija.Id;
                 resurs.Lokacija = lokacija;
             }
-            if(tipResursa != null) resurs.TipResursa = tip;
+            if (tipResursa != null) 
+            {
+                TipResursa tip = Enum.Parse<TipResursa>(tipResursa);
+                resurs.TipResursa = tip; 
+            }
             if(opis != null) resurs.Opis = opis;
+            if(podTipStola != null)
+            {
+                if (resurs.TipResursa != TipResursa.Sto)
+                {
+                    notifikacija("Podtip stola moze biti postavljen samo za resurse tipa Sto");
+                    return false;
+                }
+                resurs.PodtipStola = Enum.Parse<PodtipStola>(podTipStola);
+            }
+            if(kapacitet != null) resurs.Kapacitet = kapacitet;
+            if (imaProjektor != null) resurs.ImaProjektor = imaProjektor;
+            if (imaTV != null) resurs.ImaTV = imaTV;
+            if (imaTablu != null) resurs.ImaTablu = imaTablu;
+            if (imaOnlineOpremu != null) resurs.ImaOnlineOpremu = imaOnlineOpremu;
             if (_fasada.Resursi.Azuriraj(resurs))
             {
                 notifikacija("Izmenjen resurs");
