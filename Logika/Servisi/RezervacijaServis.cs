@@ -23,39 +23,54 @@ namespace CoWorkingManager.Logika.Servisi
             return rezervacije;
         }
 
-        public bool kreirajRezervaciju(string ime, string prezime, string resursIme, string pocetak, string kraj)
+        public bool kreirajRezervaciju(Korisnik korisnik, Resurs resurs, DateTime? pocetak, DateTime? kraj)
         {
-            var korisnik = _fasada.Korisnici.DajSve()
-                .FirstOrDefault(k => k.Ime == ime && k.Prezime == prezime);
-            if (korisnik == null)
+            if (pocetak == null || kraj == null)
             {
-                notifikacija("Korisnik nije pronadjen");
+                notifikacija("Kreiranje rezervacije neuspesno — pocetak i kraj ne smeju biti null");
                 return false;
             }
-            var lokacijaObj = _fasada.Lokacije.DajPoId(_fasada.Resursi.DajSve().FirstOrDefault(r => r.Ime == resursIme)?.LokacijaId ?? -1);
-            if (lokacijaObj == null)
+            if (pocetak >= kraj)
             {
-                notifikacija("Lokacija nije pronadjena");
+                notifikacija("Kraj rezervacije mora biti posle početka.");
                 return false;
             }
-            var resurs = _fasada.Resursi.DajSve()
-                .FirstOrDefault(r => r.Ime == resursIme && r.LokacijaId == lokacijaObj.Id);
-            if (resurs == null)
+            if (pocetak.Value.Date != kraj.Value.Date)
             {
-                notifikacija("Resurs nije pronadjen");
+                notifikacija("Nije moguće imati rezervaciju koja ne traje u istom danu.");
                 return false;
             }
-            DateTime pocetakDt, krajDt;
-            pocetakDt = DateTime.Parse(pocetak);
-            krajDt = DateTime.Parse(kraj);
-            Rezervacija rezervacija = new Rezervacija();
-            rezervacija.Korisnik = korisnik;
-            rezervacija.Resurs = resurs;
-            rezervacija.PocetakVreme = pocetakDt;
-            rezervacija.KrajVreme = krajDt;
-            if (!validacijaClanstva(korisnik, resurs, pocetakDt, krajDt)) return false;
-            if (!validacijaTermina(resurs, pocetakDt, krajDt)) return false;
-            if (!validacijaRadnogVremena(lokacijaObj, pocetakDt, krajDt)) return false;
+            var lokacija = _fasada.Lokacije.DajPoId(resurs.LokacijaId);
+            if (lokacija == null)
+            {
+                notifikacija("Kreiranje rezervacije neuspesno — lokacija resursa nije pronadjena");
+                return false;
+            }
+
+            if (!validacijaClanstva(korisnik, resurs, pocetak.Value, kraj.Value))
+            {
+                notifikacija("Kreiranje rezervacije neuspesno — nije prosla validacija clanstva");
+                return false;
+            }
+            if (!validacijaTermina(resurs, pocetak.Value, kraj.Value))
+            {
+                notifikacija("Kreiranje rezervacije neuspesno — termin nije slobodan");
+                return false;
+            }
+            if (!validacijaRadnogVremena(lokacija, pocetak.Value, kraj.Value))
+            {
+                notifikacija("Kreiranje rezervacije neuspesno — nije u radnom vremenu lokacije");
+                return false;
+            }
+
+            Rezervacija rezervacija = new RezervacijaBuilder()
+                .ZaKorisnika(korisnik.Id)
+                .NaResursu(resurs.Id)
+                .Od(pocetak.Value)
+                .Do(kraj.Value)
+                .SaStatusom(StatusRezervacije.Aktivna)
+                .Build();
+
             if (_fasada.Rezervacije.Dodaj(rezervacija))
             {
                 notifikacija("Nova rezervacija je kreirana");
@@ -92,15 +107,37 @@ namespace CoWorkingManager.Logika.Servisi
             }
             if (pocetak == null) pocetak = rezervacija.PocetakVreme;
             if (kraj == null) kraj = rezervacija.KrajVreme;
-            if (!validacijaClanstva(korisnik, resurs, (DateTime)pocetak, (DateTime)kraj)) return false;
-            if (!validacijaTermina(resurs, (DateTime)pocetak, (DateTime)kraj)) return false;
+            if (pocetak >= kraj)
+            {
+                notifikacija("Kraj rezervacije mora biti posle početka.");
+                return false;
+            }
+            if (pocetak.Value.Date != kraj.Value.Date)
+            {
+                notifikacija("Nije moguće imati rezervaciju koja ne traje u istom danu.");
+                return false;
+            }
+            if (!validacijaClanstva(korisnik, resurs, (DateTime)pocetak, (DateTime)kraj))
+            { 
+                notifikacija("Nije prosla validacija clanstva");
+                return false; 
+            }
+            if (!validacijaTermina(resurs, (DateTime)pocetak, (DateTime)kraj))
+            { 
+                notifikacija("Termin nije slobodan");
+                return false; 
+            }
             var lokacijaObj = _fasada.Lokacije.DajPoId(resurs.LokacijaId);
             if (lokacijaObj == null)
             {
                 notifikacija("Lokacija nije pronadjena");
                 return false;
             }
-            if (!validacijaRadnogVremena(lokacijaObj, (DateTime)pocetak, (DateTime)kraj)) return false;
+            if (!validacijaRadnogVremena(lokacijaObj, (DateTime)pocetak, (DateTime)kraj)) 
+            {
+                notifikacija("Nije u radnom vremenu lokacije");
+                return false; 
+            }
             if (pocetak != null)
                 rezervacija.PocetakVreme = (DateTime)pocetak;
             if (kraj != null)

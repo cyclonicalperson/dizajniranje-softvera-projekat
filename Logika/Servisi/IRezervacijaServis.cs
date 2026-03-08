@@ -6,7 +6,7 @@ namespace CoWorkingManager.Logika.Servisi
     {
         Rezervacija getRezervacija(int id);
         List<Rezervacija> dajSve();
-        bool kreirajRezervaciju(string ime, string prezime, string resursIme, string pocetak, string kraj);
+        bool kreirajRezervaciju(Korisnik korisnik, Resurs resurs, DateTime? pocetak, DateTime? kraj);
         bool otkaziRezervaciju(Korisnik korisnik, Resurs resurs);
         bool izmeniRezervaciju(Korisnik korisnik, Resurs resurs, DateTime? pocetak, DateTime? kraj);
         List<Rezervacija> dajRezervacijeKorisnika(string? imePrezime);
