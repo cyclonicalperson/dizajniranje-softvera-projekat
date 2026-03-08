@@ -91,7 +91,6 @@ namespace CoWorkingManager.Logika.Servisi
 				notifikacija("Izmena korisnika neuspesna jer korisnik nije pronadjen");
 				return false;
 			}
-           
             if (noviEmail != null)                  korisnik.Email = noviEmail;
 			if (noviTelefon != null)                korisnik.Telefon = noviTelefon;
 			if (noviTipClanstva != null) 
@@ -125,7 +124,7 @@ namespace CoWorkingManager.Logika.Servisi
 			int? lokacijaId = null;
 			if (!string.IsNullOrEmpty(lokacija))
 			{
-				var l = _fasada.Lokacije.DajSve().FirstOrDefault(x => x.Ime == lokacija);
+				var l = _fasada.Lokacije.DajPoNazivu(lokacija);
 				if (l != null)
 					lokacijaId = l.Id;
 			}

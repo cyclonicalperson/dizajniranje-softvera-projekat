@@ -96,13 +96,6 @@ namespace CoWorkingManager.Logika.Servisi
                 notifikacija("Korisnik nije pronadjen");
                 return false;
             }
-            var resurs = _fasada.Resursi.DajSve()
-                .FirstOrDefault(r => r.Ime == resursIme);
-            if (resurs == null)
-            {
-                notifikacija("Resurs nije pronadjen");
-                return false;
-            }
             var rezervacija = _fasada.Rezervacije.DajSve()
                 .FirstOrDefault(r => r.Korisnik.Id == korisnik.Id && r.StatusRezervacije == StatusRezervacije.Aktivna);
             if (rezervacija == null)
@@ -110,13 +103,60 @@ namespace CoWorkingManager.Logika.Servisi
                 notifikacija("Rezervacija nije pronadjena");
                 return false;
             }
-            if (!validacijaClanstva(korisnik, resurs, DateTime.Parse(pocetak), DateTime.Parse(kraj))) return false;
-            if (!validacijaTermina(resurs, DateTime.Parse(pocetak), DateTime.Parse(kraj))) return false;
-            if(!validacijaRadnogVremena(_fasada.Lokacije.DajPoId(resurs.LokacijaId), DateTime.Parse(pocetak), DateTime.Parse(kraj))) return false;
-            rezervacija.Korisnik = korisnik;
-            rezervacija.Resurs = resurs;
-            rezervacija.KorisnikId = korisnik.Id;
-            rezervacija.ResursId = resurs.Id;
+            var resurs = new Resurs();
+            var lokacijaObj = new Lokacija();
+            if (resursIme != null)
+            {
+                resurs = _fasada.Resursi.DajSve()
+                .FirstOrDefault(r => r.Ime == resursIme);
+                if (resurs == null)
+                {
+                    notifikacija("Resurs nije pronadjen");
+                    return false;
+                }
+                lokacijaObj = _fasada.Lokacije.DajPoId(resurs.LokacijaId);
+                if (lokacijaObj == null)
+                {
+                    notifikacija("Lokacija nije pronadjena");
+                    return false;
+                }
+            }
+            else
+            {
+                resurs = rezervacija.Resurs;
+                lokacijaObj = _fasada.Lokacije.DajPoId(resurs.LokacijaId);
+                if (lokacijaObj == null)
+                {
+                    notifikacija("Lokacija nije pronadjena");
+                    return false;
+                }
+            }
+            var pocetakDt = new DateTime();
+            if (pocetak != null)
+            {
+                pocetakDt = DateTime.Parse(pocetak);
+            }
+            else
+            {
+                pocetakDt = rezervacija.PocetakVreme;
+            }
+            var krajDt = new DateTime();
+            if (kraj != null)
+            {
+                krajDt = DateTime.Parse(kraj);
+            }
+            else
+            {
+                krajDt = rezervacija.KrajVreme;
+            }
+            if (!validacijaClanstva(korisnik, resurs, pocetakDt, krajDt)) return false;
+            if (!validacijaTermina(resurs, pocetakDt, krajDt)) return false;
+            if (!validacijaRadnogVremena(lokacijaObj, pocetakDt, krajDt)) return false;
+            if (resursIme != null) 
+            {
+                rezervacija.Resurs = resurs;
+                rezervacija.ResursId = resurs.Id;
+            }
             if (pocetak != null)
                 rezervacija.PocetakVreme = DateTime.Parse(pocetak);
             if (kraj != null)

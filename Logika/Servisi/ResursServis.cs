@@ -63,6 +63,11 @@ namespace CoWorkingManager.Logika.Servisi
         {
             var resurs = _fasada.Resursi.DajSve()
                 .FirstOrDefault(r => r.Ime == ime);
+            if (resurs == null) 
+            { 
+                notifikacija("Brisanje resursa neuspesno jer resurs nije pronadjen"); 
+                return false;
+            }
             if (_fasada.Resursi.Obrisi(resurs.Id))
             {
                 notifikacija("Obrisan resurs");
