@@ -7,12 +7,12 @@ namespace CoWorkingManager.Logika.Servisi
 	{
 		Korisnik? getKorisnik(int id);
 		bool dodajKorisnika(string ime, string prezime, string email, string? telefon,
-			string tipClanstva, string datumPocetkaClanstva, string datumKrajaClanstva,
+			string tipClanstva, DateOnly datumPocetkaClanstva, DateOnly datumKrajaClanstva,
 			string statusNaloga);
 		bool obrisiKorisnika(string ime, string prezime);
 		bool izmeniKorisnika(string ime, string prezime, string? noviEmail, string? noviTelefon,
-			string? noviTipClanstva, string? noviDatumPocetkaClanstva,
-			string? noviDatumKrajaClanstva, string? noviStatusNaloga);
+			string? noviTipClanstva, DateOnly? noviDatumPocetkaClanstva,
+			DateOnly? noviDatumKrajaClanstva, string? noviStatusNaloga);
 		List<Korisnik> dajKorisnike(string? lokacija, string? tipClanstva, string? statusNaloga);
 	}
 }
