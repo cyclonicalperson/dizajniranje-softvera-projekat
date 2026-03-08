@@ -16,6 +16,8 @@ namespace CoWorkingManager.UI.Views
         private GlavniMediator mediator;
         private RezervacijeMediator rezervacijeMediator;
         private CoworkingFasada facade = CoworkingFasada.DajInstancu();
+        private static KorisnikServis korisnikServis = new KorisnikServis();
+        private KorisnikServisProxy korisnikServisProxy = new KorisnikServisProxy(korisnikServis);
         private static RezervacijaServis rezervacijaServis = new RezervacijaServis();
         private RezervacijaServisProxy rezervacijaServisProxy = new RezervacijaServisProxy(rezervacijaServis);
 
@@ -72,7 +74,7 @@ namespace CoWorkingManager.UI.Views
             if (SelektovaniKorisnik == "Korisnik")
                 SelektovaniKorisnik = null;
 
-            //Rezervacije = facade.Rezervacije.DajPoKorisniku(SelektovaniKorisnik);
+            //Rezervacije = rezervacijaServisProxy.dajRezervacijeKorisnika(korisnikServisProxy);
             TabelaRezervacijaKorisnik.ItemsSource = null;
             TabelaRezervacijaKorisnik.ItemsSource = Rezervacije;
         }
@@ -85,7 +87,7 @@ namespace CoWorkingManager.UI.Views
             TabelaRezervacijaDanLokacija.ItemsSource = null;
             if (SelektovaniDan != null && SelektovanaLokacija != null)
             {
-                Rezervacije = rezervacijaServis.dajRezervacijePoLokacijiIDanu(facade.Lokacije.DajPoNazivu(SelektovanaLokacija), (DateTime)SelektovaniDan);
+                Rezervacije = rezervacijaServisProxy.dajRezervacijePoLokacijiIDanu(facade.Lokacije.DajPoNazivu(SelektovanaLokacija), (DateTime)SelektovaniDan);
                 TabelaRezervacijaDanLokacija.ItemsSource = Rezervacije;
             }
         }
