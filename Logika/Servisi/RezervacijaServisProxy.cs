@@ -3,9 +3,9 @@ using CoWorkingManager.Modeli;
 
 namespace CoWorkingManager.Logika.Servisi
 {
-	public class RezervacijaServisProxy
-	{
-		private readonly RezervacijaServis _praviRezervacijaServis;
+    public class RezervacijaServisProxy
+    {
+        private readonly RezervacijaServis _praviRezervacijaServis;
         public RezervacijaServisProxy(RezervacijaServis praviRezervacijaServis)
         {
             _praviRezervacijaServis = praviRezervacijaServis;
@@ -26,22 +26,22 @@ namespace CoWorkingManager.Logika.Servisi
                 throw new UnauthorizedAccessException("Administrator nije prijavljen.");
         }
         public Rezervacija getRezervacija(int id)
-		{
+        {
             proveriAdmina();
             return _praviRezervacijaServis.getRezervacija(id);
-		}
+        }
         public bool kreirajRezervaciju(string ime, string prezime, string resursIme, string pocetak, string kraj)
-		{
-            proveriAdmina();   
+        {
+            proveriAdmina();
             return _praviRezervacijaServis.kreirajRezervaciju(ime, prezime, resursIme, pocetak, kraj);
         }
-		public bool otkaziRezervaciju(string ime, string prezime, string resursIme, string pocetak, string kraj)
-		{
+        public bool otkaziRezervaciju(string ime, string prezime, string resursIme, string pocetak, string kraj)
+        {
             proveriAdmina();
             return _praviRezervacijaServis.otkaziRezervaciju(ime, prezime, resursIme, pocetak, kraj);
         }
         public bool izmeniRezervaciju(string ime, string prezime, string? resursIme, string? pocetak, string? kraj)
-		{
+        {
             proveriAdmina();
             return _praviRezervacijaServis.izmeniRezervaciju(ime, prezime, resursIme, pocetak, kraj);
         }
@@ -50,7 +50,7 @@ namespace CoWorkingManager.Logika.Servisi
             proveriAdmina();
             return _praviRezervacijaServis.dajRezervacijeKorisnika(korisnik);
         }
-        public List<Rezervacija> dajRezervacijePoLokacijiIDanu(Lokacija lokacija, DateTime datum)
+        public List<Rezervacija> dajRezervacijePoLokacijiIDanu(Lokacija? lokacija, DateTime? datum)
         {
             proveriAdmina();
             return _praviRezervacijaServis.dajRezervacijePoLokacijiIDanu(lokacija, datum);
