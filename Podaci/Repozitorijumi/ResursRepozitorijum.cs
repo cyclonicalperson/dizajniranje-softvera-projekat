@@ -129,7 +129,10 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
         // Vraca false ako resurs ne postoji
         public bool Obrisi(int id)
         {
-            var resurs = _kontekst.Resursi.Find(id);
+            var resurs = _kontekst.Resursi
+                .Include(r => r.Rezervacije)
+                .FirstOrDefault(r => r.Id == id);
+
             if (resurs == null)
                 return false;
 

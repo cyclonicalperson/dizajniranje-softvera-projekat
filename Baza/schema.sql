@@ -91,7 +91,7 @@ CREATE TABLE Rezervacije (
 
     CONSTRAINT FK_Rezervacije_Resursi
         FOREIGN KEY (ResursId)
-        REFERENCES Resursi(Id),
+        REFERENCES Resursi(Id) ON DELETE CASCADE,
 
     CONSTRAINT CHK_Rezervacija_Vreme
         CHECK (KrajVreme > PocetakVreme)

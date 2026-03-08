@@ -71,7 +71,11 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
         // Vraca false ako lokacija ne postoji
         public bool Obrisi(int id)
         {
-            var lokacija = kontekst.Lokacije.Find(id);
+            var lokacija = kontekst.Lokacije
+                .Include(l => l.Resursi)
+                    .ThenInclude(r => r.Rezervacije)
+                .FirstOrDefault(l => l.Id == id);
+
             if (lokacija == null)
                 return false;
 

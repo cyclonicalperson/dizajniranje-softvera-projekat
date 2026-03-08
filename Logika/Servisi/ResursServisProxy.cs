@@ -30,7 +30,7 @@ namespace CoWorkingManager.Logika.Servisi
             if (AdminSession.Instance.Admin == null)
                 throw new UnauthorizedAccessException("Administrator nije prijavljen.");
         }
-        Resurs getResurs(int id)
+        public Resurs getResurs(int id)
         {
             proveriAdmina();
             return _praviResursServis.getResurs(id);

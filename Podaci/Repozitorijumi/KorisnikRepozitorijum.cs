@@ -117,10 +117,13 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
         }
 
         // Brise korisnika po ID-u
-        // Vraća false ako korisnik ne postoji
+        // Vraca false ako korisnik ne postoji
         public bool Obrisi(int id)
         {
-            var korisnik = kontekst.Korisnici.Find(id);
+            var korisnik = kontekst.Korisnici
+                .Include(k => k.Rezervacije)
+                .FirstOrDefault(k => k.Id == id);
+
             if (korisnik == null)
                 return false;
 

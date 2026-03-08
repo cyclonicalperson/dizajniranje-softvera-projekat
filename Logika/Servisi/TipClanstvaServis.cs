@@ -9,7 +9,12 @@ namespace CoWorkingManager.Logika.Servisi
 
 		public bool dodajTipClanstva(string ime, decimal cena, int trajanje, int maxSatiPoMesecu, bool pristupSali, int? brojSatiUSaliMesecno)
 		{
-			var tipClanstva = new TipClanstva
+			if (brojSatiUSaliMesecno != null && !pristupSali)
+			{
+				notifikacija("Broj sati u sali mesecno moze biti postavljen samo ako tip clanstva ima pristup sali");
+				return false;
+            }
+            var tipClanstva = new TipClanstva
 			{
 				Ime = ime,
 				Cena = cena,

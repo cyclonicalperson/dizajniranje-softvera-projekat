@@ -25,22 +25,22 @@ namespace CoWorkingManager.Logika.Servisi
             if (AdminSession.Instance.Admin == null)
                 throw new UnauthorizedAccessException("Administrator nije prijavljen.");
         }
-        Rezervacija getRezervacija(int id)
+        public Rezervacija getRezervacija(int id)
 		{
             proveriAdmina();
             return _praviRezervacijaServis.getRezervacija(id);
 		}
-		bool kreirajRezervaciju(string ime, string prezime, string resursIme, string pocetak, string kraj)
+        public bool kreirajRezervaciju(string ime, string prezime, string resursIme, string pocetak, string kraj)
 		{
             proveriAdmina();   
             return _praviRezervacijaServis.kreirajRezervaciju(ime, prezime, resursIme, pocetak, kraj);
         }
-		bool otkaziRezervaciju(string ime, string prezime, string resursIme, string pocetak, string kraj)
+		public bool otkaziRezervaciju(string ime, string prezime, string resursIme, string pocetak, string kraj)
 		{
             proveriAdmina();
             return _praviRezervacijaServis.otkaziRezervaciju(ime, prezime, resursIme, pocetak, kraj);
         }
-        bool izmeniRezervaciju(string ime, string prezime, string? resursIme, string? pocetak, string? kraj)
+        public bool izmeniRezervaciju(string ime, string prezime, string? resursIme, string? pocetak, string? kraj)
 		{
             proveriAdmina();
             return _praviRezervacijaServis.izmeniRezervaciju(ime, prezime, resursIme, pocetak, kraj);
