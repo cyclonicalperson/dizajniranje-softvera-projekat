@@ -15,7 +15,8 @@ namespace CoWorkingManager.UI.Views
         private GlavniMediator mediator;
         private ResursiMediator resursiMediator;
         private CoworkingFasada facade = CoworkingFasada.DajInstancu();
-        private ResursServis resursServis = new ResursServis(); // Pretpostavljamo servis
+        private static ResursServis resursServis = new ResursServis();
+        private ResursServisProxy resursServisProxy = new ResursServisProxy(resursServis);
 
         private string SelektovanaLokacija;
         List<Lokacija> Lokacije;
@@ -75,15 +76,15 @@ namespace CoWorkingManager.UI.Views
 
             if (op == 0) // Dodaj
             {
-                return false;//resursServis.DodajResurs(Naziv, TipResursa, Opis, LokacijaID, ImaProjektor, ImaTV, ImaTablu, ImaOnlineOpremu, Kapacitet);
+                return false;//resursServisProxy.DodajResurs(Naziv, TipResursa, Opis, LokacijaID, ImaProjektor, ImaTV, ImaTablu, ImaOnlineOpremu, Kapacitet);
             }
             else if (op == 1) // Izmeni
             {
-                return false;//resursServis.IzmeniResurs(Naziv, TipResursa, Opis, LokacijaID, ImaProjektor, ImaTV, ImaTablu, ImaOnlineOpremu, Kapacitet);
+                return false;//resursServisProxy.IzmeniResurs(Naziv, TipResursa, Opis, LokacijaID, ImaProjektor, ImaTV, ImaTablu, ImaOnlineOpremu, Kapacitet);
             }
             else // Obrisi
             {
-                return false;//resursServis.ObrisiResurs(Naziv, LokacijaID);
+                return false;//resursServisProxy.ObrisiResurs(Naziv, LokacijaID);
             }
         }
 

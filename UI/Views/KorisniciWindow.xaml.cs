@@ -16,7 +16,8 @@ namespace CoWorkingManager.UI.Views
         private GlavniMediator mediator;
         private KorisniciMediator korisniciMediator;
         private CoworkingFasada facade = CoworkingFasada.DajInstancu();
-        KorisnikServis korisnikServis = new KorisnikServis();
+        private static KorisnikServis korisnikServis = new KorisnikServis();
+        private KorisnikServisProxy korisnikServisProxy = new KorisnikServisProxy(korisnikServis);
 
         private string SelektovanaLokacija;
         private string SelektovanTipClanstva;
@@ -95,24 +96,24 @@ namespace CoWorkingManager.UI.Views
 
         public bool Update(int op)
         {
-            string Ime = TextBoxIme.Text;
-            string Prezime = TextBoxPrezime.Text;
-            string Email = TextBoxEmail.Text;
-            string BrojTelefona = TextBoxBrojTelefona.Text;
-            string TipClanstva = TextBoxTipClanstva.Text;
+            string? Ime = TextBoxIme.Text;
+            string? Prezime = TextBoxPrezime.Text;
+            string? Email = TextBoxEmail.Text;
+            string? BrojTelefona = TextBoxBrojTelefona.Text;
+            string? TipClanstva = TextBoxTipClanstva.Text;
             DateTime? PocetakClanstva = TextBoxDatumPocetkaClanstva.SelectedDate;
             DateOnly? DatumPocetkaClanstva = null;
-            if (PocetakClanstva == null)
+            if (PocetakClanstva != null)
             {
-                DatumPocetkaClanstva = DateOnly.FromDateTime(TextBoxDatumPocetkaClanstva.SelectedDate.Value);
+                DatumPocetkaClanstva = DateOnly.FromDateTime(PocetakClanstva.Value);
             }
-            DateTime? IstekClanstva = TextBoxDatumPocetkaClanstva.SelectedDate;
+            DateTime? IstekClanstva = TextBoxDatumIstekaClanstva.SelectedDate;
             DateOnly? DatumIstekaClanstva = null;
-            if (IstekClanstva == null)
+            if (IstekClanstva != null)
             {
-                DatumIstekaClanstva = DateOnly.FromDateTime(TextBoxDatumIstekaClanstva.SelectedDate.Value);
+                DatumIstekaClanstva = DateOnly.FromDateTime(IstekClanstva.Value);
             }
-            string StatusNaloga = TextBoxStatusNaloga.Text;
+            string? StatusNaloga = TextBoxStatusNaloga.Text;
 
             if (string.IsNullOrWhiteSpace(Ime) || string.IsNullOrWhiteSpace(Prezime))
                 return false;
@@ -124,15 +125,15 @@ namespace CoWorkingManager.UI.Views
                     return false;
                 else
 
-                    return korisnikServis.dodajKorisnika(Ime, Prezime, Email, BrojTelefona, TipClanstva, (DateOnly)DatumPocetkaClanstva, (DateOnly)DatumIstekaClanstva, StatusNaloga);
+                    return korisnikServisProxy.dodajKorisnika(Ime, Prezime, Email, BrojTelefona, TipClanstva, (DateOnly)DatumPocetkaClanstva, (DateOnly)DatumIstekaClanstva, StatusNaloga);
             }
             else if (op == 1) // Izmeni
             {
-                return korisnikServis.izmeniKorisnika(Ime, Prezime, Email, BrojTelefona, TipClanstva, DatumPocetkaClanstva, DatumIstekaClanstva, StatusNaloga);
+                return korisnikServisProxy.izmeniKorisnika(Ime, Prezime, Email, BrojTelefona, TipClanstva, DatumPocetkaClanstva, DatumIstekaClanstva, StatusNaloga);
             }
             else // Obrisi
             {
-                return korisnikServis.obrisiKorisnika(Ime, Prezime);
+                return korisnikServisProxy.obrisiKorisnika(Ime, Prezime);
             }
         }
 

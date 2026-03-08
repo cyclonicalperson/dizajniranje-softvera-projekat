@@ -16,7 +16,8 @@ namespace CoWorkingManager.UI.Views
         private GlavniMediator mediator;
         private RezervacijeMediator rezervacijeMediator;
         private CoworkingFasada facade = CoworkingFasada.DajInstancu();
-        private RezervacijaServis rezervacijaServis = new RezervacijaServis(); // Pretpostavljamo servis
+        private static RezervacijaServis rezervacijaServis = new RezervacijaServis();
+        private RezervacijaServisProxy rezervacijaServisProxy = new RezervacijaServisProxy(rezervacijaServis);
 
         private string SelektovaniKorisnik;
         private DateTime? SelektovaniDan;

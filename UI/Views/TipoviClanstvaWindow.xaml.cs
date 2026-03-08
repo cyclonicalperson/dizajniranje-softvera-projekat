@@ -15,7 +15,8 @@ namespace CoWorkingManager.UI.Views
         private GlavniMediator mediator;
         private TipoviClanstvaMediator tipoviClanstvaMediator;
         private CoworkingFasada facade = CoworkingFasada.DajInstancu();
-        private TipClanstvaServis tipClanstvaServis = new TipClanstvaServis(); // Pretpostavljamo servis
+        private static TipClanstvaServis tipClanstvaServis = new TipClanstvaServis();
+        private TipClanstvaServisProxy tipClanstvaServisProxy = new TipClanstvaServisProxy(tipClanstvaServis);
 
         List<TipClanstva> TipoviClanstva;
 
@@ -60,15 +61,15 @@ namespace CoWorkingManager.UI.Views
 
             if (op == 0) // Dodaj
             {
-                return false;//tipClanstvaServis.dodajTipClanstva(NazivPaketa, Cena, Trajanje, MaksimalanBrojSati, DozvolaZaSale, BrojSatiZaSale);
+                return false;//tipClanstvaServisProxy.dodajTipClanstva(NazivPaketa, Cena, Trajanje, MaksimalanBrojSati, DozvolaZaSale, BrojSatiZaSale);
             }
             else if (op == 1) // Izmeni
             {
-                return false;//tipClanstvaServis.izmeniTipClanstva(NazivPaketa, Cena, Trajanje, MaksimalanBrojSati, DozvolaZaSale, BrojSatiZaSale);
+                return false;//tipClanstvaServisProxy.izmeniTipClanstva(NazivPaketa, Cena, Trajanje, MaksimalanBrojSati, DozvolaZaSale, BrojSatiZaSale);
             }
             else // Obrisi
             {
-                return false;//tipClanstvaServis.obrisiTipClanstva(NazivPaketa);
+                return false;//tipClanstvaServisProxy.obrisiTipClanstva(NazivPaketa);
             }
         }
 

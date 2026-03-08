@@ -49,11 +49,21 @@ namespace CoWorkingManager.Logika.Servisi
             return _praviKorisnikServis.obrisiKorisnika(ime, prezime);
         }
 
-        public bool izmeniKorisnika(string ime, string prezime, string? noviEmail, string? noviTelefon, string? noviTipClanstva, 
+        public bool izmeniKorisnika(string ime, string prezime, string? noviEmail, string? noviTelefon, string? noviTipClanstva,
             DateOnly? noviDatumPocetkaClanstva, DateOnly? noviDatumKrajaClanstva, string? noviStatusNaloga)
         {
             proveriAdmina();
             return _praviKorisnikServis.izmeniKorisnika(ime, prezime, noviEmail, noviTelefon, noviTipClanstva, noviDatumPocetkaClanstva, noviDatumKrajaClanstva, noviStatusNaloga);
+        }
+        public List<Korisnik> dajKorisnike(string? lokacija, string? tipClanstva, string? statusNaloga)
+        {
+            proveriAdmina();
+            return _praviKorisnikServis.dajKorisnike(lokacija, tipClanstva, statusNaloga);
+        }
+        public List<string> dajStatuseNaloga()
+        {
+            proveriAdmina();
+            return _praviKorisnikServis.dajStatuseNaloga();
         }
     }
 }
