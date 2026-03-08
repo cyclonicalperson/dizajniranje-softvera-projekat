@@ -60,9 +60,9 @@ namespace CoWorkingManager.Logika.Servisi
                 notifikacija("Izmena lokacije neuspesna jer lokacija nije pronadjena");
                 return false;
             }
-            if(adresa != null) lokacija.Adresa = adresa;
-            if(grad != null) lokacija.Grad = grad;
-            if(radniSati != null) lokacija.RadniSati = radniSati;
+            if(!string.IsNullOrWhiteSpace(adresa)) lokacija.Adresa = adresa;
+            if(!string.IsNullOrWhiteSpace(grad)) lokacija.Grad = grad;
+            if(!string.IsNullOrWhiteSpace(radniSati)) lokacija.RadniSati = radniSati;
             if(maxBrojKorisnika != null) lokacija.MaxBrojKorisnika = maxBrojKorisnika.Value;
             if (_fasada.Lokacije.Azuriraj(lokacija))
             {

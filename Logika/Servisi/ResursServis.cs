@@ -103,8 +103,8 @@ namespace CoWorkingManager.Logika.Servisi
                 TipResursa tip = Enum.Parse<TipResursa>(tipResursa);
                 resurs.TipResursa = tip; 
             }
-            if(opis != null) resurs.Opis = opis;
-            if(podTipStola != null)
+            if(!string.IsNullOrWhiteSpace(opis)) resurs.Opis = opis;
+            if(!string.IsNullOrWhiteSpace(podTipStola))
             {
                 if (resurs.TipResursa != TipResursa.Sto)
                 {
