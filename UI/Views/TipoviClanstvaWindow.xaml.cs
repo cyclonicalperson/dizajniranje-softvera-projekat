@@ -13,7 +13,7 @@ namespace CoWorkingManager.UI.Views
         private TipoviClanstvaMediator tipoviClanstvaMediator;
         private TipClanstvaServisProxy tipClanstvaServisProxy = new TipClanstvaServisProxy(new TipClanstvaServis());
 
-        List<TipClanstva> TipoviClanstva;
+        List<TipClanstva>? TipoviClanstva;
 
         public TipoviClanstvaWindow(GlavniMediator mediator, TipoviClanstvaMediator tipoviClanstvaMediator)
         {
@@ -47,22 +47,22 @@ namespace CoWorkingManager.UI.Views
             bool DozvolaZaSale = CheckBoxDozvolaZaSale.IsChecked ?? false;
             int? BrojSatiZaSale = int.TryParse(TextBoxBrojSatiZaSale.Text, out int value4) ? value4 : null;
 
-            if (string.IsNullOrWhiteSpace(NazivPaketa) || Cena == 0 || Trajanje == 0)
+            if (string.IsNullOrWhiteSpace(NazivPaketa))
                 return false;
 
             if (op == 0) // Dodaj
             {
-                if (string.IsNullOrWhiteSpace(NazivPaketa) || Cena == null || Trajanje == null || MaksimalanBrojSati == null)
+                if (Cena == null || Trajanje == null || MaksimalanBrojSati == null)
                     return false;
-                return tipClanstvaServisProxy.dodajTipClanstva((string)NazivPaketa, (decimal)Cena, (int)Trajanje, (int)MaksimalanBrojSati, DozvolaZaSale, BrojSatiZaSale);
+                return tipClanstvaServisProxy.dodajTipClanstva(NazivPaketa, Cena.Value, Trajanje.Value, MaksimalanBrojSati.Value, DozvolaZaSale, BrojSatiZaSale);
             }
             else if (op == 1) // Izmeni
             {
-                return false; //tipClanstvaServisProxy.izmeniTipClanstva(NazivPaketa, Cena, Trajanje, MaksimalanBrojSati, DozvolaZaSale, BrojSatiZaSale);
+                return false;
             }
             else // Obrisi
             {
-                return false; //tipClanstvaServisProxy.obrisiTipClanstva(NazivPaketa);
+                return false;
             }
         }
 

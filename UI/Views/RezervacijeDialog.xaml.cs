@@ -50,7 +50,6 @@ namespace CoWorkingManager.UI.Views
             if (SelectedKorisnik == null || SelectedResurs == null)
                 return false;
 
-            // ISPRAVKA 1: Koristiti DatePocetak za početak, DateZavrsetak za kraj
             DateTime? Pocetak = DatePocetak.SelectedDate;
             DateOnly? DatumPocetak = null;
             if (Pocetak != null)
@@ -65,24 +64,16 @@ namespace CoWorkingManager.UI.Views
                 DatumKraj = DateOnly.FromDateTime((DateTime)Kraj);
             }
 
-            // ISPRAVKA 2: Koristiti TimePocetak za početak, TimeZavrsetak za kraj
             string? vremePocetak = TimePocetak.Text;
             string? vremeKraj = TimeZavrsetak.Text;
 
-            // ISPRAVKA 3: Vraćati povratnu vrednost servisnih poziva umesto uvek false
             if (op == 0)
             {
-                return rezervacijaServisProxy.kreirajRezervaciju(
-                    SelectedKorisnik, SelectedResurs,
-                    DatumPocetak, vremePocetak,
-                    DatumKraj, vremeKraj);
+                return rezervacijaServisProxy.kreirajRezervaciju(SelectedKorisnik, SelectedResurs, DatumPocetak, vremePocetak, DatumKraj, vremeKraj);
             }
             else if (op == 1)
             {
-                return rezervacijaServisProxy.izmeniRezervaciju(
-                    SelectedKorisnik, SelectedResurs,
-                    DatumPocetak, vremePocetak,
-                    DatumKraj, vremeKraj);
+                return rezervacijaServisProxy.izmeniRezervaciju(SelectedKorisnik, SelectedResurs, DatumPocetak, vremePocetak, DatumKraj, vremeKraj);
             }
             else
             {

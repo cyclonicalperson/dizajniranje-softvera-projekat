@@ -1,6 +1,5 @@
 using CoWorkingManager.Modeli;
 using CoWorkingManager.Podaci;
-using System.Windows.Media;
 
 namespace CoWorkingManager.Logika.Servisi
 {
@@ -23,20 +22,41 @@ namespace CoWorkingManager.Logika.Servisi
             return korisnici;
         }
 
-        // Prima sve podatke potrebne za kreiranje korisnika
-        // Vraca true ako je korisnik uspesno dodat, false ako vec postoji korisnik sa istim emailom
         public bool dodajKorisnika(string ime, string prezime, string email, string? telefon,
             string tipClanstva, DateOnly datumPocetkaClanstva, DateOnly datumKrajaClanstva,
             string statusNaloga)
         {
-            StatusNaloga status;
-            status = Enum.Parse<StatusNaloga>(statusNaloga);
-            TipClanstva tip = _fasada.TipoviClanstva.DajPoImenu(tipClanstva);
+            if (string.IsNullOrWhiteSpace(ime) || string.IsNullOrWhiteSpace(prezime))
+            {
+                notifikacija("Ime i prezime su obavezna polja");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(email) || !email.Contains('@') || email.IndexOf('.', email.IndexOf('@')) < 0)
+            {
+                notifikacija("Email adresa nije u ispravnom formatu (npr. korisnik@domen.com)");
+                return false;
+            }
+
+            if (datumKrajaClanstva < datumPocetkaClanstva)
+            {
+                notifikacija("Datum kraja clanstva ne moze biti pre datuma pocetka");
+                return false;
+            }
+
+            if (!Enum.TryParse<StatusNaloga>(statusNaloga, ignoreCase: true, out StatusNaloga status))
+            {
+                notifikacija($"Nevalidan status naloga: '{statusNaloga}'. Dozvoljene vrednosti: Aktivan, Pauziran, Istekao");
+                return false;
+            }
+
+            TipClanstva? tip = _fasada.TipoviClanstva.DajPoImenu(tipClanstva);
             if (tip == null)
             {
                 notifikacija("Ne postoji tip clanstva sa imenom " + tipClanstva);
                 return false;
             }
+
             var korisnik = new Korisnik
             {
                 Ime = ime,
@@ -55,17 +75,19 @@ namespace CoWorkingManager.Logika.Servisi
                 notifikacija("Novi korisnik je dodat");
                 return true;
             }
-            notifikacija("Dodavanje novog korisnika neuspesno");
+            notifikacija("Dodavanje novog korisnika neuspesno — korisnik sa tim emailom vec postoji");
             return false;
         }
 
-        // Trazi korisnika po imenu i prezimenu i brise ga
-        // Vraca true ako je korisnik uspesno obrisan, false ako korisnik nije pronadjen
-        // Brise korisnika samo na osnovu ID-a koji se izvuce iz pronadjenog korisnika,
-        // znaci null polja nemaju nikakvu ulogu u samom brisanju.
-        // Jedino sto bi se promenilo je potpis funkcije, telo ostaje potpuno isto
         public bool obrisiKorisnika(string ime, string prezime)
         {
+            // ISPRAVKA: Validacija praznih polja
+            if (string.IsNullOrWhiteSpace(ime) || string.IsNullOrWhiteSpace(prezime))
+            {
+                notifikacija("Ime i prezime su obavezna polja");
+                return false;
+            }
+
             var korisnik = _fasada.Korisnici.DajSve()
                 .FirstOrDefault(k => k.Ime == ime && k.Prezime == prezime);
 
@@ -84,12 +106,16 @@ namespace CoWorkingManager.Logika.Servisi
             return false;
         }
 
-        // Trazi korisnika po imenu i prezimenu i menja mu samo ona polja koja nisu null
-        // Vraca true ako je izmena uspesna, false ako korisnik nije pronadjen ili izmena neuspesna
         public bool izmeniKorisnika(string ime, string prezime, string? noviEmail, string? noviTelefon,
             string? noviTipClanstva, DateOnly? noviDatumPocetkaClanstva,
             DateOnly? noviDatumKrajaClanstva, string? noviStatusNaloga)
         {
+            if (string.IsNullOrWhiteSpace(ime) || string.IsNullOrWhiteSpace(prezime))
+            {
+                notifikacija("Ime i prezime su obavezna polja");
+                return false;
+            }
+
             var korisnik = _fasada.Korisnici.DajSve()
                 .FirstOrDefault(k => k.Ime == ime && k.Prezime == prezime);
 
@@ -99,20 +125,49 @@ namespace CoWorkingManager.Logika.Servisi
                 return false;
             }
 
-            if (!string.IsNullOrWhiteSpace(noviEmail)) korisnik.Email = noviEmail;
+            if (!string.IsNullOrWhiteSpace(noviEmail))
+            {
+                if (!noviEmail.Contains('@') || noviEmail.IndexOf('.', noviEmail.IndexOf('@')) < 0)
+                {
+                    notifikacija("Nova email adresa nije u ispravnom formatu");
+                    return false;
+                }
+                korisnik.Email = noviEmail;
+            }
+
             if (!string.IsNullOrWhiteSpace(noviTelefon)) korisnik.Telefon = noviTelefon;
+
             if (!string.IsNullOrWhiteSpace(noviTipClanstva))
             {
-                TipClanstva? tip = _fasada.TipoviClanstva.DajPoImenu(noviTipClanstva) ?? korisnik.TipClanstva;
+                TipClanstva? tip = _fasada.TipoviClanstva.DajPoImenu(noviTipClanstva);
+                if (tip == null)
+                {
+                    notifikacija("Ne postoji tip clanstva sa imenom " + noviTipClanstva);
+                    return false;
+                }
                 korisnik.TipClanstva = tip;
                 korisnik.TipClanstvaId = tip.Id;
             }
-            if (noviDatumPocetkaClanstva != null) korisnik.DatumPocetkaClanstva = (DateOnly)noviDatumPocetkaClanstva;
-            if (noviDatumKrajaClanstva != null) korisnik.DatumKrajaClanstva = (DateOnly)noviDatumKrajaClanstva;
+
+            DateOnly pocetakZaProveru = noviDatumPocetkaClanstva ?? korisnik.DatumPocetkaClanstva;
+            DateOnly krajZaProveru = noviDatumKrajaClanstva ?? korisnik.DatumKrajaClanstva;
+            if (krajZaProveru < pocetakZaProveru)
+            {
+                notifikacija("Datum kraja clanstva ne moze biti pre datuma pocetka");
+                return false;
+            }
+            if (noviDatumPocetkaClanstva != null) korisnik.DatumPocetkaClanstva = noviDatumPocetkaClanstva.Value;
+            if (noviDatumKrajaClanstva != null) korisnik.DatumKrajaClanstva = noviDatumKrajaClanstva.Value;
+
             if (!string.IsNullOrWhiteSpace(noviStatusNaloga))
             {
-                StatusNaloga status = Enum.Parse<StatusNaloga>(noviStatusNaloga);
-                korisnik.StatusNaloga = status;
+                // ISPRAVKA: Enum.TryParse umesto Enum.Parse
+                if (!Enum.TryParse<StatusNaloga>(noviStatusNaloga, ignoreCase: true, out StatusNaloga noviStatus))
+                {
+                    notifikacija($"Nevalidan status naloga: '{noviStatusNaloga}'. Dozvoljene vrednosti: Aktivan, Pauziran, Istekao");
+                    return false;
+                }
+                korisnik.StatusNaloga = noviStatus;
             }
 
             if (_fasada.Korisnici.Azuriraj(korisnik))
@@ -124,8 +179,6 @@ namespace CoWorkingManager.Logika.Servisi
             return false;
         }
 
-        // Vraca filtrirani spisak korisnika po lokaciji, tipu clanstva i statusu naloga
-        // Svi parametri su opcioni — prosleđuje null za parametre koji se ne filtriraju
         public List<Korisnik> dajKorisnike(string? lokacija, string? tipClanstva, string? statusNaloga)
         {
             int? lokacijaId = null;
@@ -156,13 +209,11 @@ namespace CoWorkingManager.Logika.Servisi
         public List<string> dajStatuseNaloga()
         {
             List<string> statusi = new List<string>();
-
             foreach (var korisnik in _fasada.Korisnici.DajSve())
             {
                 if (!statusi.Contains(korisnik.StatusNaloga.ToString()))
                     statusi.Add(korisnik.StatusNaloga.ToString());
             }
-
             notifikacija("Dohvaceni statusi naloga");
             return statusi;
         }

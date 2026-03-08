@@ -1,6 +1,5 @@
 using CoWorkingManager.Modeli;
 using CoWorkingManager.Podaci;
-using System.Windows.Markup;
 
 namespace CoWorkingManager.Logika.Servisi
 {
@@ -26,13 +25,25 @@ namespace CoWorkingManager.Logika.Servisi
         public bool dodajResurs(string ime, string imeLokacije, string tipResursa,
             string? opis, string? podTipStola, int? kapacitet, bool? imaProjektor, bool? imaTV, bool? imaTablu, bool? imaOnlineOpremu)
         {
-            Lokacija lokacija = _fasada.Lokacije.DajPoNazivu(imeLokacije);
+            if (string.IsNullOrWhiteSpace(ime))
+            {
+                notifikacija("Naziv resursa je obavezno polje");
+                return false;
+            }
+
+            Lokacija? lokacija = _fasada.Lokacije.DajPoNazivu(imeLokacije);
             if (lokacija == null)
             {
                 notifikacija("Dodavanje resursa neuspesno jer lokacija nije pronadjena");
                 return false;
             }
-            TipResursa tip = Enum.Parse<TipResursa>(tipResursa);
+
+            if (!Enum.TryParse<TipResursa>(tipResursa, ignoreCase: true, out TipResursa tip))
+            {
+                notifikacija($"Nevalidan tip resursa: '{tipResursa}'. Dozvoljene vrednosti: Sto, Sala, PrivatnaKancelarija");
+                return false;
+            }
+
             var resurs = new Resurs
             {
                 Ime = ime,
@@ -41,11 +52,17 @@ namespace CoWorkingManager.Logika.Servisi
                 TipResursa = tip,
                 Opis = opis
             };
+
             if (tip != TipResursa.Sto)
             {
                 if (podTipStola != null)
                 {
                     notifikacija("Podtip stola moze biti postavljen samo za resurse tipa Sto");
+                    return false;
+                }
+                if (kapacitet != null && kapacitet <= 0)
+                {
+                    notifikacija("Kapacitet mora biti pozitivan broj");
                     return false;
                 }
                 if (kapacitet != null) resurs.Kapacitet = kapacitet;
@@ -56,36 +73,42 @@ namespace CoWorkingManager.Logika.Servisi
             }
             else
             {
-                // Za Sto — oprema i kapacitet nisu dozvoljeni (moraju biti NULL u bazi)
-                // Checkboxovi u GUI su uvek bool? — proveravamo == true jer false/null su oba OK
                 if (kapacitet != null || imaProjektor == true || imaTV == true || imaTablu == true || imaOnlineOpremu == true)
                 {
                     notifikacija("Kapacitet, imaProjektor, imaTV, imaTablu i imaOnlineOpremu mogu biti postavljeni samo za resurse koji nisu tipa Sto");
                     return false;
                 }
+
                 PodtipStola? podTip = null;
                 if (!string.IsNullOrWhiteSpace(podTipStola))
                 {
-                    if (!Enum.IsDefined(typeof(PodtipStola), podTipStola))
+                    if (!Enum.TryParse<PodtipStola>(podTipStola, ignoreCase: true, out PodtipStola parsedPodtip))
                     {
-                        notifikacija("Nevalidan podtip stola");
+                        notifikacija($"Nevalidan podtip stola: '{podTipStola}'. Dozvoljene vrednosti: HotDesk, DedicatedDesk");
                         return false;
                     }
-                    podTip = Enum.Parse<PodtipStola>(podTipStola);
+                    podTip = parsedPodtip;
                 }
                 resurs.PodtipStola = podTip;
             }
+
             if (_fasada.Resursi.Dodaj(resurs))
             {
                 notifikacija("Novi resurs je dodat");
                 return true;
             }
-            notifikacija("Dodavanje novog resursa neuspesno");
+            notifikacija("Dodavanje novog resursa neuspesno — resurs sa istim imenom vec postoji na toj lokaciji");
             return false;
         }
 
         public bool obrisiResurs(string ime)
         {
+            if (string.IsNullOrWhiteSpace(ime))
+            {
+                notifikacija("Naziv resursa je obavezno polje");
+                return false;
+            }
+
             var resurs = _fasada.Resursi.DajSve()
                 .FirstOrDefault(r => r.Ime == ime);
             if (resurs == null)
@@ -105,6 +128,12 @@ namespace CoWorkingManager.Logika.Servisi
         public bool izmeniResurs(string ime, string? imeLokacije, string? tipResursa,
             string? opis, string? podTipStola, int? kapacitet, bool? imaProjektor, bool? imaTV, bool? imaTablu, bool? imaOnlineOpremu)
         {
+            if (string.IsNullOrWhiteSpace(ime))
+            {
+                notifikacija("Naziv resursa je obavezno polje");
+                return false;
+            }
+
             var resurs = _fasada.Resursi.DajSve()
                 .FirstOrDefault(r => r.Ime == ime);
             if (resurs == null)
@@ -112,6 +141,7 @@ namespace CoWorkingManager.Logika.Servisi
                 notifikacija("Izmena resursa neuspesna jer resurs nije pronadjen");
                 return false;
             }
+
             if (!string.IsNullOrWhiteSpace(imeLokacije))
             {
                 var lokacija = _fasada.Lokacije.DajPoNazivu(imeLokacije);
@@ -123,17 +153,29 @@ namespace CoWorkingManager.Logika.Servisi
                 resurs.LokacijaId = lokacija.Id;
                 resurs.Lokacija = lokacija;
             }
+
             if (!string.IsNullOrWhiteSpace(tipResursa))
             {
-                TipResursa tip = Enum.Parse<TipResursa>(tipResursa);
-                resurs.TipResursa = tip;
+                if (!Enum.TryParse<TipResursa>(tipResursa, ignoreCase: true, out TipResursa noviTip))
+                {
+                    notifikacija($"Nevalidan tip resursa: '{tipResursa}'. Dozvoljene vrednosti: Sto, Sala, PrivatnaKancelarija");
+                    return false;
+                }
+                resurs.TipResursa = noviTip;
             }
+
             if (!string.IsNullOrWhiteSpace(opis)) resurs.Opis = opis;
+
             if (resurs.TipResursa != TipResursa.Sto)
             {
                 if (podTipStola != null)
                 {
                     notifikacija("Podtip stola moze biti postavljen samo za resurse tipa Sto");
+                    return false;
+                }
+                if (kapacitet != null && kapacitet <= 0)
+                {
+                    notifikacija("Kapacitet mora biti pozitivan broj");
                     return false;
                 }
                 if (kapacitet != null) resurs.Kapacitet = kapacitet;
@@ -150,8 +192,16 @@ namespace CoWorkingManager.Logika.Servisi
                     return false;
                 }
                 if (!string.IsNullOrWhiteSpace(podTipStola))
-                    resurs.PodtipStola = Enum.Parse<PodtipStola>(podTipStola);
+                {
+                    if (!Enum.TryParse<PodtipStola>(podTipStola, ignoreCase: true, out PodtipStola parsedPodtip))
+                    {
+                        notifikacija($"Nevalidan podtip stola: '{podTipStola}'. Dozvoljene vrednosti: HotDesk, DedicatedDesk");
+                        return false;
+                    }
+                    resurs.PodtipStola = parsedPodtip;
+                }
             }
+
             if (_fasada.Resursi.Azuriraj(resurs))
             {
                 notifikacija("Izmenjen resurs");
@@ -160,14 +210,14 @@ namespace CoWorkingManager.Logika.Servisi
             notifikacija("Izmene resursa neuspesne");
             return false;
         }
+
         public List<Resurs> dajResursePoLokacijiSortiranoPoTipu(string? lokacija)
         {
             if (lokacija == null)
             {
-                var sviResursi = _fasada.Resursi.DajSve()
+                return _fasada.Resursi.DajSve()
                     .OrderBy(r => r.TipResursa)
                     .ToList();
-                return sviResursi;
             }
             var lokacijaObj = _fasada.Lokacije.DajPoNazivu(lokacija);
             if (lokacijaObj == null)
@@ -182,7 +232,5 @@ namespace CoWorkingManager.Logika.Servisi
             notifikacija("Dohvaceni resursi po lokaciji");
             return resursi;
         }
-
-
     }
 }
