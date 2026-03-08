@@ -41,6 +41,14 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
                 .FirstOrDefault(k => k.Email == email);
         }
 
+        // Vraca korisnika po punom imenu
+        public Korisnik? DajPoPunoIme(string punoIme)
+        {
+            return kontekst.Korisnici
+                .Include(k => k.TipClanstva)
+                .FirstOrDefault(k => (k.Ime + " " + k.Prezime) == punoIme);
+        }
+
         // Vraća filtrirani spisak korisnika
         // Svi parametri su opcioni — ignorisu se ako nisu prosledjeni
         public List<Korisnik> DajPoFiltru(
