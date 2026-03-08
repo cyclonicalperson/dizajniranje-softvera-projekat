@@ -1,11 +1,9 @@
 ﻿using CoWorkingManager.Logika.Servisi;
 using CoWorkingManager.Mediator;
 using CoWorkingManager.Modeli;
-using CoWorkingManager.Podaci;
 using CoWorkingManager.UI.Mediator;
 using System.Windows;
 using System.Windows.Controls;
-using System.Collections.Generic;
 using System.IO;
 
 namespace CoWorkingManager.UI.Views
@@ -14,9 +12,8 @@ namespace CoWorkingManager.UI.Views
     {
         private GlavniMediator mediator;
         private ResursiMediator resursiMediator;
-        private CoworkingFasada facade = CoworkingFasada.DajInstancu();
-        private static ResursServis resursServis = new ResursServis();
-        private ResursServisProxy resursServisProxy = new ResursServisProxy(resursServis);
+        private ResursServisProxy resursServisProxy = new ResursServisProxy(new ResursServis());
+        private LokacijaServisProxy lokacijaServisProxy = new LokacijaServisProxy(new LokacijaServis());
 
         private string SelektovanaLokacija;
         List<Lokacija> Lokacije;
@@ -41,7 +38,7 @@ namespace CoWorkingManager.UI.Views
         public void RefreshPretragaMeni()
         {
             SelResursi_LokCBox.Items.Clear();
-            Lokacije = facade.Lokacije.DajSve();
+            Lokacije = lokacijaServisProxy.dajSve();
             SelResursi_LokCBox.Items.Add("Lokacija");
             SelektovanaLokacija = "Lokacija";
             foreach (Lokacija x in Lokacije)

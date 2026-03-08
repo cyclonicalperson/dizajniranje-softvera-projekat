@@ -14,9 +14,8 @@ namespace CoWorkingManager.UI.Views
         {
             this.mediator = mediator;
             InitializeComponent();
-            // Učitaj naziv lanca iz config.txt
             string[] configLines = File.ReadAllLines("config.txt");
-            Lanac.Text = configLines[0]; // Prva linija je naziv lanca
+            Lanac.Text = configLines[0];
         }
 
         private void Korisnici_Click(object sender, RoutedEventArgs e)

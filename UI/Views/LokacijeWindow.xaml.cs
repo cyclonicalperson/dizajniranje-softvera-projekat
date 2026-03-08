@@ -1,11 +1,8 @@
 ﻿using CoWorkingManager.Logika.Servisi;
 using CoWorkingManager.Mediator;
 using CoWorkingManager.Modeli;
-using CoWorkingManager.Podaci;
 using CoWorkingManager.UI.Mediator;
 using System.Windows;
-using System.Windows.Controls;
-using System.Collections.Generic;
 using System.IO;
 using CoWorkingManager.Podaci.Repozitorijumi;
 
@@ -15,9 +12,7 @@ namespace CoWorkingManager.UI.Views
     {
         private GlavniMediator mediator;
         private LokacijeMediator lokacijeMediator;
-        private CoworkingFasada facade = CoworkingFasada.DajInstancu();
-        private static LokacijaServis lokacijaServis = new LokacijaServis();
-        private LokacijaServisProxy lokacijaServisProxy = new LokacijaServisProxy(lokacijaServis);
+        private LokacijaServisProxy lokacijaServisProxy = new LokacijaServisProxy(new LokacijaServis());
 
         List<StatistikaZauzetosti> StatistikeZauzetosti;
         List <Lokacija> Lokacije;
@@ -40,8 +35,8 @@ namespace CoWorkingManager.UI.Views
 
         public void RefreshTable()
         {
-            StatistikeZauzetosti = facade.Lokacije.DajStatistikuZauzetostiZaSve(DateTime.Today);
-            Lokacije = facade.Lokacije.DajSve();
+            StatistikeZauzetosti = lokacijaServisProxy.DajStatistikuZauzetostiZaSve(DateTime.Today);
+            Lokacije = lokacijaServisProxy.dajSve();
             TabelaLokacija.ItemsSource = null;
             TabelaLokacija.ItemsSource = StatistikeZauzetosti;
         }

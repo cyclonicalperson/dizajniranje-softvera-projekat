@@ -1,10 +1,6 @@
 ﻿using CoWorkingManager.Logika.Servisi;
 using CoWorkingManager.Modeli;
-using CoWorkingManager.Podaci;
 using CoWorkingManager.UI.Mediator;
-using System;
-using System.ComponentModel;
-using System.DirectoryServices.ActiveDirectory;
 using System.Windows;
 using System.Windows.Controls;
 

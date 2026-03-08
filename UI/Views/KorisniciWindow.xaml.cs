@@ -1,13 +1,10 @@
 ﻿using CoWorkingManager.Logika.Servisi;
 using CoWorkingManager.Mediator;
 using CoWorkingManager.Modeli;
-using CoWorkingManager.Podaci;
 using CoWorkingManager.UI.Mediator;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Collections.Generic;
-using System.IO;
-using System;
 
 namespace CoWorkingManager.UI.Views
 {
@@ -15,9 +12,9 @@ namespace CoWorkingManager.UI.Views
     {
         private GlavniMediator mediator;
         private KorisniciMediator korisniciMediator;
-        private CoworkingFasada facade = CoworkingFasada.DajInstancu();
-        private static KorisnikServis korisnikServis = new KorisnikServis();
-        private KorisnikServisProxy korisnikServisProxy = new KorisnikServisProxy(korisnikServis);
+        private KorisnikServisProxy korisnikServisProxy = new KorisnikServisProxy(new KorisnikServis());
+        private LokacijaServisProxy lokacijaServisProxy = new LokacijaServisProxy(new LokacijaServis());
+        private TipClanstvaServisProxy tipClanstvaServisProxy = new TipClanstvaServisProxy(new TipClanstvaServis());
 
         private string SelektovanaLokacija;
         private string SelektovanTipClanstva;
@@ -32,10 +29,9 @@ namespace CoWorkingManager.UI.Views
         {
             this.mediator = mediator;
             this.korisniciMediator = korisniciMediator;
-            facade = CoworkingFasada.DajInstancu();
             InitializeComponent();
-            //Dodati naziv lanca
-            //Lanac.Text = 
+            string[] configLines = File.ReadAllLines("config.txt");
+            NazivLanca.Text = configLines[0];
         }
 
         public void Show()
@@ -54,19 +50,19 @@ namespace CoWorkingManager.UI.Views
             SelKorisnici_TipClCBox.Items.Clear();
             SelKorisnici_StatusCBox.Items.Clear();
 
-            Lokacije = facade.Lokacije.DajSve();
+            Lokacije = lokacijaServisProxy.dajSve();
             SelKorisnici_LokCBox.Items.Add("Lokacija");
             SelektovanaLokacija = "Lokacija";
             foreach (Lokacija x in Lokacije)
                 SelKorisnici_LokCBox.Items.Add(x.Ime);
 
-            TipoviClanstva = facade.TipoviClanstva.DajSve();
+            TipoviClanstva = tipClanstvaServisProxy.dajSve();
             SelKorisnici_TipClCBox.Items.Add("TipClanstva");
             SelektovanTipClanstva = "TipClanstva";
             foreach (TipClanstva x in TipoviClanstva)
                 SelKorisnici_TipClCBox.Items.Add(x.Ime);
 
-            StatusiNaloga = korisnikServis.dajStatuseNaloga();
+            StatusiNaloga = korisnikServisProxy.dajStatuseNaloga();
             SelKorisnici_StatusCBox.Items.Add("StatusNaloga");
             SelektovanStatusaNaloga = "StatusNaloga";
             foreach (string x in StatusiNaloga)
@@ -88,7 +84,7 @@ namespace CoWorkingManager.UI.Views
             if (SelektovanStatusaNaloga == "StatusNaloga")
                 SelektovanStatusaNaloga = null;
 
-            Korisnici = korisnikServis.dajKorisnike(SelektovanaLokacija, SelektovanTipClanstva, SelektovanStatusaNaloga);
+            Korisnici = korisnikServisProxy.dajKorisnike(SelektovanaLokacija, SelektovanTipClanstva, SelektovanStatusaNaloga);
 
             TabelaKorisnika.ItemsSource = null;
             TabelaKorisnika.ItemsSource = Korisnici;

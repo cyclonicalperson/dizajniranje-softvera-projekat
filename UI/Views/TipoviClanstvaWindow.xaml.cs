@@ -1,11 +1,8 @@
 ﻿using CoWorkingManager.Logika.Servisi;
 using CoWorkingManager.Mediator;
 using CoWorkingManager.Modeli;
-using CoWorkingManager.Podaci;
 using CoWorkingManager.UI.Mediator;
 using System.Windows;
-using System.Windows.Controls;
-using System.Collections.Generic;
 using System.IO;
 
 namespace CoWorkingManager.UI.Views
@@ -14,9 +11,7 @@ namespace CoWorkingManager.UI.Views
     {
         private GlavniMediator mediator;
         private TipoviClanstvaMediator tipoviClanstvaMediator;
-        private CoworkingFasada facade = CoworkingFasada.DajInstancu();
-        private static TipClanstvaServis tipClanstvaServis = new TipClanstvaServis();
-        private TipClanstvaServisProxy tipClanstvaServisProxy = new TipClanstvaServisProxy(tipClanstvaServis);
+        private TipClanstvaServisProxy tipClanstvaServisProxy = new TipClanstvaServisProxy(new TipClanstvaServis());
 
         List<TipClanstva> TipoviClanstva;
 
@@ -38,7 +33,7 @@ namespace CoWorkingManager.UI.Views
 
         public void RefreshTable()
         {
-            TipoviClanstva = facade.TipoviClanstva.DajSve();
+            TipoviClanstva = tipClanstvaServisProxy.dajSve();
             TabelaTipovaClanstva.ItemsSource = null;
             TabelaTipovaClanstva.ItemsSource = TipoviClanstva;
         }

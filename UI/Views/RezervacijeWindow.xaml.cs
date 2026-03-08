@@ -1,13 +1,10 @@
 ﻿using CoWorkingManager.Logika.Servisi;
 using CoWorkingManager.Mediator;
 using CoWorkingManager.Modeli;
-using CoWorkingManager.Podaci;
 using CoWorkingManager.UI.Mediator;
 using System.Windows;
 using System.Windows.Controls;
-using System.Collections.Generic;
 using System.IO;
-using System;
 
 namespace CoWorkingManager.UI.Views
 {
@@ -15,9 +12,9 @@ namespace CoWorkingManager.UI.Views
     {
         private GlavniMediator mediator;
         private RezervacijeMediator rezervacijeMediator;
-        private CoworkingFasada facade = CoworkingFasada.DajInstancu();
-        private RezervacijaServis rezervacijaServis = new RezervacijaServis(); // Pretpostavljamo servis
-
+        private RezervacijaServisProxy rezervacijaServisProxy = new RezervacijaServisProxy(new RezervacijaServis());
+        private LokacijaServisProxy lokacijaServisProxy = new LokacijaServisProxy(new LokacijaServis());
+        private KorisnikServisProxy korisnikServisProxy = new KorisnikServisProxy(new KorisnikServis());
         private string SelektovaniKorisnik;
         private DateTime? SelektovaniDan;
         private string SelektovanaLokacija;
@@ -45,7 +42,7 @@ namespace CoWorkingManager.UI.Views
         public void RefreshPretragaKorisnikMeni()
         {
             SelRezervacije_KorisnikCBox.Items.Clear();
-            Korisnici = facade.Korisnici.DajSve();
+            Korisnici = korisnikServisProxy.dajSve();
             SelRezervacije_KorisnikCBox.Items.Add("Korisnik");
             SelektovaniKorisnik = "Korisnik";
             foreach (Korisnik x in Korisnici)
@@ -56,7 +53,7 @@ namespace CoWorkingManager.UI.Views
         public void RefreshPretragaDanLokacijaMeni()
         {
             SelRezervacije_LokacijaCBox.Items.Clear();
-            Lokacije = facade.Lokacije.DajSve();
+            Lokacije = lokacijaServisProxy.dajSve();
             SelRezervacije_LokacijaCBox.Items.Add("Lokacija");
             SelektovanaLokacija = "Lokacija";
             foreach (Lokacija x in Lokacije)
@@ -69,7 +66,7 @@ namespace CoWorkingManager.UI.Views
             if (SelektovaniKorisnik == "Korisnik")
                 SelektovaniKorisnik = null;
 
-            Rezervacije = rezervacijaServis.dajRezervacijeKorisnika(SelektovaniKorisnik);
+            Rezervacije = rezervacijaServisProxy.dajRezervacijeKorisnika(SelektovaniKorisnik);
             TabelaRezervacijaKorisnik.ItemsSource = null;
             TabelaRezervacijaKorisnik.ItemsSource = Rezervacije;
         }
@@ -79,7 +76,7 @@ namespace CoWorkingManager.UI.Views
             if (SelektovanaLokacija == "Lokacija")
                 SelektovanaLokacija = null;
 
-            Rezervacije = rezervacijaServis.dajRezervacijePoLokacijiIDanu(SelektovanaLokacija, SelektovaniDan);
+            Rezervacije = rezervacijaServisProxy.dajRezervacijePoLokacijiIDanu(SelektovanaLokacija, SelektovaniDan);
             TabelaRezervacijaDanLokacija.ItemsSource = null;
             TabelaRezervacijaDanLokacija.ItemsSource = Rezervacije;
         }
