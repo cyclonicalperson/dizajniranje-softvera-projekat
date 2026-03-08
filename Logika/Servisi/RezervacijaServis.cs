@@ -60,7 +60,7 @@ namespace CoWorkingManager.Logika.Servisi
         {
             var korisnik = _fasada.Korisnici.DajSve()
                 .FirstOrDefault(k => k.Ime == ime && k.Prezime == prezime);
-            if(korisnik == null)
+            if (korisnik == null)
             {
                 notifikacija("Korisnik nije pronadjen");
                 return false;
@@ -153,7 +153,7 @@ namespace CoWorkingManager.Logika.Servisi
             if (!validacijaClanstva(korisnik, resurs, pocetakDt, krajDt)) return false;
             if (!validacijaTermina(resurs, pocetakDt, krajDt)) return false;
             if (!validacijaRadnogVremena(lokacijaObj, pocetakDt, krajDt)) return false;
-            if (resursIme != null) 
+            if (resursIme != null)
             {
                 rezervacija.Resurs = resurs;
                 rezervacija.ResursId = resurs.Id;
@@ -242,11 +242,36 @@ namespace CoWorkingManager.Logika.Servisi
             notifikacija("Dohvacene rezervacije korisnika");
             return rezervacije;
         }
-        // Vraca sve rezervacije na datoj lokaciji za dati dan, sortirane po vremenu pocetka
+
         // Ne ukljucuje otkazane rezervacije
-        public List<Rezervacija> dajRezervacijePoLokacijiIDanu(Lokacija lokacija, DateTime datum)
+        public List<Rezervacija> dajRezervacijePoLokacijiIDanu(string? lokacija, DateTime? datum)
         {
-            var rezervacije = _fasada.Rezervacije.DajPoLokacijiIDanu(lokacija.Id, datum);
+            var lokacijaObj = _fasada.Lokacije.DajSve()
+                    .FirstOrDefault(l => l.Ime == lokacija);
+            if (lokacijaObj == null)
+            {
+                notifikacija("Lokacija nije pronadjena");
+                return new List<Rezervacija>();
+            }
+            if (lokacija != null && datum != null)
+            {
+                return _fasada.Rezervacije.DajPoLokacijiIDanu(lokacijaObj.Id, datum.Value);
+            }
+
+            var sve = _fasada.Rezervacije.DajSve()
+                .Where(r => r.StatusRezervacije != StatusRezervacije.Otkazana);
+
+            if (lokacija != null)
+                sve = sve.Where(r => r.Resurs.LokacijaId == lokacijaObj.Id);
+
+            if (datum != null)
+            {
+                var pocetakDana = datum.Value.Date;
+                var krajDana = datum.Value.Date.AddDays(1);
+                sve = sve.Where(r => r.PocetakVreme < krajDana && r.KrajVreme > pocetakDana);
+            }
+
+            var rezervacije = sve.OrderBy(r => r.PocetakVreme).ToList();
             notifikacija("Dohvacene rezervacije po lokaciji i danu");
             return rezervacije;
         }
