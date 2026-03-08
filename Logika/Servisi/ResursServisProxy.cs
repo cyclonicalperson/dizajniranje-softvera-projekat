@@ -52,5 +52,10 @@ namespace CoWorkingManager.Logika.Servisi
             proveriAdmina();
             return _praviResursServis.izmeniResurs(ime, imeLokacije, tipResursa, opis, podTipStola, kapacitet, imaProjektor, imaTV, imaTablu, imaOnlineOpremu);
         }
+        List<Resurs> dajResursePoLokacijiSortiranoPoTipu(string lokacija)
+        {
+            proveriAdmina();
+            return _praviResursServis.dajResursePoLokacijiSortiranoPoTipu(lokacija);
+        }
     }
 }
