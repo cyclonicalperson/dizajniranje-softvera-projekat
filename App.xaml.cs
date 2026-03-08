@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Windows;
-using CoWorkingManager.Mediator;
+using CoWorkingManager.Logika.Servisi;
 using CoWorkingManager.Podaci;
 using CoWorkingManager.UI.Views;
 
@@ -29,13 +29,24 @@ namespace CoWorkingManager
             }
 
             string connectionString = lines[1];
-
             CoworkingFasada.Inicijalizuj(connectionString);
 
             CoworkingFasada fasada = CoworkingFasada.DajInstancu();
+            fasada.Rezervacije.ObeleziZavrseneRezervacije();
+
+            // Pokrecemo automatski dnevni izvoz izveštaja
+            // Izvoz se dešava odmah pri pokretanju, pa zatim svakih 24h
+            IzvestajServis.Instanca.Pokreni(IzvestajServis.PeriodIzvoza.SvakiDan);
 
             LoginWindow login = new LoginWindow();
             login.Show();
+        }
+
+        protected override void OnExit(ExitEventArgs e)
+        {
+            // Zaustavljamo tajmer pri zatvaranju da se proces ugasi cisto
+            IzvestajServis.Instanca.Zaustavi();
+            base.OnExit(e);
         }
     }
 }

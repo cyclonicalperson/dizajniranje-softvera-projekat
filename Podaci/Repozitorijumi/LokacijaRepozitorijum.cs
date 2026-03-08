@@ -30,19 +30,12 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
                 .FirstOrDefault(l => l.Id == id);
         }
 
-        // Vraca lokaciju po nazivu — case-insensitive, parcijalno poklapanje
-        // Npr. pretraga("beo") vraca "Beograd centar", "Novi Beograd" itd.
-        // Vraca prazan spisak ako nista nije pronadjeno
-        // Ako je naziv prazan ili null, vraća sve lokacije
-        public List<Lokacija> PretraziPoNazivu(string naziv)
+        // Vraca lokaciju ciji naziv tacno odgovara trazenom — ili null ako ne postoji
+        public Lokacija? DajPoNazivu(string naziv)
         {
-            if (string.IsNullOrWhiteSpace(naziv))
-                return DajSve();
-
             return kontekst.Lokacije
                 .Include(l => l.Resursi)
-                .Where(l => l.Ime.Contains(naziv))
-                .ToList();
+                .FirstOrDefault(l => l.Ime == naziv);
         }
 
         // Dodaje novu lokaciju
