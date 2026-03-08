@@ -239,7 +239,7 @@ namespace CoWorkingManager.Podaci
                 e.HasOne(r => r.Resurs)
                  .WithMany(res => res.Rezervacije)
                  .HasForeignKey(r => r.ResursId)
-                 .OnDelete(DeleteBehavior.Restrict);
+                 .OnDelete(DeleteBehavior.Cascade);
 
                 // Indeksi iz schema.sql
                 e.HasIndex(r => r.KorisnikId).HasDatabaseName("IX_Rezervacije_Korisnik");
