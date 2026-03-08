@@ -30,6 +30,11 @@ namespace CoWorkingManager.UI.Mediator
                     rezervacije.Neuspesno.Visibility = Visibility.Collapsed;
                     rezervacije.RefreshPretragaDanLokacijaMeni();
                     break;
+
+                case "RefreshAfterChange":
+                    rezervacije.RefreshTableKorisnik();
+                    rezervacije.RefreshTableDanLokacija();
+                    break;
             }
         }
     }

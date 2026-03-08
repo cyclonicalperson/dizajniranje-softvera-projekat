@@ -16,10 +16,7 @@ namespace CoWorkingManager.UI.Views
         private GlavniMediator mediator;
         private RezervacijeMediator rezervacijeMediator;
         private CoworkingFasada facade = CoworkingFasada.DajInstancu();
-        private static KorisnikServis korisnikServis = new KorisnikServis();
-        private KorisnikServisProxy korisnikServisProxy = new KorisnikServisProxy(korisnikServis);
-        private static RezervacijaServis rezervacijaServis = new RezervacijaServis();
-        private RezervacijaServisProxy rezervacijaServisProxy = new RezervacijaServisProxy(rezervacijaServis);
+        private RezervacijaServis rezervacijaServis = new RezervacijaServis(); // Pretpostavljamo servis
 
         private string SelektovaniKorisnik;
         private DateTime? SelektovaniDan;
@@ -49,7 +46,6 @@ namespace CoWorkingManager.UI.Views
 
         public void RefreshPretragaKorisnikMeni()
         {
-            RefreshTableKorisnik();
             SelRezervacije_KorisnikCBox.Items.Clear();
             Korisnici = facade.Korisnici.DajSve();
             SelRezervacije_KorisnikCBox.Items.Add("Korisnik");
@@ -61,7 +57,6 @@ namespace CoWorkingManager.UI.Views
 
         public void RefreshPretragaDanLokacijaMeni()
         {
-            RefreshTableDanLokacija();
             SelRezervacije_LokacijaCBox.Items.Clear();
             Lokacije = facade.Lokacije.DajSve();
             SelRezervacije_LokacijaCBox.Items.Add("Lokacija");
@@ -76,7 +71,7 @@ namespace CoWorkingManager.UI.Views
             if (SelektovaniKorisnik == "Korisnik")
                 SelektovaniKorisnik = null;
 
-            Rezervacije = rezervacijaServisProxy.dajRezervacijeKorisnika(SelektovaniKorisnik);
+            Rezervacije = rezervacijaServis.dajRezervacijeKorisnika(SelektovaniKorisnik);
             TabelaRezervacijaKorisnik.ItemsSource = null;
             TabelaRezervacijaKorisnik.ItemsSource = Rezervacije;
         }
@@ -86,8 +81,8 @@ namespace CoWorkingManager.UI.Views
             if (SelektovanaLokacija == "Lokacija")
                 SelektovanaLokacija = null;
 
+            Rezervacije = rezervacijaServis.dajRezervacijePoLokacijiIDanu(SelektovanaLokacija, SelektovaniDan);
             TabelaRezervacijaDanLokacija.ItemsSource = null;
-            Rezervacije = rezervacijaServisProxy.dajRezervacijePoLokacijiIDanu(SelektovanaLokacija, SelektovaniDan);
             TabelaRezervacijaDanLokacija.ItemsSource = Rezervacije;
         }
 
@@ -109,21 +104,23 @@ namespace CoWorkingManager.UI.Views
             rezervacijeMediator.Notify(this, "Meni_PretragaDanLokacija");
         }
 
-        private void KreirajIzmeni_Click(object sender, RoutedEventArgs e)
+        private void Upravljaj_Click(object sender, RoutedEventArgs e)
         {
-            // Otvori dijalog za kreiranje/izmenu
-            var dialog = new RezervacijeDialog(); // Novi dijalog
+            Rezervacija selected = null;
+            if (PretragaKorisnik.Visibility == Visibility.Visible && TabelaRezervacijaKorisnik.SelectedItem != null)
+                selected = TabelaRezervacijaKorisnik.SelectedItem as Rezervacija;
+            else if (PretragaDanLokacija.Visibility == Visibility.Visible && TabelaRezervacijaDanLokacija.SelectedItem != null)
+                selected = TabelaRezervacijaDanLokacija.SelectedItem as Rezervacija;
+
+            var dialog = new RezervacijeDialog(selected); // Novi ili izmeni/otkazi
             if (dialog.ShowDialog() == true)
             {
-                // Validacije u servisu: zauzetost, sati, radno vreme
-                /*if (rezervacijaServis.KreirajIliIzmeniRezervaciju(dialog.RezervacijaData))
-                {
-                    Uspesno.Visibility = Visibility.Visible;
-                }
-                else
-                {
-                    Neuspesno.Visibility = Visibility.Visible;
-                }*/
+                Uspesno.Visibility = Visibility.Visible;
+                rezervacijeMediator.Notify(this, "RefreshAfterChange");
+            }
+            else
+            {
+                Neuspesno.Visibility = Visibility.Visible;
             }
         }
 

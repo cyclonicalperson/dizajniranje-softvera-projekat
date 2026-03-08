@@ -1,21 +1,41 @@
 ﻿using CoWorkingManager.Modeli;
 using System.Windows;
 using System;
+using CoWorkingManager.Logika.Servisi;
+using CoWorkingManager.Podaci;
 
 namespace CoWorkingManager.UI.Views
 {
     public partial class RezervacijeDialog : Window
     {
         public Rezervacija RezervacijaData { get; private set; } // Podaci za rezervaciju
+        private CoworkingFasada facade = CoworkingFasada.DajInstancu();
+        private RezervacijaServis rezervacijaServis = new RezervacijaServis(); // Pretpostavljamo servis
+        private bool isEditMode = false;
 
         public RezervacijeDialog(Rezervacija existing = null)
         {
             InitializeComponent();
             // Popuni combobox sa korisnicima, resursima, lokacijama iz fasade
-            // Ako existing, popuni polja
+            ComboKorisnik.ItemsSource = facade.Korisnici.DajSve(); // Pretpostavi binding na ID/Name
+            ComboLokacija.ItemsSource = facade.Lokacije.DajSve();
+            ComboResurs.ItemsSource = facade.Resursi.DajSve();
             if (existing != null)
             {
+                isEditMode = true;
                 // Popuni za izmenu
+                /*ComboKorisnik.SelectedValue = existing.KorisnikID;
+                ComboLokacija.SelectedValue = existing.LokacijaID; // Dodaj LokacijaID u model ako treba
+                ComboResurs.SelectedValue = existing.ResursID;
+                DatePocetak.SelectedDate = existing.DatumPocetka;
+                DateZavrsetak.SelectedDate = existing.DatumZavrsetka;
+                if (existing.ResursTip == "sala") // Pretpostavi polje u modelu
+                {
+                    TxtBrojUcesnika.Text = existing.BrojUcesnika.ToString(); // Dodaj polje u model
+                }*/
+                BtnOtkaziRezervaciju.Visibility = Visibility.Visible; // Pokaži za edit mod
+                BtnSacuvaj.Content = "Izmeni"; // Promeni tekst button-a
+                RezervacijaData = existing; // Za izmenu
             }
             // Za sale, prikaži broj učesnika
             ComboResurs.SelectionChanged += (s, e) => {
@@ -29,18 +49,49 @@ namespace CoWorkingManager.UI.Views
         private void Sacuvaj_Click(object sender, RoutedEventArgs e)
         {
             // Kreiraj Rezervacija objekat
-            /*RezervacijaData = new Rezervacija
+            RezervacijaData = RezervacijaData ?? new Rezervacija();
+            /*RezervacijaData.KorisnikID = ComboKorisnik.SelectedValue.ToString();
+            RezervacijaData.ResursID = ComboResurs.SelectedValue.ToString();
+            RezervacijaData.LokacijaID = ComboLokacija.SelectedValue.ToString(); // Dodaj u model ako treba
+            RezervacijaData.DatumPocetka = DatePocetak.SelectedDate ?? DateTime.Now;
+            RezervacijaData.DatumZavrsetka = DateZavrsetak.SelectedDate ?? DateTime.Now;
+            // Dodaj broj ucesnika ako sala
+            if (PanelBrojUcesnika.Visibility == Visibility.Visible)
             {
-                KorisnikID = ComboKorisnik.SelectedValue.ToString(),
-                ResursID = ComboResurs.SelectedValue.ToString(),
-                DatumPocetka = DatePocetak.SelectedDate ?? DateTime.Now,
-                DatumZavrsetka = DateZavrsetak.SelectedDate ?? DateTime.Now,
-                // Dodaj broj ucesnika ako sala
-            };*/
-            DialogResult = true;
+                if (int.TryParse(TxtBrojUcesnika.Text, out int broj))
+                    RezervacijaData.BrojUcesnika = broj;
+                else
+                {
+                    ValidationError.Text = "Nevalidan broj učesnika.";
+                    ValidationError.Visibility = Visibility.Visible;
+                    return;
+                }
+            }
+
+            // Validacija poslovnih pravila
+            if (!rezervacijaServis.ValidirajRezervaciju(RezervacijaData)) // Pozovi servis za proveru zauzetosti, sati, radnog vremena
+            {
+                ValidationError.Text = "Rezervacija nije validna: zauzeto, prekoračeni sati ili van radnog vremena.";
+                ValidationError.Visibility = Visibility.Visible;
+                return;
+            }
+
+            // Sačuvaj (kreiraj ili izmeni)
+            rezervacijaServis.KreirajIliIzmeniRezervaciju(RezervacijaData);
+            DialogResult = true;*/
         }
 
-        private void Otkazi_Click(object sender, RoutedEventArgs e)
+        private void OtkaziRezervaciju_Click(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Da li želite da otkažete rezervaciju?", "Potvrda", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                /*RezervacijaData.Status = "otkazana"; // Promeni status
+                rezervacijaServis.KreirajIliIzmeniRezervaciju(RezervacijaData); // Sačuvaj promenu
+                DialogResult = true;*/
+            }
+        }
+
+        private void Zatvori_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = false;
         }
