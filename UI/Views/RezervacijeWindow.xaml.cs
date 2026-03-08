@@ -85,7 +85,7 @@ namespace CoWorkingManager.UI.Views
                 SelektovanaLokacija = null;
 
             TabelaRezervacijaDanLokacija.ItemsSource = null;
-            //Rezervacije = rezervacijaServisProxy.dajRezervacijePoLokacijiIDanu(SelektovanaLokacija, (DateTime)SelektovaniDan);
+            Rezervacije = rezervacijaServisProxy.dajRezervacijePoLokacijiIDanu(SelektovanaLokacija, SelektovaniDan);
             TabelaRezervacijaDanLokacija.ItemsSource = Rezervacije;
         }
 
