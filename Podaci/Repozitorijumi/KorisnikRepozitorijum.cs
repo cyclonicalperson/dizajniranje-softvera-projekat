@@ -19,6 +19,7 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
         {
             return kontekst.Korisnici
                 .Include(k => k.TipClanstva)
+                .AsNoTracking()
                 .ToList();
         }
 
@@ -98,11 +99,17 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
         // Vraca false ako korisnik ne postoji ili novi email već koristi drugi korisnik
         public bool Azuriraj(Korisnik korisnik)
         {
-            if (!kontekst.Korisnici.Any(k => k.Id == korisnik.Id))
+            if (!kontekst.Korisnici.AsNoTracking().Any(k => k.Id == korisnik.Id))
                 return false;
 
             if (EmailPostoji(korisnik.Email, excludeId: korisnik.Id))
                 return false;
+
+            // Ako EF vec prati entitet sa istim ID-jem, detachujemo ga pre izmene
+            var tracked = kontekst.ChangeTracker.Entries<Korisnik>()
+                .FirstOrDefault(e => e.Entity.Id == korisnik.Id);
+            if (tracked != null)
+                tracked.State = EntityState.Detached;
 
             kontekst.Entry(korisnik).State = EntityState.Modified;
             kontekst.SaveChanges();
