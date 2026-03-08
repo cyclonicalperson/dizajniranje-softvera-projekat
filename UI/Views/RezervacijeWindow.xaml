@@ -32,10 +32,10 @@
                         Margin="5"
                         Click="PretragaDanLokacija_Click"/>
 
-                <Button Content="Kreiraj/Izmeni"
-                        Width="150"
+                <Button Content="Upravljaj rezervacijom"
+                        Width="180"
                         Margin="5"
-                        Click="KreirajIzmeni_Click"/>
+                        Click="Upravljaj_Click"/>
 
                 <Button Content="Glavni Meni"
                         Width="120"
@@ -57,12 +57,13 @@
                 <DataGrid x:Name="TabelaRezervacijaKorisnik"
                           Height="350"
                           AutoGenerateColumns="False"
-                          IsReadOnly="True">
+                          IsReadOnly="True"
+                          SelectionMode="Single">
 
                     <DataGrid.Columns>
 
-                        <DataGridTextColumn Header="Resurs" Binding="{Binding Resurs.Ime}"/>
-                        <DataGridTextColumn Header="Lokacija" Binding="{Binding Lokacija.Ime}"/>
+                        <DataGridTextColumn Header="Resurs" Binding="{Binding Resurs}"/>
+                        <DataGridTextColumn Header="Lokacija" Binding="{Binding Lokacija}"/>
                         <DataGridTextColumn Header="Početak" Binding="{Binding PocetakVreme}"/>
                         <DataGridTextColumn Header="Završetak" Binding="{Binding KrajVreme}"/>
                         <DataGridTextColumn Header="Status" Binding="{Binding StatusRezervacije}"/>
@@ -99,12 +100,13 @@
                 <DataGrid x:Name="TabelaRezervacijaDanLokacija"
                           Height="350"
                           AutoGenerateColumns="False"
-                          IsReadOnly="True">
+                          IsReadOnly="True"
+                          SelectionMode="Single">
 
                     <DataGrid.Columns>
 
-                        <DataGridTextColumn Header="Korisnik" Binding="{Binding Korisnik.Ime + Korisnik.Prezime}"/>
-                        <DataGridTextColumn Header="Resurs" Binding="{Binding Resurs.Ime}"/>
+                        <DataGridTextColumn Header="Korisnik" Binding="{Binding Korisnik}"/>
+                        <DataGridTextColumn Header="Resurs" Binding="{Binding Resurs}"/>
                         <DataGridTextColumn Header="Početak" Binding="{Binding PocetakVreme}"/>
                         <DataGridTextColumn Header="Završetak" Binding="{Binding KrajVreme}"/>
                         <DataGridTextColumn Header="Status" Binding="{Binding StatusRezervacije}"/>
