@@ -2,6 +2,7 @@ using CoWorkingManager.Logika.Servisi;
 using CoWorkingManager.Modeli;
 using CoWorkingManager.Podaci;
 using System.Windows.Controls;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CoWorkingManager.Logika.Servisi
 {
@@ -23,8 +24,22 @@ namespace CoWorkingManager.Logika.Servisi
             return rezervacije;
         }
 
-        public bool kreirajRezervaciju(Korisnik korisnik, Resurs resurs, DateTime? pocetak, DateTime? kraj)
+        public bool kreirajRezervaciju(Korisnik korisnik, Resurs resurs, DateOnly? pocetakDatum, string? pocetakVreme, DateOnly? krajDatum, string? krajVreme)
         {
+            DateTime? pocetak = null;
+            if (pocetakDatum != null && pocetakVreme != null)
+            {
+                DateOnly d = pocetakDatum.Value;
+                TimeOnly t = TimeOnly.Parse(pocetakVreme);
+                pocetak = d.ToDateTime(t);
+            }
+            DateTime? kraj = null;
+            if (krajDatum != null && krajVreme != null)
+            {
+                DateOnly d = krajDatum.Value;
+                TimeOnly t = TimeOnly.Parse(krajVreme);
+                kraj = d.ToDateTime(t);
+            }
             if (pocetak == null || kraj == null)
             {
                 notifikacija("Kreiranje rezervacije neuspesno — pocetak i kraj ne smeju biti null");
@@ -35,6 +50,7 @@ namespace CoWorkingManager.Logika.Servisi
                 notifikacija("Kraj rezervacije mora biti posle početka.");
                 return false;
             }
+
             if (pocetak.Value.Date != kraj.Value.Date)
             {
                 notifikacija("Nije moguće imati rezervaciju koja ne traje u istom danu.");
@@ -96,7 +112,7 @@ namespace CoWorkingManager.Logika.Servisi
             notifikacija("Otkazivanje rezervacija neuspesno");
             return false;
         }
-        public bool izmeniRezervaciju(Korisnik korisnik, Resurs resurs, DateTime? pocetak, DateTime? kraj)
+        public bool izmeniRezervaciju(Korisnik korisnik, Resurs resurs, DateOnly? pocetakDatum, string? pocetakVreme, DateOnly? krajDatum, string? krajVreme)
         {
             var rezervacija = _fasada.Rezervacije.DajSve()
                 .FirstOrDefault(r => r.Korisnik.Id == korisnik.Id && r.Resurs.Id == resurs.Id && r.StatusRezervacije == StatusRezervacije.Aktivna);
@@ -104,6 +120,40 @@ namespace CoWorkingManager.Logika.Servisi
             {
                 notifikacija("Rezervacija nije pronadjena");
                 return false;
+            }
+            if (pocetakDatum == null && pocetakVreme != null)
+            {
+                notifikacija("Ne mozete menjati vreme pocetka bez menjanja datuma");
+                return false;
+            }
+            if (krajDatum == null && krajVreme != null)
+            {
+                notifikacija("Ne mozete menjati vreme kraja bez menjanja datuma");
+                return false;
+            }
+            if (pocetakDatum != null && pocetakVreme == null)
+            {
+                notifikacija("Ne mozete menjati datum pocetka bez menjanja vremena");
+                return false;
+            }
+            if (krajDatum != null && krajVreme == null)
+            {
+                notifikacija("Ne mozete menjati datum kraja bez menjanja vremena");
+                return false;
+            }
+            DateTime? pocetak = null;
+            if (pocetakDatum != null && pocetakVreme != null)
+            {
+                DateOnly d = pocetakDatum.Value;
+                TimeOnly t = TimeOnly.Parse(pocetakVreme);
+                pocetak = d.ToDateTime(t);
+            }
+            DateTime? kraj = null;
+            if (krajDatum != null && krajVreme != null)
+            {
+                DateOnly d = krajDatum.Value;
+                TimeOnly t = TimeOnly.Parse(krajVreme);
+                kraj = d.ToDateTime(t);
             }
             if (pocetak == null) pocetak = rezervacija.PocetakVreme;
             if (kraj == null) kraj = rezervacija.KrajVreme;

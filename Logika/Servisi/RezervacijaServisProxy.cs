@@ -37,20 +37,20 @@ namespace CoWorkingManager.Logika.Servisi
             return _praviRezervacijaServis.dajSve();
         }
 
-        public bool kreirajRezervaciju(Korisnik korisnik, Resurs resurs, DateTime? pocetak, DateTime? kraj)
+        public bool kreirajRezervaciju(Korisnik korisnik, Resurs resurs, DateOnly? pocetakDatum, string? pocetakVreme, DateOnly? krajDatum, string? krajVreme)
         {
             proveriAdmina();
-            return _praviRezervacijaServis.kreirajRezervaciju(korisnik, resurs, pocetak, kraj);
+            return _praviRezervacijaServis.kreirajRezervaciju(korisnik, resurs, pocetakDatum, pocetakVreme, krajDatum, krajVreme);
         }
         public bool otkaziRezervaciju(Korisnik korisnik, Resurs resurs)
         {
             proveriAdmina();
             return _praviRezervacijaServis.otkaziRezervaciju(korisnik, resurs);
         }
-        public bool izmeniRezervaciju(Korisnik korisnik, Resurs resurs, DateTime? pocetak, DateTime? kraj)
+        public bool izmeniRezervaciju(Korisnik korisnik, Resurs resurs, DateOnly? pocetakDatum, string? pocetakVreme, DateOnly? krajDatum, string? krajVreme)
         {
             proveriAdmina();
-            return _praviRezervacijaServis.izmeniRezervaciju(korisnik, resurs, pocetak, kraj);
+            return _praviRezervacijaServis.izmeniRezervaciju(korisnik, resurs, pocetakDatum, pocetakVreme, krajDatum, krajVreme);
         }
         public List<Rezervacija> dajRezervacijeKorisnika(string? korisnik)
         {
