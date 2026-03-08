@@ -35,6 +35,12 @@ namespace CoWorkingManager.Logika.Servisi
             return _praviKorisnikServis.getKorisnik(id);
         }
 
+        public List<Korisnik> dajSve()
+        {
+            proveriAdmina();
+            return _praviKorisnikServis.dajSve();
+        }
+
         public bool dodajKorisnika(string ime, string prezime, string email, string? telefon,
             string tipClanstva, DateOnly datumPocetkaClanstva, DateOnly datumKrajaClanstva,
             string statusNaloga)

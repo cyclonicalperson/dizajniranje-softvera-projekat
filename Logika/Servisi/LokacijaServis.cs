@@ -15,6 +15,14 @@ namespace CoWorkingManager.Logika.Servisi
             return lokacija;
         }
 
+        public List<Lokacija> dajSve()
+        {
+            var lokacije = _fasada.Lokacije.DajSve();
+            notifikacija("Dohvacene sve lokacije");
+            return lokacije;
+        }
+
+
         public bool dodajLokaciju(string ime, string adresa, string grad, string radniSati, int maxBrojKorisnika)
         {
             var lokacija = new Lokacija
@@ -60,10 +68,10 @@ namespace CoWorkingManager.Logika.Servisi
                 notifikacija("Izmena lokacije neuspesna jer lokacija nije pronadjena");
                 return false;
             }
-            if(!string.IsNullOrWhiteSpace(adresa)) lokacija.Adresa = adresa;
-            if(!string.IsNullOrWhiteSpace(grad)) lokacija.Grad = grad;
-            if(!string.IsNullOrWhiteSpace(radniSati)) lokacija.RadniSati = radniSati;
-            if(maxBrojKorisnika != null) lokacija.MaxBrojKorisnika = maxBrojKorisnika.Value;
+            if (!string.IsNullOrWhiteSpace(adresa)) lokacija.Adresa = adresa;
+            if (!string.IsNullOrWhiteSpace(grad)) lokacija.Grad = grad;
+            if (!string.IsNullOrWhiteSpace(radniSati)) lokacija.RadniSati = radniSati;
+            if (maxBrojKorisnika != null) lokacija.MaxBrojKorisnika = maxBrojKorisnika.Value;
             if (_fasada.Lokacije.Azuriraj(lokacija))
             {
                 notifikacija("Izmenjena lokacija");

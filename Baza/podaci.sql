@@ -14,9 +14,9 @@ VALUES
 INSERT INTO Lokacije
 (Ime, Adresa, Grad, RadniSati, MaxBrojKorisnika)
 VALUES
-('Hub Kragujevac Center', 'Kralja Aleksandra 12', 'Kragujevac', '08:00–22:00', 120),
-('Hub Beograd', 'Nemanjina 4', 'Beograd', '00:00–24:00', 300),
-('Hub Novi Sad', 'Bulevar Oslobodjenja 88', 'Novi Sad', '07:00–23:00', 180);
+('Hub Kragujevac Center', 'Kralja Aleksandra 12', 'Kragujevac', '08:00-22:00', 120),
+('Hub Beograd', 'Nemanjina 4', 'Beograd', '00:00-24:00', 300),
+('Hub Novi Sad', 'Bulevar Oslobodjenja 88', 'Novi Sad', '07:00-23:00', 180);
 
 
 -- Korisnici

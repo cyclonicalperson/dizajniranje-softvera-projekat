@@ -16,6 +16,13 @@ namespace CoWorkingManager.Logika.Servisi
             return korisnik;
         }
 
+        public List<Korisnik> dajSve()
+        {
+            var korisnici = _fasada.Korisnici.DajSve();
+            notifikacija("Dohvaceni svi korisnici");
+            return korisnici;
+        }
+
         // Prima sve podatke potrebne za kreiranje korisnika
         // Vraca true ako je korisnik uspesno dodat, false ako vec postoji korisnik sa istim emailom
         public bool dodajKorisnika(string ime, string prezime, string email, string? telefon,

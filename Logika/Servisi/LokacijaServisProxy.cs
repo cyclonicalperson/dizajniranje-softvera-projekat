@@ -36,6 +36,12 @@ namespace CoWorkingManager.Logika.Servisi
             return _praviLokacijaServis.getLokacija(id);
         }
 
+        public List<Lokacija> dajSve()
+        {
+            proveriAdmina();
+            return _praviLokacijaServis.dajSve();
+        }
+
         public bool dodajLokaciju(string ime, string adresa, string grad, string radniSati, int maxBrojKorisnika)
         {
             proveriAdmina();

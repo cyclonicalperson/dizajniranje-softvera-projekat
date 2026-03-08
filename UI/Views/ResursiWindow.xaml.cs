@@ -64,20 +64,21 @@ namespace CoWorkingManager.UI.Views
             string? Naziv = TextBoxNaziv.Text;
             string? LokacijaIme = TextBoxLokacijaID.Text;
             string? TipResursa = TextBoxTipResursa.Text;
-            string? Opis = TextBoxOpis.Text;
-            string? PodtipStola = TextBoxPodtipStola.Text;
-            bool ImaProjektor = CheckBoxImaProjektor.IsChecked ?? false;
-            bool ImaTV = CheckBoxImaTV.IsChecked ?? false;
-            bool ImaTablu = CheckBoxImaTablu.IsChecked ?? false;
-            bool ImaOnlineOpremu = CheckBoxImaOnlineOpremu.IsChecked ?? false;
+            string? Opis = string.IsNullOrWhiteSpace(TextBoxOpis.Text) ? null : TextBoxOpis.Text;
+            string? PodtipStola = string.IsNullOrWhiteSpace(TextBoxPodtipStola.Text) ? null : TextBoxPodtipStola.Text;
             int? Kapacitet = int.TryParse(TextBoxKapacitet.Text, out int value) ? value : null;
+
+            bool? ImaProjektor = CheckBoxImaProjektor.IsChecked;
+            bool? ImaTV = CheckBoxImaTV.IsChecked;
+            bool? ImaTablu = CheckBoxImaTablu.IsChecked;
+            bool? ImaOnlineOpremu = CheckBoxImaOnlineOpremu.IsChecked;
 
             if (string.IsNullOrWhiteSpace(Naziv) || string.IsNullOrWhiteSpace(TipResursa))
                 return false;
 
             if (op == 0) // Dodaj
             {
-                if (string.IsNullOrWhiteSpace(Naziv) || string.IsNullOrWhiteSpace(LokacijaIme) || string.IsNullOrWhiteSpace(TipResursa))
+                if (string.IsNullOrWhiteSpace(LokacijaIme))
                     return false;
                 return resursServisProxy.kreirajResurs(Naziv, LokacijaIme, TipResursa, Opis, PodtipStola, Kapacitet, ImaProjektor, ImaTV, ImaTablu, ImaOnlineOpremu);
             }
