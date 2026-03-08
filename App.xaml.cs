@@ -32,7 +32,8 @@ namespace CoWorkingManager
             CoworkingFasada.Inicijalizuj(connectionString);
 
             CoworkingFasada fasada = CoworkingFasada.DajInstancu();
-            fasada.Rezervacije.ObeleziZavrseneRezervacije();
+            // Ne obelezavamo gotove rezervacije jer necemo vise imati aktivne rezervacije
+            //fasada.Rezervacije.ObeleziZavrseneRezervacije();
 
             // Pokrecemo automatski dnevni izvoz izveštaja
             // Izvoz se dešava odmah pri pokretanju, pa zatim svakih 24h
