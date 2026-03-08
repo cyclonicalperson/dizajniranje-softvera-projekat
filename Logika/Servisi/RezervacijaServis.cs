@@ -238,6 +238,11 @@ namespace CoWorkingManager.Logika.Servisi
             var prezime = imePrezime.Split(' ')[1];
             var korisnik = _fasada.Korisnici.DajSve()
                 .FirstOrDefault(k => k.Ime == ime && k.Prezime == prezime);
+            if (korisnik == null) 
+            {
+                notifikacija("Korisnik nije pronadjen");
+                return new List<Rezervacija>();
+            }
             rezervacije = _fasada.Rezervacije.DajPoKorisniku(korisnik.Id);
             notifikacija("Dohvacene rezervacije korisnika");
             return rezervacije;
