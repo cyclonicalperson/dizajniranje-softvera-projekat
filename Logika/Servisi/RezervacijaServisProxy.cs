@@ -42,15 +42,15 @@ namespace CoWorkingManager.Logika.Servisi
             proveriAdmina();
             return _praviRezervacijaServis.kreirajRezervaciju(ime, prezime, resursIme, pocetak, kraj);
         }
-        public bool otkaziRezervaciju(string ime, string prezime, string resursIme, string pocetak, string kraj)
+        public bool otkaziRezervaciju(Korisnik korisnik, Resurs resurs)
         {
             proveriAdmina();
-            return _praviRezervacijaServis.otkaziRezervaciju(ime, prezime, resursIme, pocetak, kraj);
+            return _praviRezervacijaServis.otkaziRezervaciju(korisnik, resurs);
         }
-        public bool izmeniRezervaciju(string ime, string prezime, string? resursIme, string? pocetak, string? kraj)
+        public bool izmeniRezervaciju(Korisnik korisnik, Resurs resurs, DateTime? pocetak, DateTime? kraj)
         {
             proveriAdmina();
-            return _praviRezervacijaServis.izmeniRezervaciju(ime, prezime, resursIme, pocetak, kraj);
+            return _praviRezervacijaServis.izmeniRezervaciju(korisnik, resurs, pocetak, kraj);
         }
         public List<Rezervacija> dajRezervacijeKorisnika(string? korisnik)
         {
