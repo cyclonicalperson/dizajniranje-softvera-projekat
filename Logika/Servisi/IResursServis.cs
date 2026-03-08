@@ -4,6 +4,6 @@ namespace CoWorkingManager.Logika.Servisi
 {
 	public interface IResursServis
 	{
-		List<Resurs> dajResursePoLokacijiSortiranoPoTipu(string lokacija);
+		List<Resurs> dajResursePoLokacijiSortiranoPoTipu(string? lokacija);
 	}
 }

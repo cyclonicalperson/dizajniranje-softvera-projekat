@@ -45,7 +45,7 @@ namespace CoWorkingManager.Logika.Servisi
             proveriAdmina();
             return _praviRezervacijaServis.izmeniRezervaciju(ime, prezime, resursIme, pocetak, kraj);
         }
-        public List<Rezervacija> dajRezervacijeKorisnika(Korisnik korisnik)
+        public List<Rezervacija> dajRezervacijeKorisnika(string? korisnik)
         {
             proveriAdmina();
             return _praviRezervacijaServis.dajRezervacijeKorisnika(korisnik);
