@@ -63,7 +63,7 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
         }
 
         // Brise lokaciju (kaskadno briše resurse na njoj)
-        // Vraća false ako lokacija ne postoji
+        // Vraca false ako lokacija ne postoji
         public bool Obrisi(int id)
         {
             var lokacija = kontekst.Lokacije.Find(id);
@@ -79,6 +79,13 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
         // Vraca ukupan broj resursa, broj zauzeto i procenat
         public StatistikaZauzetosti DajStatistikuZauzetosti(int lokacijaId, DateTime uTrenutku)
         {
+            var lokacija = kontekst.Lokacije
+                .Include(l => l.Resursi)
+                .FirstOrDefault(l => l.Id == lokacijaId);
+
+            if (lokacija == null)
+                throw new InvalidOperationException($"Lokacija sa ID {lokacijaId} ne postoji");
+
             int ukupno = kontekst.Resursi.Count(r => r.LokacijaId == lokacijaId);
 
             int zauzeto = kontekst.Rezervacije
@@ -94,23 +101,57 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
 
             return new StatistikaZauzetosti
             {
-                LokacijaId = lokacijaId,
+                Lokacija = lokacija,
                 UkupnoResursa = ukupno,
                 ZauzetihResursa = zauzeto,
                 ProcenatZauzetosti = procenat
             };
+        }
+
+        // Izracunava statistike zauzetosti za sve lokacije u datom trenutku
+        // Vraca listu sa ukupnim brojem resursa, brojem zauzetih i procentom za svaku lokaciju
+        public List<StatistikaZauzetosti> DajStatistikuZauzetostiZaSve(DateTime uTrenutku)
+        {
+            var lokacije = kontekst.Lokacije
+                .Include(l => l.Resursi)
+                .ToList();
+
+            return lokacije.Select(lokacija =>
+            {
+                int ukupnoResursa = kontekst.Resursi
+                    .Count(r => r.LokacijaId == lokacija.Id);
+
+                int zauzetihResursa = kontekst.Rezervacije
+                    .Include(r => r.Resurs)
+                    .Count(r => r.Resurs.LokacijaId == lokacija.Id
+                             && r.StatusRezervacije == StatusRezervacije.Aktivna
+                             && r.PocetakVreme <= uTrenutku
+                             && r.KrajVreme > uTrenutku);
+
+                double procenat = ukupnoResursa > 0
+                    ? Math.Round((double)zauzetihResursa / ukupnoResursa * 100, 1)
+                    : 0;
+
+                return new StatistikaZauzetosti
+                {
+                    Lokacija = lokacija,
+                    UkupnoResursa = ukupnoResursa,
+                    ZauzetihResursa = zauzetihResursa,
+                    ProcenatZauzetosti = procenat
+                };
+            }).ToList();
         }
     }
 
     // Embedded klasa sa statistikama zauzetosti lokacije
     public class StatistikaZauzetosti
     {
-        public int LokacijaId { get; set; }
+        public Lokacija Lokacija { get; set; } = null!;
         public int UkupnoResursa { get; set; }
         public int ZauzetihResursa { get; set; }
         public double ProcenatZauzetosti { get; set; }
 
         public override string ToString() =>
-            $"{ZauzetihResursa}/{UkupnoResursa} zauzeto ({ProcenatZauzetosti}%)";
+            $"{Lokacija.Ime}: {ZauzetihResursa}/{UkupnoResursa} zauzeto ({ProcenatZauzetosti}%)";
     }
 }
