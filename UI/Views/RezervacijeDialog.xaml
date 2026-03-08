@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         Title="Rezervacija"
-        Height="400"
+        Height="475"
         Width="400"
         Background="#F4F6F9">
 
@@ -20,11 +20,17 @@
             <Label Content="Resurs:"/>
             <ComboBox x:Name="ComboResurs" SelectionChanged="ComboResurs_SelectionChanged"/>
 
-            <Label Content="Datum i vreme početka:"/>
+            <Label Content="Datum pocetka:"/>
             <DatePicker x:Name="DatePocetak" DisplayDateStart="{Binding Path=Today}"/>
 
-            <Label Content="Datum i vreme završetka:"/>
+            <Label Content="Vreme pocetka:"/>
+            <TextBox x:Name="TimePocetak"/>
+
+            <Label Content="Datum zavrsetka:"/>
             <DatePicker x:Name="DateZavrsetak" DisplayDateStart="{Binding Path=Today}"/>
+
+            <Label Content="Vreme zavrsetka:"/>
+            <TextBox x:Name="TimeZavrsetak"/>
 
             <TextBlock x:Name="ValidationError" Foreground="Red" Visibility="Collapsed" TextWrapping="Wrap"/>
 

@@ -54,16 +54,28 @@ namespace CoWorkingManager.UI.Views
             if (SelectedKorisnik == null || SelectedResurs == null)
                 return false;
 
-            DateTime? pocetak = DatePocetak.SelectedDate;
-            DateTime? kraj = DateZavrsetak.SelectedDate;
+            DateTime? Pocetak = DateZavrsetak.SelectedDate;
+            DateOnly? DatumPocetak = null;
+            if (Pocetak != null)
+            {
+                DatumPocetak = DateOnly.FromDateTime((DateTime)Pocetak);
+            }
+            DateTime? Kraj = DateZavrsetak.SelectedDate;
+            DateOnly? DatumKraj = null;
+            if (Kraj != null)
+            {
+                DatumKraj = DateOnly.FromDateTime((DateTime)Kraj);
+            }
+            string? vremePocetak = TimePocetak.Text;
+            string? vremeKraj = TimePocetak.Text;
 
             if (op == 0)
             {
-                rezervacijaServisProxy.kreirajRezervaciju(SelectedKorisnik, SelectedResurs, pocetak, kraj);
+                rezervacijaServisProxy.kreirajRezervaciju(SelectedKorisnik, SelectedResurs, DatumPocetak, vremePocetak, DatumKraj, vremeKraj);
             }
             else if(op == 1)
             {
-                rezervacijaServisProxy.izmeniRezervaciju(SelectedKorisnik, SelectedResurs, pocetak, kraj);
+                rezervacijaServisProxy.izmeniRezervaciju(SelectedKorisnik, SelectedResurs, DatumPocetak, vremePocetak, DatumKraj, vremeKraj);
             }   
             else
             {
