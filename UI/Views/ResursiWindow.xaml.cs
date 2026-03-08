@@ -54,37 +54,40 @@ namespace CoWorkingManager.UI.Views
             if (SelektovanaLokacija == "Lokacija")
                 SelektovanaLokacija = null;
 
-            Resursi = facade.Resursi.DajSve();
+            Resursi = resursServisProxy.dajResursePoLokacijiSortiranoPoTipu(SelektovanaLokacija);
             TabelaResursa.ItemsSource = null;
             TabelaResursa.ItemsSource = Resursi;
         }
 
         public bool Update(int op)
         {
-            string Naziv = TextBoxNaziv.Text;
-            string TipResursa = TextBoxTipResursa.Text;
-            string Opis = TextBoxOpis.Text;
-            string LokacijaID = TextBoxLokacijaID.Text;
+            string? Naziv = TextBoxNaziv.Text;
+            string? LokacijaIme = TextBoxLokacijaID.Text;
+            string? TipResursa = TextBoxTipResursa.Text;
+            string? Opis = TextBoxOpis.Text;
+            string? PodtipStola = TextBoxPodtipStola.Text;
             bool ImaProjektor = CheckBoxImaProjektor.IsChecked ?? false;
             bool ImaTV = CheckBoxImaTV.IsChecked ?? false;
             bool ImaTablu = CheckBoxImaTablu.IsChecked ?? false;
             bool ImaOnlineOpremu = CheckBoxImaOnlineOpremu.IsChecked ?? false;
-            string Kapacitet = TextBoxKapacitet.Text;
+            int? Kapacitet = int.TryParse(TextBoxKapacitet.Text, out int value) ? value : null;
 
             if (string.IsNullOrWhiteSpace(Naziv) || string.IsNullOrWhiteSpace(TipResursa))
                 return false;
 
             if (op == 0) // Dodaj
             {
-                return false;//resursServisProxy.DodajResurs(Naziv, TipResursa, Opis, LokacijaID, ImaProjektor, ImaTV, ImaTablu, ImaOnlineOpremu, Kapacitet);
+                if (string.IsNullOrWhiteSpace(Naziv) || string.IsNullOrWhiteSpace(LokacijaIme) || string.IsNullOrWhiteSpace(TipResursa))
+                    return false;
+                return resursServisProxy.kreirajResurs(Naziv, LokacijaIme, TipResursa, Opis, PodtipStola, Kapacitet, ImaProjektor, ImaTV, ImaTablu, ImaOnlineOpremu);
             }
             else if (op == 1) // Izmeni
             {
-                return false;//resursServisProxy.IzmeniResurs(Naziv, TipResursa, Opis, LokacijaID, ImaProjektor, ImaTV, ImaTablu, ImaOnlineOpremu, Kapacitet);
+                return resursServisProxy.izmeniResurs(Naziv, LokacijaIme, TipResursa, Opis, PodtipStola, Kapacitet, ImaProjektor, ImaTV, ImaTablu, ImaOnlineOpremu);
             }
             else // Obrisi
             {
-                return false;//resursServisProxy.ObrisiResurs(Naziv, LokacijaID);
+                return resursServisProxy.otkaziResurs(Naziv);
             }
         }
 

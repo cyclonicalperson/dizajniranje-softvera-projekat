@@ -35,24 +35,24 @@ namespace CoWorkingManager.Logika.Servisi
             proveriAdmina();
             return _praviResursServis.getResurs(id);
         }
-        bool kreirajResurs(string ime, string imeLokacije, string tipResursa, 
+        public bool kreirajResurs(string ime, string imeLokacije, string tipResursa, 
             string? opis, string? podTipStola, int? kapacitet, bool? imaProjektor, bool? imaTV, bool? imaTablu, bool? imaOnlineOpremu)
         {
             proveriAdmina();
             return _praviResursServis.dodajResurs(ime, imeLokacije, tipResursa, opis, podTipStola, kapacitet, imaProjektor, imaTV, imaTablu, imaOnlineOpremu);
         }
-        bool otkaziResurs(string ime)
+        public bool otkaziResurs(string ime)
         {
             proveriAdmina();
             return _praviResursServis.obrisiResurs(ime);
         }
-        bool izmeniResurs(string ime, string? imeLokacije, string? tipResursa, 
+        public bool izmeniResurs(string ime, string? imeLokacije, string? tipResursa, 
             string? opis, string? podTipStola, int? kapacitet, bool? imaProjektor, bool? imaTV, bool? imaTablu, bool? imaOnlineOpremu)
         {
             proveriAdmina();
             return _praviResursServis.izmeniResurs(ime, imeLokacije, tipResursa, opis, podTipStola, kapacitet, imaProjektor, imaTV, imaTablu, imaOnlineOpremu);
         }
-        List<Resurs> dajResursePoLokacijiSortiranoPoTipu(string lokacija)
+        public List<Resurs> dajResursePoLokacijiSortiranoPoTipu(string lokacija)
         {
             proveriAdmina();
             return _praviResursServis.dajResursePoLokacijiSortiranoPoTipu(lokacija);

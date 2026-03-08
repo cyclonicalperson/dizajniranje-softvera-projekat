@@ -127,6 +127,11 @@
                         <TextBox x:Name="TextBoxKapacitet"/>
                     </StackPanel>
 
+                    <StackPanel Grid.Row="4" Grid.Column="1" Margin="5">
+                        <TextBlock Text="Podtip Stola:"/>
+                        <TextBox x:Name="TextBoxPodtipStola"/>
+                    </StackPanel>
+
                 </Grid>
 
                 <StackPanel Orientation="Horizontal"
