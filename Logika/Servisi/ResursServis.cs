@@ -87,7 +87,7 @@ namespace CoWorkingManager.Logika.Servisi
                 notifikacija("Izmena resursa neuspesna jer resurs nije pronadjen"); 
                 return false; 
             }
-            if(imeLokacije != null)
+            if(!string.IsNullOrWhiteSpace(imeLokacije))
             {
                 var lokacija = _fasada.Lokacije.DajPoNazivu(imeLokacije);
                 if (lokacija == null)
@@ -98,13 +98,13 @@ namespace CoWorkingManager.Logika.Servisi
                 resurs.LokacijaId = lokacija.Id;
                 resurs.Lokacija = lokacija;
             }
-            if (tipResursa != null) 
+            if (!string.IsNullOrWhiteSpace(tipResursa)) 
             {
                 TipResursa tip = Enum.Parse<TipResursa>(tipResursa);
                 resurs.TipResursa = tip; 
             }
-            if(opis != null) resurs.Opis = opis;
-            if(podTipStola != null)
+            if(!string.IsNullOrWhiteSpace(opis)) resurs.Opis = opis;
+            if(!string.IsNullOrWhiteSpace(podTipStola))
             {
                 if (resurs.TipResursa != TipResursa.Sto)
                 {

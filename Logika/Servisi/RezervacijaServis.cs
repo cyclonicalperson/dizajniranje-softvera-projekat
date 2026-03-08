@@ -105,7 +105,7 @@ namespace CoWorkingManager.Logika.Servisi
             }
             var resurs = new Resurs();
             var lokacijaObj = new Lokacija();
-            if (resursIme != null)
+            if (!string.IsNullOrWhiteSpace(resursIme))
             {
                 resurs = _fasada.Resursi.DajSve()
                 .FirstOrDefault(r => r.Ime == resursIme);
