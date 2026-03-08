@@ -36,8 +36,7 @@ namespace CoWorkingManager.Logika.Servisi
 
         public bool obrisiLokaciju(string ime)
         {
-            var lokacija = _fasada.Lokacije.DajSve()
-                .FirstOrDefault(l => l.Ime == ime);
+            var lokacija = _fasada.Lokacije.DajPoNazivu(ime);
             if (lokacija == null)
             {
                 notifikacija("Brisanje lokacije neuspesno jer lokacija nije pronadjena");
@@ -55,9 +54,8 @@ namespace CoWorkingManager.Logika.Servisi
 
         public bool izmeniLokaciju(string ime, string? adresa, string? grad, string? radniSati, int? maxBrojKorisnika)
         {
-            var lokacija = _fasada.Lokacije.DajSve()
-                .FirstOrDefault(l => l.Ime == ime);
-            if(lokacija == null)
+            var lokacija = _fasada.Lokacije.DajPoNazivu(ime);
+            if (lokacija == null)
             {
                 notifikacija("Izmena lokacije neuspesna jer lokacija nije pronadjena");
                 return false;
@@ -73,6 +71,14 @@ namespace CoWorkingManager.Logika.Servisi
             }
             notifikacija("Izmena lokacije neuspesna");
             return false;
+        }
+
+        public Lokacija pronadjiLokaciju(string ime)
+        {
+            var lokacija = _fasada.Lokacije.DajPoNazivu(ime);
+            if (lokacija == null) notifikacija("Lokacija nije pronadjena");
+            else notifikacija("Uzeta lokacija");
+            return lokacija;
         }
     }
 }

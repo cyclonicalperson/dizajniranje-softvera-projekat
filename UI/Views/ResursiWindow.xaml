@@ -170,8 +170,7 @@
                 Nije moguće izvršiti akciju
             </TextBlock>
 
-        </StackPanel>
+
 
     </Grid>
-
 </Window>

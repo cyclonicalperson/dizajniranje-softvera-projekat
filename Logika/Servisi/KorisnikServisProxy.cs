@@ -36,7 +36,7 @@ namespace CoWorkingManager.Logika.Servisi
         }
 
         public bool dodajKorisnika(string ime, string prezime, string email, string? telefon,
-            string tipClanstva, string datumPocetkaClanstva, string datumKrajaClanstva,
+            string tipClanstva, DateOnly datumPocetkaClanstva, DateOnly datumKrajaClanstva,
             string statusNaloga)
         {
             proveriAdmina();
@@ -50,7 +50,7 @@ namespace CoWorkingManager.Logika.Servisi
         }
 
         public bool izmeniKorisnika(string ime, string prezime, string? noviEmail, string? noviTelefon, string? noviTipClanstva, 
-            string? noviDatumPocetkaClanstva, string? noviDatumKrajaClanstva, string? noviStatusNaloga)
+            DateOnly? noviDatumPocetkaClanstva, DateOnly? noviDatumKrajaClanstva, string? noviStatusNaloga)
         {
             proveriAdmina();
             return _praviKorisnikServis.izmeniKorisnika(ime, prezime, noviEmail, noviTelefon, noviTipClanstva, noviDatumPocetkaClanstva, noviDatumKrajaClanstva, noviStatusNaloga);

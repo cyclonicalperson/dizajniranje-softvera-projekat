@@ -10,7 +10,7 @@ namespace CoWorkingManager.UI.Views
     {
         private GlavniMediator mediator;
 
-        public GlavniWindow(GlavniMediator mediator)
+        public GlavniWindow(GlavniMediator mediator, string imeLanca)
         {
             this.mediator = mediator;
             InitializeComponent();

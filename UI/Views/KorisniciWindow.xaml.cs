@@ -33,14 +33,16 @@ namespace CoWorkingManager.UI.Views
             this.korisniciMediator = korisniciMediator;
             facade = CoworkingFasada.DajInstancu();
             InitializeComponent();
-            string[] configLines = File.ReadAllLines("config.txt");
-            Lanac.Text = configLines[0];
+            //Dodati naziv lanca
+            //Lanac.Text = 
         }
 
         public void Show()
         {
             Pretraga.Visibility = Visibility.Collapsed;
             Izmena.Visibility = Visibility.Collapsed;
+            RefreshPretragaMeni();
+            RefreshTable();
 
             base.Show();
         }

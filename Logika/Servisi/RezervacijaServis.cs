@@ -23,8 +23,7 @@ namespace CoWorkingManager.Logika.Servisi
                 notifikacija("Korisnik nije pronadjen");
                 return false;
             }
-            var lokacijaObj = _fasada.Lokacije.DajSve()
-                .FirstOrDefault(l => l.Id == _fasada.Resursi.DajSve().FirstOrDefault(r => r.Ime == resursIme)?.LokacijaId);
+            var lokacijaObj = _fasada.Lokacije.DajPoId(_fasada.Resursi.DajSve().FirstOrDefault(r => r.Ime == resursIme)?.LokacijaId ?? -1);
             if (lokacijaObj == null)
             {
                 notifikacija("Lokacija nije pronadjena");
@@ -88,7 +87,7 @@ namespace CoWorkingManager.Logika.Servisi
             notifikacija("Otkazivanje rezervacija neuspesno");
             return false;
         }
-        public bool izmeniRezervaciju(string ime, string prezime, string resursIme, string pocetak, string kraj)
+        public bool izmeniRezervaciju(string ime, string prezime, string? resursIme, string? pocetak, string? kraj)
         {
             var korisnik = _fasada.Korisnici.DajSve()
                 .FirstOrDefault(k => k.Ime == ime && k.Prezime == prezime);
@@ -105,16 +104,10 @@ namespace CoWorkingManager.Logika.Servisi
                 return false;
             }
             var rezervacija = _fasada.Rezervacije.DajSve()
-                .FirstOrDefault(r => r.Korisnik.Id == korisnik.Id && r.Resurs.Id == resurs.Id
-                    && r.PocetakVreme == DateTime.Parse(pocetak) && r.KrajVreme == DateTime.Parse(kraj));
+                .FirstOrDefault(r => r.Korisnik.Id == korisnik.Id && r.StatusRezervacije == StatusRezervacije.Aktivna);
             if (rezervacija == null)
             {
                 notifikacija("Rezervacija nije pronadjena");
-                return false;
-            }
-            if (rezervacija.StatusRezervacije == StatusRezervacije.Otkazana)
-            {
-                notifikacija("Ne mozete izmeniti otkazanu rezervaciju");
                 return false;
             }
             if (!validacijaClanstva(korisnik, resurs, DateTime.Parse(pocetak), DateTime.Parse(kraj))) return false;
@@ -124,9 +117,10 @@ namespace CoWorkingManager.Logika.Servisi
             rezervacija.Resurs = resurs;
             rezervacija.KorisnikId = korisnik.Id;
             rezervacija.ResursId = resurs.Id;
-            rezervacija.PocetakVreme = DateTime.Parse(pocetak);
-            rezervacija.KrajVreme = DateTime.Parse(kraj);
-            rezervacija.StatusRezervacije = StatusRezervacije.Aktivna;
+            if (pocetak != null)
+                rezervacija.PocetakVreme = DateTime.Parse(pocetak);
+            if (kraj != null)
+                rezervacija.KrajVreme = DateTime.Parse(kraj);
             if (_fasada.Rezervacije.Azuriraj(rezervacija))
             {
                 notifikacija("Izmenjena rezervacija");

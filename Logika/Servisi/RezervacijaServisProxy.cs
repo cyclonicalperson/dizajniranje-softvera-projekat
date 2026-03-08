@@ -40,7 +40,7 @@ namespace CoWorkingManager.Logika.Servisi
             proveriAdmina();
             return _praviRezervacijaServis.otkaziRezervaciju(ime, prezime, resursIme, pocetak, kraj);
         }
-        bool izmeniRezervaciju(string ime, string prezime, string resursIme, string pocetak, string kraj)
+        bool izmeniRezervaciju(string ime, string prezime, string? resursIme, string? pocetak, string? kraj)
 		{
             proveriAdmina();
             return _praviRezervacijaServis.izmeniRezervaciju(ime, prezime, resursIme, pocetak, kraj);

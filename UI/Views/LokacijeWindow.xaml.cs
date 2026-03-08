@@ -24,8 +24,6 @@ namespace CoWorkingManager.UI.Views
             this.mediator = mediator;
             this.lokacijeMediator = lokacijeMediator;
             InitializeComponent();
-            string[] configLines = File.ReadAllLines("config.txt");
-            Lanac.Text = configLines[0];
         }
 
         public void Show()
