@@ -61,7 +61,7 @@
 
                     <DataGrid.Columns>
 
-                        <DataGridTextColumn Header="Resurs" Binding="{Binding Resurs.Ime + ' ' + Resurs.Prezime}"/>
+                        <DataGridTextColumn Header="Resurs" Binding="{Binding Resurs.Ime + Resurs.Prezime}"/>
                         <DataGridTextColumn Header="Lokacija" Binding="{Binding Lokacija}"/>
                         <DataGridTextColumn Header="Početak" Binding="{Binding PocetakVreme}"/>
                         <DataGridTextColumn Header="Završetak" Binding="{Binding KrajVreme}"/>
