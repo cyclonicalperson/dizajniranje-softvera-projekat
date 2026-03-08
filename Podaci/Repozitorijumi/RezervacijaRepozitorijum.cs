@@ -109,15 +109,14 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
         // ili novi termin se preklapa sa drugom rezervacijom
         public bool Azuriraj(Rezervacija rezervacija)
         {
-            var uBazi = kontekst.Rezervacije.Find(rezervacija.Id);
+            var uBazi = kontekst.Rezervacije.AsNoTracking()
+                .FirstOrDefault(r => r.Id == rezervacija.Id);
             if (uBazi == null)
                 return false;
 
-            // Izmena je dozvoljena samo za aktivne rezervacije
             if (uBazi.StatusRezervacije != StatusRezervacije.Aktivna)
                 return false;
 
-            // Proverava preklapanje, iskljucujući samu ovu rezervaciju
             if (PostojiPreklapanje(
                     rezervacija.ResursId,
                     rezervacija.PocetakVreme,
@@ -125,7 +124,12 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
                     excludeId: rezervacija.Id))
                 return false;
 
-            kontekst.Rezervacije.Update(rezervacija);
+            var tracked = kontekst.ChangeTracker.Entries<Rezervacija>()
+                .FirstOrDefault(e => e.Entity.Id == rezervacija.Id);
+            if (tracked != null)
+                tracked.State = EntityState.Detached;
+
+            kontekst.Entry(rezervacija).State = EntityState.Modified;
             kontekst.SaveChanges();
             return true;
         }

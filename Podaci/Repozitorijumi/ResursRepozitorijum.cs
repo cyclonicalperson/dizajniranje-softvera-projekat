@@ -112,10 +112,15 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
         // Vraca false ako resurs sa datim ID-jem ne postoji
         public bool Azuriraj(Resurs resurs)
         {
-            if (!_kontekst.Resursi.Any(r => r.Id == resurs.Id))
+            if (!_kontekst.Resursi.AsNoTracking().Any(r => r.Id == resurs.Id))
                 return false;
 
-            _kontekst.Resursi.Update(resurs);
+            var tracked = _kontekst.ChangeTracker.Entries<Resurs>()
+                .FirstOrDefault(e => e.Entity.Id == resurs.Id);
+            if (tracked != null)
+                tracked.State = EntityState.Detached;
+
+            _kontekst.Entry(resurs).State = EntityState.Modified;
             _kontekst.SaveChanges();
             return true;
         }

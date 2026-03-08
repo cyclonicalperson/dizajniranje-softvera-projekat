@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using CoWorkingManager.Modeli;
 
 namespace CoWorkingManager.Podaci.Repozitorijumi
@@ -56,7 +57,7 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
         // ime / email već koristi drugi administrator
         public bool Azuriraj(Administrator administrator)
         {
-            if (!kontekst.Administratori.Any(a => a.Id == administrator.Id))
+            if (!kontekst.Administratori.AsNoTracking().Any(a => a.Id == administrator.Id))
                 return false;
 
             if (KorisnickoImePostoji(administrator.KorisnickoIme, excludeId: administrator.Id))
@@ -65,7 +66,12 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
             if (EmailPostoji(administrator.Email, excludeId: administrator.Id))
                 return false;
 
-            kontekst.Administratori.Update(administrator);
+            var tracked = kontekst.ChangeTracker.Entries<Administrator>()
+                .FirstOrDefault(e => e.Entity.Id == administrator.Id);
+            if (tracked != null)
+                tracked.State = EntityState.Detached;
+
+            kontekst.Entry(administrator).State = EntityState.Modified;
             kontekst.SaveChanges();
             return true;
         }
