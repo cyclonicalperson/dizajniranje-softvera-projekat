@@ -63,7 +63,7 @@
                     <DataGrid.Columns>
 
                         <DataGridTextColumn Header="Resurs" Binding="{Binding Resurs}"/>
-                        <DataGridTextColumn Header="Lokacija" Binding="{Binding Lokacija}"/>
+                        <DataGridTextColumn Header="Lokacija" Binding="{Binding Resurs.Lokacija}"/>
                         <DataGridTextColumn Header="Početak" Binding="{Binding PocetakVreme}"/>
                         <DataGridTextColumn Header="Završetak" Binding="{Binding KrajVreme}"/>
                         <DataGridTextColumn Header="Status" Binding="{Binding StatusRezervacije}"/>

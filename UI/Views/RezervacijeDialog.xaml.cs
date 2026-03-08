@@ -8,9 +8,16 @@ namespace CoWorkingManager.UI.Views
 {
     public partial class RezervacijeDialog : Window
     {
-        public Rezervacija RezervacijaData { get; private set; } // Podaci za rezervaciju
+        public Rezervacija RezervacijaData { get; private set; }
         private CoworkingFasada facade = CoworkingFasada.DajInstancu();
-        private RezervacijaServis rezervacijaServis = new RezervacijaServis(); // Pretpostavljamo servis
+        private static RezervacijaServis rezervacijaServis = new RezervacijaServis();
+        private RezervacijaServisProxy rezervacijaServisProxy = new RezervacijaServisProxy(rezervacijaServis);
+        private static KorisnikServis korisnikServis = new KorisnikServis();
+        private KorisnikServisProxy korisnikServisProxy = new KorisnikServisProxy(korisnikServis);
+        private static LokacijaServis lokacijaServis = new LokacijaServis();
+        private static LokacijaServisProxy lokacijaServisProxy = new LokacijaServisProxy(lokacijaServis);
+        private static ResursServis resursServis = new ResursServis();
+        private ResursServisProxy resursServisProxy = new ResursServisProxy(resursServis);
         private bool isEditMode = false;
 
         public RezervacijeDialog(Rezervacija existing = null)
@@ -46,7 +53,7 @@ namespace CoWorkingManager.UI.Views
             };
         }
 
-        private void Sacuvaj_Click(object sender, RoutedEventArgs e)
+        private void Dodaj_Click(object sender, RoutedEventArgs e)
         {
             // Kreiraj Rezervacija objekat
             RezervacijaData = RezervacijaData ?? new Rezervacija();
@@ -81,14 +88,15 @@ namespace CoWorkingManager.UI.Views
             DialogResult = true;*/
         }
 
-        private void OtkaziRezervaciju_Click(object sender, RoutedEventArgs e)
+        private void Izmeni_Click(object sender, RoutedEventArgs e)
+        { 
+        }
+
+        private void Otkazi_Click(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Da li želite da otkažete rezervaciju?", "Potvrda", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
-            {
-                /*RezervacijaData.Status = "otkazana"; // Promeni status
-                rezervacijaServis.KreirajIliIzmeniRezervaciju(RezervacijaData); // Sačuvaj promenu
-                DialogResult = true;*/
-            }
+            /*RezervacijaData.Status = "otkazana"; // Promeni status
+            rezervacijaServis.KreirajIliIzmeniRezervaciju(RezervacijaData); // Sačuvaj promenu
+            DialogResult = true;*/
         }
 
         private void Zatvori_Click(object sender, RoutedEventArgs e)
