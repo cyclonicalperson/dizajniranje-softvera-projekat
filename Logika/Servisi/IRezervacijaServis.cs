@@ -9,6 +9,6 @@ namespace CoWorkingManager.Logika.Servisi
         bool otkaziRezervaciju(string ime, string prezime, string resursIme, string pocetak, string kraj);
         bool izmeniRezervaciju(string ime, string prezime, string? resursIme, string? pocetak, string? kraj);
         List<Rezervacija> dajRezervacijeKorisnika(string? imePrezime);
-        List<Rezervacija> dajRezervacijePoLokacijiIDanu(Lokacija? lokacija, DateTime? datum);
+        List<Rezervacija> dajRezervacijePoLokacijiIDanu(string? lokacija, DateTime? datum);
     }
 }
