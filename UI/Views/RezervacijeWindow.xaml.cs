@@ -49,6 +49,7 @@ namespace CoWorkingManager.UI.Views
 
         public void RefreshPretragaKorisnikMeni()
         {
+            RefreshTableKorisnik();
             SelRezervacije_KorisnikCBox.Items.Clear();
             Korisnici = facade.Korisnici.DajSve();
             SelRezervacije_KorisnikCBox.Items.Add("Korisnik");
@@ -60,6 +61,7 @@ namespace CoWorkingManager.UI.Views
 
         public void RefreshPretragaDanLokacijaMeni()
         {
+            RefreshTableDanLokacija();
             SelRezervacije_LokacijaCBox.Items.Clear();
             Lokacije = facade.Lokacije.DajSve();
             SelRezervacije_LokacijaCBox.Items.Add("Lokacija");
