@@ -54,10 +54,15 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
         // Vraca false ako lokacija ne postoji
         public bool Azuriraj(Lokacija lokacija)
         {
-            if (!kontekst.Lokacije.Any(l => l.Id == lokacija.Id))
+            if (!kontekst.Lokacije.AsNoTracking().Any(l => l.Id == lokacija.Id))
                 return false;
 
-            kontekst.Lokacije.Update(lokacija);
+            var tracked = kontekst.ChangeTracker.Entries<Lokacija>()
+                .FirstOrDefault(e => e.Entity.Id == lokacija.Id);
+            if (tracked != null)
+                tracked.State = EntityState.Detached;
+
+            kontekst.Entry(lokacija).State = EntityState.Modified;
             kontekst.SaveChanges();
             return true;
         }

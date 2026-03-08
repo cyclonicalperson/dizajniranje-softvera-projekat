@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using CoWorkingManager.Modeli;
 
 namespace CoWorkingManager.Podaci.Repozitorijumi
@@ -38,10 +39,15 @@ namespace CoWorkingManager.Podaci.Repozitorijumi
         // Vraca false ako tip sa datim ID-jem ne postoji
         public bool Azuriraj(TipClanstva tip)
         {
-            if (!kontekst.TipoviClanstava.Any(t => t.Id == tip.Id))
+            if (!kontekst.TipoviClanstava.AsNoTracking().Any(t => t.Id == tip.Id))
                 return false;
 
-            kontekst.TipoviClanstava.Update(tip);
+            var tracked = kontekst.ChangeTracker.Entries<TipClanstva>()
+                .FirstOrDefault(e => e.Entity.Id == tip.Id);
+            if (tracked != null)
+                tracked.State = EntityState.Detached;
+
+            kontekst.Entry(tip).State = EntityState.Modified;
             kontekst.SaveChanges();
             return true;
         }
