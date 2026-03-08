@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Collections.Generic;
 using System.IO;
+using CoWorkingManager.Podaci.Repozitorijumi;
 
 namespace CoWorkingManager.UI.Views
 {
@@ -18,6 +19,7 @@ namespace CoWorkingManager.UI.Views
         private static LokacijaServis lokacijaServis = new LokacijaServis();
         private LokacijaServisProxy lokacijaServisProxy = new LokacijaServisProxy(lokacijaServis);
 
+        List<StatistikaZauzetosti> StatistikeZauzetosti;
         List <Lokacija> Lokacije;
 
         public LokacijeWindow(GlavniMediator mediator, LokacijeMediator lokacijeMediator)
@@ -38,6 +40,7 @@ namespace CoWorkingManager.UI.Views
 
         public void RefreshTable()
         {
+            //StatistikeZauzetosti = facade.Lokacije.DajStatistikuZauzetostiZaSve();
             Lokacije = facade.Lokacije.DajSve();
             TabelaLokacija.ItemsSource = null;
             TabelaLokacija.ItemsSource = Lokacije;

@@ -51,11 +51,11 @@
 
                     <DataGrid.Columns>
 
-                        <DataGridTextColumn Header="Naziv" Binding="{Binding NazivLokacije}"/>
-                        <DataGridTextColumn Header="Adresa" Binding="{Binding Adresa}"/>
-                        <DataGridTextColumn Header="Grad" Binding="{Binding Grad}"/>
-                        <DataGridTextColumn Header="Radno vreme" Binding="{Binding RadnoVreme}"/>
-                        <DataGridTextColumn Header="Maks. kapacitet" Binding="{Binding MaksimalanKapacitet}"/>
+                        <DataGridTextColumn Header="Naziv" Binding="{Binding Lokacija.Ime}"/>
+                        <DataGridTextColumn Header="Adresa" Binding="{Binding Lokacija.Adresa}"/>
+                        <DataGridTextColumn Header="Grad" Binding="{Binding Lokacija.Grad}"/>
+                        <DataGridTextColumn Header="Radno vreme" Binding="{Binding Lokacija.RadniSati}"/>
+                        <DataGridTextColumn Header="Maks. kapacitet" Binding="{Binding Lokacija.MaxBrojKorisnika}"/>
                         <DataGridTextColumn Header="Broj radnih mesta" Binding="{Binding UkupanBrojRadnihMesta}"/>
                         <DataGridTextColumn Header="Rezervisanih" Binding="{Binding BrojRezervisanih}"/>
                         <DataGridTextColumn Header="Zauzetost (%)" Binding="{Binding ProcenatZauzetosti}"/>
