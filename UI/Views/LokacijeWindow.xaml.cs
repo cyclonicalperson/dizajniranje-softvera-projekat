@@ -15,9 +15,10 @@ namespace CoWorkingManager.UI.Views
         private GlavniMediator mediator;
         private LokacijeMediator lokacijeMediator;
         private CoworkingFasada facade = CoworkingFasada.DajInstancu();
-        private LokacijaServis lokacijaServis = new LokacijaServis(); // Pretpostavljamo servis
+        private static LokacijaServis lokacijaServis = new LokacijaServis();
+        private LokacijaServisProxy lokacijaServisProxy = new LokacijaServisProxy(lokacijaServis);
 
-        List<Lokacija> Lokacije;
+        List <Lokacija> Lokacije;
 
         public LokacijeWindow(GlavniMediator mediator, LokacijeMediator lokacijeMediator)
         {
@@ -56,15 +57,15 @@ namespace CoWorkingManager.UI.Views
 
             if (op == 0) // Dodaj
             {
-                return false;//lokacijaServis.DodajLokaciju(NazivLokacije, Adresa, Grad, RadnoVreme, MaksimalanKapacitet, Opis);
+                return false;//lokacijaServisProxy.DodajLokaciju(NazivLokacije, Adresa, Grad, RadnoVreme, MaksimalanKapacitet, Opis);
             }
             else if (op == 1) // Izmeni
             {
-                return false;//lokacijaServis.IzmeniLokaciju(NazivLokacije, Adresa, Grad, RadnoVreme, MaksimalanKapacitet, Opis);
+                return false;//lokacijaServisProxy.IzmeniLokaciju(NazivLokacije, Adresa, Grad, RadnoVreme, MaksimalanKapacitet, Opis);
             }
             else // Obrisi
             {
-                return false;//lokacijaServis.ObrisiLokaciju(NazivLokacije);
+                return false;//lokacijaServisProxy.ObrisiLokaciju(NazivLokacije);
             }
         }
 
