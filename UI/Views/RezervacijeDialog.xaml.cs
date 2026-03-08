@@ -54,8 +54,18 @@ namespace CoWorkingManager.UI.Views
             if (SelectedKorisnik == null || SelectedResurs == null)
                 return false;
 
-            DateTime? DatumPocetak = DatePocetak.SelectedDate;
-            DateTime? DatumKraj = DateZavrsetak.SelectedDate;
+            DateTime? Pocetak = DateZavrsetak.SelectedDate;
+            DateOnly? DatumPocetak = null;
+            if (Pocetak != null)
+            {
+                DatumPocetak = DateOnly.FromDateTime((DateTime)Pocetak);
+            }
+            DateTime? Kraj = DateZavrsetak.SelectedDate;
+            DateOnly? DatumKraj = null;
+            if (Kraj != null)
+            {
+                DatumKraj = DateOnly.FromDateTime((DateTime)Kraj);
+            }
             string? vremePocetak = TimePocetak.Text;
             string? vremeKraj = TimePocetak.Text;
 
