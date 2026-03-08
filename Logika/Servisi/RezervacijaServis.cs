@@ -1,6 +1,7 @@
 using CoWorkingManager.Logika.Servisi;
 using CoWorkingManager.Modeli;
 using CoWorkingManager.Podaci;
+using System.Windows.Controls;
 
 namespace CoWorkingManager.Logika.Servisi
 {
@@ -225,9 +226,19 @@ namespace CoWorkingManager.Logika.Servisi
             return pocetak >= pocetakRadnog && kraj <= krajRadnog;
         }
         // Vraca sve rezervacije prosleđenog korisnika, sortirane od najnovije
-        public List<Rezervacija> dajRezervacijeKorisnika(Korisnik korisnik)
+        public List<Rezervacija> dajRezervacijeKorisnika(string? imePrezime)
         {
-            var rezervacije = _fasada.Rezervacije.DajPoKorisniku(korisnik.Id);
+            var rezervacije = new List<Rezervacija>();
+            if (imePrezime == null)
+            {
+                rezervacije = _fasada.Rezervacije.DajSve().OrderByDescending(r => r.PocetakVreme).ToList();
+                return rezervacije;
+            }
+            var ime = imePrezime.Split(' ')[0];
+            var prezime = imePrezime.Split(' ')[1];
+            var korisnik = _fasada.Korisnici.DajSve()
+                .FirstOrDefault(k => k.Ime == ime && k.Prezime == prezime);
+            rezervacije = _fasada.Rezervacije.DajPoKorisniku(korisnik.Id);
             notifikacija("Dohvacene rezervacije korisnika");
             return rezervacije;
         }

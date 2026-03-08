@@ -126,8 +126,15 @@ namespace CoWorkingManager.Logika.Servisi
             notifikacija("Izmene resursa neuspesne");
             return false;
         }
-        public List<Resurs> dajResursePoLokacijiSortiranoPoTipu(string lokacija)
+        public List<Resurs> dajResursePoLokacijiSortiranoPoTipu(string? lokacija)
 		{
+            if (lokacija == null)
+            {
+                var sviResursi = _fasada.Resursi.DajSve()
+                    .OrderBy(r => r.TipResursa)
+                    .ToList();
+                return sviResursi;
+            }
             var lokacijaObj = _fasada.Lokacije.DajPoNazivu(lokacija);
             if (lokacijaObj == null)
             {
