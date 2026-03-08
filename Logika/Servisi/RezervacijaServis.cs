@@ -259,7 +259,7 @@ namespace CoWorkingManager.Logika.Servisi
         // Ne ukljucuje otkazane rezervacije
         public List<Rezervacija> dajRezervacijePoLokacijiIDanu(string? lokacija, DateTime? datum)
         {
-            
+
             if (lokacija != null && datum != null)
             {
                 var lokacijaObj = _fasada.Lokacije.DajPoNazivu(lokacija);
@@ -271,24 +271,26 @@ namespace CoWorkingManager.Logika.Servisi
                 return _fasada.Rezervacije.DajPoLokacijiIDanu(lokacijaObj.Id, datum.Value);
             }
 
-            var sve = _fasada.Rezervacije.DajSve()
-                .Where(r => r.StatusRezervacije != StatusRezervacije.Otkazana);
+            IEnumerable<Rezervacija> sve = _fasada.Rezervacije.DajSve();
 
             if (lokacija != null)
             {
                 var lokacijaObj = _fasada.Lokacije.DajPoNazivu(lokacija);
+
                 if (lokacijaObj == null)
                 {
                     notifikacija("Lokacija nije pronadjena");
                     return new List<Rezervacija>();
                 }
+
                 sve = sve.Where(r => r.Resurs.LokacijaId == lokacijaObj.Id);
             }
 
             if (datum != null)
             {
                 var pocetakDana = datum.Value.Date;
-                var krajDana = datum.Value.Date.AddDays(1);
+                var krajDana = pocetakDana.AddDays(1);
+
                 sve = sve.Where(r => r.PocetakVreme < krajDana && r.KrajVreme > pocetakDana);
             }
 
