@@ -74,7 +74,7 @@ namespace CoWorkingManager.UI.Views
             if (SelektovaniKorisnik == "Korisnik")
                 SelektovaniKorisnik = null;
 
-            //Rezervacije = rezervacijaServisProxy.dajRezervacijeKorisnika(korisnikServisProxy);
+            Rezervacije = rezervacijaServisProxy.dajRezervacijeKorisnika(SelektovaniKorisnik);
             TabelaRezervacijaKorisnik.ItemsSource = null;
             TabelaRezervacijaKorisnik.ItemsSource = Rezervacije;
         }
